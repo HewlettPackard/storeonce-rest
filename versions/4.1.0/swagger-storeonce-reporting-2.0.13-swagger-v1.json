@@ -1,0 +1,2161 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "2.0.13-SNAPSHOT",
+    "title": "Reporting"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Name of the resource"
+    },
+    {
+      "name": "Retention Periods"
+    },
+    {
+      "name": "Scheduled Report subresource"
+    },
+    {
+      "name": "Scheduled report results"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/reporting": {
+      "get": {
+        "tags": [
+          "Name of the resource"
+        ],
+        "summary": "Operation description",
+        "description": "Additional details",
+        "operationId": "getMembers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Item"
+              }
+            }
+          },
+          "500": {
+            "description": "There was a problem while using the store"
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/results": {
+      "get": {
+        "tags": [
+          "Scheduled report results"
+        ],
+        "summary": "Get results",
+        "description": "Get results",
+        "operationId": "getResults",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Results"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/results/download": {
+      "get": {
+        "tags": [
+          "Scheduled report results"
+        ],
+        "summary": "Download a report results file",
+        "description": "",
+        "operationId": "getFile",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "name": "configUuid",
+            "in": "query",
+            "description": "The UUID of the config that created the results. ",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "description": "The timestamp of the results to be downloaded. ",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/retention-periods": {
+      "get": {
+        "tags": [
+          "Retention Periods"
+        ],
+        "summary": "Get Retention period",
+        "description": "Get Retention period configured",
+        "operationId": "getRetentionPeriods",
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/RetentionPeriod"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/scheduled-reports/configs": {
+      "get": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Get all Scheduled Reports",
+        "description": "Gets all Scheduled Reports",
+        "operationId": "getAllScheduledReports",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/collection"
+            }
+          },
+          "500": {
+            "description": "Error obtaining the stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Create a new Schedule Report",
+        "description": "",
+        "operationId": "createScheduleReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "New Schedule Report to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          },
+          {
+            "in": "body",
+            "name": "scheduleReport",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Invalid report type.<br/>Empty list of email addresses.<br/>Invalid report type.<br/>Read-only field uuid specified"
+          },
+          "409": {
+            "description": "Email server not configured on this appliance.<br/>Maximum number of scheduled reports already configured"
+          },
+          "500": {
+            "description": "Error updating stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:create"
+        ]
+      }
+    },
+    "/reporting/scheduled-reports/configs/config/{config-id}": {
+      "get": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Retrieve a Scheduled Report with the given uuid",
+        "description": "",
+        "operationId": "getScheduledReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "config-id",
+            "in": "path",
+            "description": "UUID of the Scheduled Report to be retrieved",
+            "required": true,
+            "type": "string",
+            "x-example": "84fbe8d0-5106-47c2-b237-e887bd7dbcfb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          },
+          "404": {
+            "description": "No scheduled report found for the uuid provided"
+          },
+          "500": {
+            "description": "Error obtaining the stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Modify the specififed Scheduled Report",
+        "description": "",
+        "operationId": "updateScheduledReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated Scheduled Report",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          },
+          {
+            "name": "config-id",
+            "in": "path",
+            "description": "UUID of the Scheduled Report to be updated",
+            "required": true,
+            "type": "string",
+            "x-example": "84fbe8d0-5106-47c2-b237-e887bd7dbcfb"
+          },
+          {
+            "in": "body",
+            "name": "scheduleReport",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ReportingSchedulerResource"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Empty/Invalid schedule report name provided.<br/>Empty list for reportTypes provided.<br/>Read-only field uuid specified"
+          },
+          "404": {
+            "description": "No scheduled report found for the uuid provided"
+          },
+          "500": {
+            "description": "Error updating stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Delete a Scheduled Report with the given uuid",
+        "description": "",
+        "operationId": "deleteScheduledReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "config-id",
+            "in": "path",
+            "description": "UUID of the Scheduled Report to be deleted",
+            "required": true,
+            "type": "string",
+            "x-example": "84fbe8d0-5106-47c2-b237-e887bd7dbcfb"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "No scheduled report found for the uuid provided"
+          },
+          "500": {
+            "description": "Error updating stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:delete"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "AlgorithmConstraints": {
+      "type": "object"
+    },
+    "ApplianceDetails": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the Appliance Group"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Appliance"
+        }
+      }
+    },
+    "Application": {
+      "type": "object",
+      "properties": {
+        "singletons": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object"
+          }
+        },
+        "classes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "Authenticator": {
+      "type": "object"
+    },
+    "BindPairObject": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "object"
+        }
+      }
+    },
+    "ClientRequestFilter": {
+      "type": "object"
+    },
+    "ClientResponseFilter": {
+      "type": "object"
+    },
+    "Cookie": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "path": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        }
+      }
+    },
+    "EnumerationByte[]": {
+      "type": "object"
+    },
+    "EventCategory": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "eventIdentifier": {
+          "type": "string"
+        }
+      }
+    },
+    "EventCategoryService": {
+      "type": "object",
+      "properties": {
+        "allEventCategories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventCategory"
+          }
+        }
+      }
+    },
+    "EventDispatcher": {
+      "type": "object"
+    },
+    "EventFactory": {
+      "type": "object"
+    },
+    "EventMessageReadWrite": {
+      "type": "object"
+    },
+    "ExecuteServices": {
+      "type": "object"
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "HTTPServerConfiguration": {
+      "type": "object",
+      "properties": {
+        "serverThreadPoolSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "serverWaitingRequestsQueueSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "serverPort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "serverSecurePort": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "HTTPServerConfiguration"
+      }
+    },
+    "HostnameVerifier": {
+      "type": "object"
+    },
+    "HttpAuthenticationFeature": {
+      "type": "object"
+    },
+    "I18nManager": {
+      "type": "object",
+      "properties": {
+        "localeManager": {
+          "$ref": "#/definitions/LocaleManager"
+        },
+        "localeToUse": {
+          "$ref": "#/definitions/Locale"
+        }
+      }
+    },
+    "InfrastructureDirectoryServices": {
+      "type": "object",
+      "properties": {
+        "i18nPath": {
+          "type": "string"
+        },
+        "realBinPath": {
+          "type": "string"
+        },
+        "realLogPath": {
+          "type": "string"
+        },
+        "serverKeystorePathname": {
+          "type": "string"
+        },
+        "fsckLogPath": {
+          "type": "string"
+        },
+        "adeBinPath": {
+          "type": "string"
+        },
+        "realConfPath": {
+          "type": "string"
+        },
+        "archiveName": {
+          "type": "string"
+        },
+        "storesPathname": {
+          "type": "string"
+        },
+        "clientKeystorePathname": {
+          "type": "string"
+        },
+        "clientTruststorePathname": {
+          "type": "string"
+        },
+        "serverTruststorePathname": {
+          "type": "string"
+        },
+        "backupPathname": {
+          "type": "string"
+        },
+        "csrpath": {
+          "type": "string"
+        },
+        "realExecuteScriptPath": {
+          "type": "string"
+        },
+        "runtimePath": {
+          "type": "string"
+        },
+        "realSbinPath": {
+          "type": "string"
+        },
+        "homePath": {
+          "type": "string"
+        },
+        "keystorePathname": {
+          "type": "string"
+        }
+      }
+    },
+    "InfrastructureManagerServices": {
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        },
+        "activeNode": {
+          "$ref": "#/definitions/Node"
+        },
+        "clusterVifAddress": {
+          "type": "string"
+        },
+        "clusterVifDevice": {
+          "type": "string"
+        },
+        "serverPort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "serverSecurePort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "productConfiguration": {
+          "$ref": "#/definitions/ProductConfiguration"
+        },
+        "infrastructureDirectoryServices": {
+          "$ref": "#/definitions/InfrastructureDirectoryServices"
+        },
+        "registeredClusterNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Node"
+          }
+        },
+        "localNode": {
+          "$ref": "#/definitions/Node"
+        },
+        "productConfigurationManager": {
+          "$ref": "#/definitions/ProductConfigurationManager"
+        }
+      }
+    },
+    "InfrastructureServerServices": {
+      "type": "object",
+      "properties": {
+        "starting": {
+          "type": "boolean",
+          "default": false
+        },
+        "shuttingDown": {
+          "type": "boolean",
+          "default": false
+        },
+        "forcedShuttingDown": {
+          "type": "boolean",
+          "default": false
+        },
+        "inNoFailover": {
+          "type": "boolean",
+          "default": false
+        },
+        "upgrading": {
+          "type": "boolean",
+          "default": false
+        },
+        "singleNode": {
+          "type": "boolean",
+          "default": false
+        },
+        "configChangesAllowed": {
+          "type": "boolean",
+          "default": false
+        },
+        "pmMode": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "BecomingActive",
+            "Passive",
+            "NoPmFailover",
+            "NotConfigured",
+            "Unknown"
+          ]
+        },
+        "production": {
+          "type": "boolean",
+          "default": false
+        },
+        "restClient": {
+          "$ref": "#/definitions/RestClient"
+        },
+        "activeServer": {
+          "$ref": "#/definitions/Node"
+        },
+        "i18nManager": {
+          "$ref": "#/definitions/I18nManager"
+        },
+        "standardBindings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "storeLock": {
+          "type": "object"
+        },
+        "execute": {
+          "$ref": "#/definitions/ExecuteServices"
+        },
+        "notificationManager": {
+          "$ref": "#/definitions/NotificationManagerServices"
+        },
+        "currentTimeInMsec": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "infrastructureManager": {
+          "$ref": "#/definitions/InfrastructureManagerServices"
+        },
+        "taskManager": {
+          "$ref": "#/definitions/TaskManagerServices"
+        },
+        "eventFactory": {
+          "$ref": "#/definitions/EventFactory"
+        },
+        "eventMessageReadWrite": {
+          "$ref": "#/definitions/EventMessageReadWrite"
+        },
+        "eventCategoryService": {
+          "$ref": "#/definitions/EventCategoryService"
+        },
+        "authenticator": {
+          "$ref": "#/definitions/Authenticator"
+        },
+        "trustedClusterManager": {
+          "$ref": "#/definitions/TrustedClusterManager"
+        },
+        "active": {
+          "type": "boolean",
+          "default": false
+        },
+        "eventDispatcher": {
+          "$ref": "#/definitions/EventDispatcher"
+        },
+        "started": {
+          "type": "boolean",
+          "default": false
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Item": {
+      "type": "object",
+      "properties": {
+        "string": {
+          "type": "string"
+        },
+        "integer": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "Item"
+      }
+    },
+    "Limits": {
+      "type": "object",
+      "properties": {
+        "FileNameLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "FilePathnameLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ShareNameLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SharesPerHost": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "NFSShares": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "NFSClients": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "MaxStoragePoolSize": {
+          "$ref": "#/definitions/StoragePoolSize"
+        },
+        "MountPointNameLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "StoragePoolNameLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "StoragePoolsPerHost": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "VirtualServersPerStoragePool": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "FileStoresPerVirtualServer": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SnapsPerFileStore": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "IpsPerVirtualServer": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ConditionTimeoutSeconds": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SystemDirectories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "Limits"
+      }
+    },
+    "Locale": {
+      "type": "object",
+      "properties": {
+        "script": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "variant": {
+          "type": "string"
+        },
+        "extensionKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "unicodeLocaleAttributes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "unicodeLocaleKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "iso3Language": {
+          "type": "string"
+        },
+        "iso3Country": {
+          "type": "string"
+        },
+        "displayLanguage": {
+          "type": "string"
+        },
+        "displayScript": {
+          "type": "string"
+        },
+        "displayCountry": {
+          "type": "string"
+        },
+        "displayVariant": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        }
+      }
+    },
+    "LocaleManager": {
+      "type": "object",
+      "properties": {
+        "acceptLanguage": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "Node": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "NotificationManagerServices": {
+      "type": "object"
+    },
+    "PathSegment": {
+      "type": "object",
+      "properties": {
+        "matrixParameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "ProductConfiguration": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "type": "string",
+          "xml": {
+            "attribute": true
+          }
+        },
+        "version": {
+          "type": "string",
+          "xml": {
+            "attribute": true
+          }
+        },
+        "Limits": {
+          "$ref": "#/definitions/Limits"
+        },
+        "HTTPServerConfiguration": {
+          "$ref": "#/definitions/HTTPServerConfiguration"
+        }
+      },
+      "xml": {
+        "name": "ProductConfiguration"
+      }
+    },
+    "ProductConfigurationManager": {
+      "type": "object"
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "format": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "ReportingSchedulerResource": {
+      "type": "object",
+      "properties": {
+        "application": {
+          "$ref": "#/definitions/Application"
+        },
+        "uriinfo": {
+          "$ref": "#/definitions/UriInfo"
+        },
+        "request": {
+          "$ref": "#/definitions/Request"
+        },
+        "taskmanager": {
+          "$ref": "#/definitions/TaskManager"
+        },
+        "apiVersion": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "routePrefix": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "view": {
+          "type": "string"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sort": {
+          "type": "string"
+        },
+        "resourceContext": {
+          "$ref": "#/definitions/ResourceContext"
+        },
+        "allScheduledReports": {
+          "$ref": "#/definitions/collection"
+        },
+        "metadata": {
+          "$ref": "#/definitions/Response"
+        },
+        "activeServerName": {
+          "type": "string"
+        },
+        "i18nManager": {
+          "$ref": "#/definitions/I18nManager"
+        },
+        "infrastructureServerObject": {
+          "$ref": "#/definitions/InfrastructureServerServices"
+        }
+      }
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        }
+      }
+    },
+    "ResourceContext": {
+      "type": "object"
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "entity": {
+          "type": "object"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "RestClient": {
+      "type": "object",
+      "properties": {
+        "restClientControl": {
+          "$ref": "#/definitions/RestClientControl"
+        }
+      }
+    },
+    "RestClientControl": {
+      "type": "object",
+      "properties": {
+        "classesToRegister": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object"
+          }
+        },
+        "instancesToRegister": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "object"
+          }
+        },
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "http",
+            "https"
+          ]
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sslContext": {
+          "$ref": "#/definitions/SSLContext"
+        },
+        "hostnameVerifier": {
+          "$ref": "#/definitions/HostnameVerifier"
+        },
+        "requestFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClientRequestFilter"
+          }
+        },
+        "responseFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClientResponseFilter"
+          }
+        },
+        "authenticationFeatures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/HttpAuthenticationFeature"
+          }
+        },
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "cookies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Cookie"
+          }
+        },
+        "cookiesTargetedToClassic": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Cookie"
+          }
+        },
+        "throwOnErrorStatus": {
+          "type": "boolean",
+          "default": false
+        },
+        "needChuncked": {
+          "type": "boolean",
+          "default": false
+        },
+        "autoRetryOnBadConnection": {
+          "type": "boolean",
+          "default": false
+        },
+        "clientInjectBinding": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/BindPairObject"
+          }
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "SizeBytes"
+        }
+      }
+    },
+    "ResultSet": {
+      "type": "object",
+      "properties": {
+        "scheduleUuid": {
+          "type": "string",
+          "description": "ScheduleUuid"
+        },
+        "resultList": {
+          "type": "array",
+          "description": "ResultList",
+          "items": {
+            "$ref": "#/definitions/Result"
+          }
+        }
+      }
+    },
+    "Results": {
+      "type": "object",
+      "properties": {
+        "resultFiles": {
+          "type": "array",
+          "xml": {
+            "name": "resultFile",
+            "wrapped": true
+          },
+          "description": "Results",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/ResultSet"
+          }
+        }
+      },
+      "xml": {
+        "name": "Results"
+      }
+    },
+    "RetentionPeriod": {
+      "type": "object",
+      "properties": {
+        "highFrequencyRetentionSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "High Frequency Retention Seconds"
+        },
+        "mediumFrequencyRetentionSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Medium Frequency Retention Seconds"
+        },
+        "lowFrequencyRetentionSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Low Frequency Retention Seconds"
+        }
+      },
+      "xml": {
+        "name": "RetentionPeriod"
+      }
+    },
+    "SNIMatcher": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "SNIServerName": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "encoded": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "byte"
+          }
+        }
+      }
+    },
+    "SSLContext": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "protocol": {
+          "type": "string"
+        },
+        "serverSocketFactory": {
+          "$ref": "#/definitions/SSLServerSocketFactory"
+        },
+        "serverSessionContext": {
+          "$ref": "#/definitions/SSLSessionContext"
+        },
+        "clientSessionContext": {
+          "$ref": "#/definitions/SSLSessionContext"
+        },
+        "defaultSSLParameters": {
+          "$ref": "#/definitions/SSLParameters"
+        },
+        "supportedSSLParameters": {
+          "$ref": "#/definitions/SSLParameters"
+        },
+        "socketFactory": {
+          "$ref": "#/definitions/SSLSocketFactory"
+        }
+      }
+    },
+    "SSLParameters": {
+      "type": "object",
+      "properties": {
+        "cipherSuites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wantClientAuth": {
+          "type": "boolean",
+          "default": false
+        },
+        "needClientAuth": {
+          "type": "boolean",
+          "default": false
+        },
+        "algorithmConstraints": {
+          "$ref": "#/definitions/AlgorithmConstraints"
+        },
+        "endpointIdentificationAlgorithm": {
+          "type": "string"
+        },
+        "serverNames": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SNIServerName"
+          }
+        },
+        "snimatchers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SNIMatcher"
+          }
+        },
+        "useCipherSuitesOrder": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "SSLServerSocketFactory": {
+      "type": "object",
+      "properties": {
+        "supportedCipherSuites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultCipherSuites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SSLSessionContext": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "$ref": "#/definitions/EnumerationByte[]"
+        },
+        "sessionTimeout": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sessionCacheSize": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "SSLSocketFactory": {
+      "type": "object",
+      "properties": {
+        "supportedCipherSuites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defaultCipherSuites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ScheduleReport": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the Schedule Report"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Scheduled Report"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the Scheduled Report"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "This is a localise text for report type",
+          "default": false
+        },
+        "applianceReportType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Report to be sent as part of this schedule. Only valid if target type is Appliances."
+        },
+        "applianceReportTypeString": {
+          "type": "string",
+          "description": "This is a localise text for report type. Only valid if target type is Appliances"
+        },
+        "deviceReportType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Report to be sent as part of this schedule. Only valid if target type is Devices."
+        },
+        "deviceReportTypeString": {
+          "type": "string",
+          "description": "This is a localise text for report type. Only valid if target type is Devices."
+        },
+        "timePeriod": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Time Period for which the report would be generated"
+        },
+        "timePeriodString": {
+          "type": "string",
+          "description": "Time Period for which the report would be generated.",
+          "readOnly": true
+        },
+        "emailAddresses": {
+          "type": "array",
+          "description": "List of email addresses.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scheduleFrequency": {
+          "type": "integer",
+          "format": "int32",
+          "description": "It is the frequency of the schedule."
+        },
+        "scheduleFrequencyString": {
+          "type": "string",
+          "description": "This is a localise text for schedule frequency",
+          "readOnly": true
+        },
+        "frequency": {
+          "type": "string",
+          "description": "Quartz cron expression used to create this schedule."
+        },
+        "targetType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Target of this report either Appliances or Devices"
+        },
+        "targetTypeString": {
+          "type": "string",
+          "description": "This is a localise text for report target"
+        },
+        "targetAppliances": {
+          "type": "array",
+          "description": "Appliances for which the report is to be generated. Only applicable if targetType is APPLIANCES_TARGET",
+          "items": {
+            "$ref": "#/definitions/ApplianceDetails"
+          }
+        },
+        "targetDevices": {
+          "type": "array",
+          "description": "Device for which the report is to be generated. Only applicable if targetType is DEVICES_TARGET",
+          "items": {
+            "$ref": "#/definitions/targetDevices"
+          }
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date of schedule",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date of schedule",
+          "format": "date-time"
+        }
+      },
+      "xml": {
+        "name": "ScheduleReport"
+      }
+    },
+    "StoragePoolSize": {
+      "type": "object",
+      "properties": {
+        "Unit": {
+          "type": "string"
+        },
+        "Size": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "MaxStoragePoolSize"
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "TaskActionImpl": {
+      "type": "object",
+      "properties": {
+        "done": {
+          "type": "boolean",
+          "default": false
+        },
+        "result": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "operationClass": {
+          "type": "string"
+        },
+        "rawOperation": {
+          "type": "string"
+        },
+        "task": {
+          "$ref": "#/definitions/Task"
+        },
+        "started": {
+          "type": "boolean",
+          "default": false
+        },
+        "endtime": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "infailover": {
+          "type": "boolean",
+          "default": false
+        },
+        "failedNode": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean",
+          "default": false
+        },
+        "failed": {
+          "type": "boolean",
+          "default": false
+        },
+        "confirmed_completed": {
+          "type": "boolean",
+          "default": false
+        },
+        "rawTaskInfo": {
+          "type": "string"
+        },
+        "taskInfoClass": {
+          "type": "string"
+        },
+        "routePrefix": {
+          "type": "string"
+        },
+        "absUriPath": {
+          "type": "string",
+          "format": "uri"
+        },
+        "forceNotification": {
+          "type": "boolean",
+          "default": false
+        },
+        "operation": {
+          "$ref": "#/definitions/TaskOperation"
+        },
+        "stopped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "TaskManager": {
+      "type": "object",
+      "properties": {
+        "taskActions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskActionImpl"
+          }
+        }
+      }
+    },
+    "TaskManagerServices": {
+      "type": "object"
+    },
+    "TaskOperation": {
+      "type": "object",
+      "properties": {
+        "owner": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "targetNode": {
+          "$ref": "#/definitions/Node"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "NOT_STARTED",
+            "RUNNING",
+            "STOPPED",
+            "SUSPENDED",
+            "COMPLETED",
+            "FAILED",
+            "KILLED",
+            "INFAILOVER",
+            "UNKNOWN"
+          ]
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "errorCode": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "callTimeout": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedCallTimeout": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "taskOperation"
+      }
+    },
+    "TrustedCluster": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "vif": {
+          "type": "string"
+        },
+        "trustedHosts": {
+          "type": "array",
+          "xml": {
+            "name": "trustedHost"
+          },
+          "items": {
+            "$ref": "#/definitions/TrustedHost"
+          }
+        }
+      }
+    },
+    "TrustedClusterManager": {
+      "type": "object",
+      "properties": {
+        "trustedClusters": {
+          "$ref": "#/definitions/TrustedClusters"
+        }
+      }
+    },
+    "TrustedClusters": {
+      "type": "object",
+      "properties": {
+        "trustedClusters": {
+          "type": "array",
+          "xml": {
+            "name": "trustedCluster"
+          },
+          "items": {
+            "$ref": "#/definitions/TrustedCluster"
+          }
+        }
+      }
+    },
+    "TrustedHost": {
+      "type": "object",
+      "properties": {
+        "hostCertFingerPrint": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "UriBuilder": {
+      "type": "object"
+    },
+    "UriInfo": {
+      "type": "object",
+      "properties": {
+        "queryParameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "baseUri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "pathSegments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PathSegment"
+          }
+        },
+        "requestUri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "requestUriBuilder": {
+          "$ref": "#/definitions/UriBuilder"
+        },
+        "absolutePathBuilder": {
+          "$ref": "#/definitions/UriBuilder"
+        },
+        "baseUriBuilder": {
+          "$ref": "#/definitions/UriBuilder"
+        },
+        "pathParameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "matchedURIs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "matchedResources": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "path": {
+          "type": "string"
+        },
+        "absolutePath": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/ScheduleReport"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "targetDevices": {
+      "type": "object",
+      "properties": {
+        "applianceUuid": {
+          "type": "string",
+          "description": "UUID of the Appliance"
+        },
+        "vtlLibraryIds": {
+          "type": "array",
+          "description": "List of VTL Library IDs",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "nasShareIds": {
+          "type": "array",
+          "description": "List of NAS Share IDs",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "catStoreIds": {
+          "type": "array",
+          "description": "List of CAT Store IDs",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ]
+}

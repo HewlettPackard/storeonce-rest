@@ -1,0 +1,1495 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "3.0.5-SNAPSHOT",
+    "title": "RMC"
+  },
+  "basePath": "/api/v1/data-services",
+  "tags": [
+    {
+      "name": "RMC"
+    },
+    {
+      "name": "RMC ERT"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/ert/attach": {
+      "post": {
+        "tags": [
+          "RMC ERT"
+        ],
+        "summary": "Calls the underlying RMC REST server to add a Target/initiator association.",
+        "description": "At the end of this synchronous operation, a Target/initiator is associated.",
+        "operationId": "postErtAttach",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "cbod and iSCSI name of the initiator must be specified for ERT attach. Other optional fields include write access for mount, SCSI block size, catalyst backup format, catalyst identifier, catalyst password and Target CHAP username.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ErtAttachAndDetach"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation. Returns iscsiTargetName in the response body"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "404": {
+            "description": "Target does not exist"
+          },
+          "409": {
+            "description": "Invalid Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "502": {
+            "description": "Target failed to start"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:create"
+        ]
+      }
+    },
+    "/ert/config": {
+      "get": {
+        "tags": [
+          "RMC ERT"
+        ],
+        "summary": "Calls the underlying RMC REST server to get configuration of all the ISCSI targets.",
+        "description": "At the end of this synchronous call, the returned object will contain configuration of all Target objects.",
+        "operationId": "getAllErtConfig",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ErtStatusConfig"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      }
+    },
+    "/ert/config/cbod{cbod}": {
+      "get": {
+        "tags": [
+          "RMC ERT"
+        ],
+        "summary": "Calls the underlying RMC REST server to get configuration of an ISCSI Target.",
+        "description": "At the end of this synchronous call, the returned object will contain configuration of a single Target object.",
+        "operationId": "getERTConfig",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cbod",
+            "in": "path",
+            "description": "cbod",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ErtStatusConfig"
+            }
+          },
+          "404": {
+            "description": "Target does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      }
+    },
+    "/ert/detach": {
+      "post": {
+        "tags": [
+          "RMC ERT"
+        ],
+        "summary": "Calls the underlying RMC REST server to remove a Target/initiator association.",
+        "description": "At the end of this synchronous operation, a Target/initiator is removed.",
+        "operationId": "postErtDetach",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "cbod & iSCSI name of initiator must be specified for ERT detach.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ErtAttachAndDetach"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation. Returns iscsiTargetName in the response body"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "404": {
+            "description": "Target does not exist"
+          },
+          "409": {
+            "description": "Invalid Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "502": {
+            "description": "Target failed to start"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:create"
+        ]
+      }
+    },
+    "/ert/status": {
+      "get": {
+        "tags": [
+          "RMC ERT"
+        ],
+        "summary": "Calls the underlying RMC REST server to get status of all the ISCSI targets.",
+        "description": "At the end of this synchronous call, the returned object will contain status of all volume objects.",
+        "operationId": "getAllErtStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ErtStatusConfig"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      }
+    },
+    "/ert/status/cbod{cbod}": {
+      "get": {
+        "tags": [
+          "RMC ERT"
+        ],
+        "summary": "Calls the underlying RMC REST server to get status of status of an ISCSI Target.",
+        "description": "At the end of this synchronous call, the returned object will contain status of a single volume object.",
+        "operationId": "getERTStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "cbod",
+            "in": "path",
+            "description": "cbod",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ErtStatusConfig"
+            }
+          },
+          "404": {
+            "description": "Target does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      }
+    },
+    "/rmc/block-device-cleanup": {
+      "post": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to cleanup the block devices.",
+        "description": "At the end of this asynchronous operation, the specified block device will be deleted.",
+        "operationId": "blockDeviceCleanup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Identifiers of the devices or uuids(StoreServ or StoreVirtual) but not both should be specified for block device cleanup.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceCleanUp"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Request Accepted. Returns the URI of the job created in the Location header"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "409": {
+            "description": "Current device status does not permit deletion"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:create"
+        ]
+      }
+    },
+    "/rmc/block-device-discovery": {
+      "post": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to discover new block devices.",
+        "description": "At the end of this asynchronous operation, the OS will see a new block device.",
+        "operationId": "blockDeviceDiscovery",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Identifiers of the devices, target addresses(StoreServ or StoreVirtual) needed for discovery and the protocol used.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceDiscovery"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Request Accepted. Returns the URI of the job created in the Location header"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:create"
+        ]
+      }
+    },
+    "/rmc/block-devices": {
+      "get": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to get details of all the devices.",
+        "description": "At the end of this synchronous call, the returned object will contain details of all block devices.",
+        "operationId": "getAllBlockDevices",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/BlockDeviceCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      }
+    },
+    "/rmc/block-devices/device{uuid}": {
+      "get": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to get details of a specific block device.",
+        "description": "At the end of this synchronous call, the returned object will contain details of a specific block device.",
+        "operationId": "getBlockDevice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "uuid of the specific block device",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/BlockDevices"
+            }
+          },
+          "404": {
+            "description": "No block device with this ID found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to get details of a specific job.",
+        "description": "At the end of this synchronous call, the returned object will contain details of a specific job.",
+        "operationId": "deleteBlockDevice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "uuid of the specific block device",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Operation. Returns the URI of the job associated in the Location header"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "409": {
+            "description": "Current device status does not permit deletion"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:delete"
+        ]
+      }
+    },
+    "/rmc/catalyst-object-cleanup": {
+      "post": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to cleanup the catalyst objects.",
+        "description": "At the end of this asynchronous operation, the specified catalyst object will be deleted.",
+        "operationId": "catalystObjectCleanup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "backupid, storeName(StoreServ or StoreVirtual)should be specified for catalyst object cleanup.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CatalystObject"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Operation. Returns the URI of the job associated in the Location header"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:create"
+        ]
+      }
+    },
+    "/rmc/jobs": {
+      "get": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to get details of all the jobs. The jobs can be filtered based on jobType, jobState or rmcTaskUuid.",
+        "description": "At the end of this synchronous call, the returned object will contain details of jobs.",
+        "operationId": "getJobs",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/JobCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      }
+    },
+    "/rmc/jobs/job{jobid}": {
+      "get": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to get details of a specific job.",
+        "description": "At the end of this synchronous call, the returned object will contain details of a specific job.",
+        "operationId": "getJobByID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jobid",
+            "in": "path",
+            "description": "jobID of the specific job",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Jobs"
+            }
+          },
+          "404": {
+            "description": "No job with this ID found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to get details of a specific job.",
+        "description": "At the end of this sychronous call, a specified job will be aborted.",
+        "operationId": "abortJobByID",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jobid",
+            "in": "path",
+            "description": "jobID of the specific job",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "markedForCancellation to set a specified job to be aborted.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Jobs"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "No job with this ID found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:update"
+        ]
+      }
+    },
+    "/rmc/volume-copies": {
+      "post": {
+        "tags": [
+          "RMC"
+        ],
+        "summary": "Calls the underlying RMC REST server to backup block devices.",
+        "description": "At the end of this asynchronous operation, a block device is backed up to a catalyst store.",
+        "operationId": "blockDeviceVolumeCopy",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Identifiers of the devices(StoreServ or StoreVirtual)should be specified for device backup.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeviceVolumeCopy"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Request Accepted. Returns the URI of the job created in the Location header"
+          },
+          "400": {
+            "description": "Parameter missing or incorrect"
+          },
+          "409": {
+            "description": "Maximum concurrent volume copy reached"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "rmc:create"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "BlockDeviceCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/BlockDevices"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "BlockDevices": {
+      "type": "object",
+      "required": [
+        "targetAddresses",
+        "targetIqn"
+      ],
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "uuid for the blockDevice."
+        },
+        "deviceIdentifier": {
+          "type": "string",
+          "description": "deviceIdentifier for the blockDevice."
+        },
+        "devicePath": {
+          "type": "string",
+          "description": "devicePath for the blockDevice."
+        },
+        "blockDeviceStatus": {
+          "type": "string",
+          "description": "Status(DISCOVERING, DISCOVERED, CLEANINGUP, REMOVED, BUSY) for block device.",
+          "enum": [
+            "DISCOVERING",
+            "DISCOVERED",
+            "CLEANINGUP",
+            "REMOVED",
+            "BUSY"
+          ]
+        },
+        "targetIqn": {
+          "type": "string",
+          "description": "targetIqn of the block device"
+        },
+        "blockDeviceStatusString": {
+          "type": "string",
+          "description": "Localized string for the block device status."
+        },
+        "targetAddresses": {
+          "type": "array",
+          "xml": {
+            "name": "targetAddress",
+            "wrapped": true
+          },
+          "description": "targetAddress of the block device.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "BlockDevices"
+      }
+    },
+    "CatalystObject": {
+      "type": "object",
+      "required": [
+        "backupId",
+        "clientPassword",
+        "clientUser",
+        "rmcTaskUuid",
+        "storeName"
+      ],
+      "properties": {
+        "clientUser": {
+          "type": "string",
+          "description": "clientUser required for catalyst object deletion."
+        },
+        "clientPassword": {
+          "type": "string",
+          "description": "clientPassword required for catalyst object deletion."
+        },
+        "storeName": {
+          "type": "string",
+          "description": "storeName where the catalyst object is present."
+        },
+        "backupId": {
+          "type": "string",
+          "description": "backupId used for catalyst object delete."
+        },
+        "rmcTaskUuid": {
+          "type": "string",
+          "description": "rmcTaskUuid used for catalyst object delete."
+        }
+      },
+      "xml": {
+        "name": "CatalystObject"
+      }
+    },
+    "CheckpointData": {
+      "type": "object",
+      "properties": {
+        "objectFragmentNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Individual stream number of the backup or restore job"
+        },
+        "bytesProcessed": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Specifies the number of bytes processed for a given read/write operation on the block device"
+        }
+      }
+    },
+    "DeviceCleanUp": {
+      "type": "object",
+      "properties": {
+        "uuids": {
+          "type": "array",
+          "xml": {
+            "name": "uuid",
+            "wrapped": true
+          },
+          "description": "List of UUIDs of the volume in RMC",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deviceIdentifiers": {
+          "type": "array",
+          "xml": {
+            "name": "deviceIdentifier",
+            "wrapped": true
+          },
+          "description": "List of WWNs of the block device",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "DeviceCleanUp"
+      }
+    },
+    "DeviceDiscovery": {
+      "type": "object",
+      "required": [
+        "deviceIdentifiers",
+        "protocol"
+      ],
+      "properties": {
+        "rmcTaskUuid": {
+          "type": "string",
+          "description": "The discovery task id from RMC for group level monitoring. This is created in RMC and passed down."
+        },
+        "protocol": {
+          "type": "string",
+          "description": "The protocol(FC or ISCSI) that should be used for discovery",
+          "enum": [
+            "FC",
+            "ISCSI"
+          ]
+        },
+        "deviceIdentifiers": {
+          "type": "array",
+          "xml": {
+            "name": "deviceIdentifier",
+            "wrapped": true
+          },
+          "description": "Information regarding all the block devices for discovery",
+          "items": {
+            "$ref": "#/definitions/DeviceIdentifiers"
+          }
+        }
+      },
+      "xml": {
+        "name": "DeviceDiscovery"
+      }
+    },
+    "DeviceIdentifiers": {
+      "type": "object",
+      "required": [
+        "deviceIdentifier",
+        "lun",
+        "uuid"
+      ],
+      "properties": {
+        "deviceIdentifier": {
+          "type": "string",
+          "description": "WWN of the block device"
+        },
+        "lun": {
+          "type": "integer",
+          "format": "int32",
+          "description": "LUN number of the block device"
+        },
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the volume in RMC"
+        },
+        "targetAddresses": {
+          "type": "array",
+          "xml": {
+            "name": "targetAddress",
+            "wrapped": true
+          },
+          "description": "Target IPs of the storage system. It could be hostname or FQDN as well",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DeviceVolumeCopy": {
+      "type": "object",
+      "required": [
+        "backupType",
+        "rmcTaskUuid",
+        "sourceIdentifier",
+        "sourceType",
+        "targetIdentifier",
+        "targetType"
+      ],
+      "properties": {
+        "sourceIdentifier": {
+          "type": "string",
+          "description": "Indicates the source identifier"
+        },
+        "targetIdentifier": {
+          "type": "string",
+          "description": "Indicates the target identifier"
+        },
+        "rmcTaskUuid": {
+          "type": "string",
+          "description": "This is the parent backup/restore task id from RMC for group level monitoring. This is created in RMC and passed down."
+        },
+        "numObjects": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of objects that will created in backup system for each backup"
+        },
+        "numStreams": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of streams"
+        },
+        "clientUser": {
+          "type": "string",
+          "description": "Client username"
+        },
+        "clientPassword": {
+          "type": "string",
+          "description": "Client password"
+        },
+        "rmcVersion": {
+          "type": "string",
+          "description": "Version of RMC"
+        },
+        "mapBlockSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Block size of map"
+        },
+        "dedupeBlockSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Dedupe block size"
+        },
+        "mapProtocolVersion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Version of the protocol"
+        },
+        "parentVolumeUid": {
+          "type": "string",
+          "description": "Volume ID of the parent volume"
+        },
+        "childVolumeUid": {
+          "type": "string",
+          "description": "Volume ID of the child volume"
+        },
+        "parentObjectUuid": {
+          "type": "string",
+          "description": "Object ID of the parent"
+        },
+        "currentObjectUuid": {
+          "type": "string",
+          "description": "Current object ID"
+        },
+        "sourceType": {
+          "type": "string",
+          "description": "Indicates the source type(BLACK, CATALYST OR FILE)",
+          "enum": [
+            "BLOCK",
+            "CATALYST",
+            "FILE"
+          ]
+        },
+        "targetType": {
+          "type": "string",
+          "description": "Indicates the target type(CATALYST, BLOCK OR FILE)",
+          "enum": [
+            "BLOCK",
+            "CATALYST",
+            "FILE"
+          ]
+        },
+        "backupType": {
+          "type": "string",
+          "description": "Indicates the type of the backup(FULL, INCREMENTAL OR OPTIMIZED)",
+          "enum": [
+            "FULL",
+            "INCREMENTAL",
+            "OPTIMIZED"
+          ]
+        },
+        "backupFormat": {
+          "type": "string",
+          "description": "Indicates the format of the backup.",
+          "enum": [
+            "SPANNED",
+            "STRIPED",
+            "STRIPED_THIN"
+          ]
+        },
+        "verify": {
+          "type": "boolean",
+          "description": "To be passed if backup needs to be verified",
+          "default": false
+        },
+        "resume": {
+          "type": "boolean",
+          "description": "To be passed in case of backup resume/retry",
+          "default": false
+        },
+        "checkpointData": {
+          "type": "array",
+          "xml": {
+            "name": "checkpointData",
+            "wrapped": true
+          },
+          "description": "Object containing the progress information of individual volumes per stream",
+          "items": {
+            "$ref": "#/definitions/CheckpointData"
+          }
+        }
+      },
+      "xml": {
+        "name": "DeviceVolumeCopy"
+      }
+    },
+    "ErtAttachAndDetach": {
+      "type": "object",
+      "required": [
+        "cbod",
+        "iscsiInitiatorName"
+      ],
+      "properties": {
+        "cbod": {
+          "type": "string",
+          "description": "cbod"
+        },
+        "iscsiInitiatorName": {
+          "type": "string",
+          "description": "The iSCSI name of the initiator that will have access to the Target"
+        },
+        "writeProtectionEnabled": {
+          "type": "boolean",
+          "description": "If true then the volume will be mounted with Write Access. If not present the volume will be mounted read only",
+          "default": false
+        },
+        "blockSizeBytes": {
+          "type": "integer",
+          "format": "int32",
+          "description": "SCSI block size in bytes. If not specified the SCSI block size is 512."
+        },
+        "catBackupFormat": {
+          "type": "string",
+          "description": "Catalyst Backup Format can be either SPANNED or STRIPED. If not present the Catalyst Backup Format is SPANNED.",
+          "enum": [
+            "Spanned",
+            "Striped"
+          ]
+        },
+        "catIdentifier": {
+          "type": "string",
+          "description": "Catalyst Identifier"
+        },
+        "catPassword": {
+          "type": "string",
+          "description": "Catalyst Password"
+        },
+        "targetChapUsername": {
+          "type": "string",
+          "description": "Target username for iSCSI CHAP mutual authentication"
+        },
+        "iscsiTargetName": {
+          "type": "string",
+          "description": "The iSCSI name of the Target"
+        }
+      },
+      "xml": {
+        "name": "ErtAttachAndDetach"
+      }
+    },
+    "ErtStatusConfig": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "description": "Object containing single target status/config information",
+          "$ref": "#/definitions/Target"
+        },
+        "targets": {
+          "type": "array",
+          "xml": {
+            "name": "Targets",
+            "wrapped": true
+          },
+          "description": "Object containing the targets status/config information",
+          "items": {
+            "$ref": "#/definitions/Target"
+          }
+        }
+      },
+      "xml": {
+        "name": "ErtStatusConfig"
+      }
+    },
+    "Hosts": {
+      "type": "object",
+      "properties": {
+        "iscsiInitiatorName": {
+          "type": "string",
+          "description": "The iSCSI name of the initiator that will be accessing the Target"
+        },
+        "numLogins": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of current connections from the initiator"
+        },
+        "writeCacheLimitReached": {
+          "type": "boolean",
+          "description": "True if the write cache limit has been reached",
+          "default": false
+        }
+      }
+    },
+    "Initiators": {
+      "type": "object",
+      "required": [
+        "initiatorAccess"
+      ],
+      "properties": {
+        "iscsiInitiatorName": {
+          "type": "string",
+          "description": "The iSCSI Name of the initiator."
+        },
+        "initiatorAccess": {
+          "type": "string",
+          "description": "Access of initiator",
+          "enum": [
+            "RO",
+            "RW"
+          ]
+        },
+        "targetChapUsername": {
+          "type": "string",
+          "description": "iSCSI Target CHAP user name."
+        }
+      }
+    },
+    "JobCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Jobs"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "Jobs": {
+      "type": "object",
+      "required": [
+        "completedDate",
+        "createdDate",
+        "jobState",
+        "jobType",
+        "updatedDate",
+        "uuid"
+      ],
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "Id of the job"
+        },
+        "jobState": {
+          "type": "string",
+          "description": "State(AVAILABLE, RUNNING, ABORTED, PAUSED, ERROR, WARNING or NEW) of the job",
+          "enum": [
+            "COMPLETED",
+            "RUNNING",
+            "ABORTED",
+            "PAUSED",
+            "FAILED",
+            "WARNING",
+            "NEW"
+          ]
+        },
+        "jobType": {
+          "type": "string",
+          "description": "Type(DISCOVERY, RESTORE, BACKUP OR CLEANUP) of the job",
+          "enum": [
+            "DISCOVERY",
+            "BACKUP",
+            "RESTORE",
+            "CLEANUP",
+            "VERIFY",
+            "DELETE"
+          ]
+        },
+        "createdDate": {
+          "type": "string",
+          "description": "Time of creation of jobs",
+          "format": "date-time"
+        },
+        "updatedDate": {
+          "type": "string",
+          "description": "Time when job was updated",
+          "format": "date-time"
+        },
+        "completedDate": {
+          "type": "string",
+          "description": "Time when job was completed",
+          "format": "date-time"
+        },
+        "rmcTaskUuid": {
+          "type": "string",
+          "description": "Parent backup/restore task id from RMC for group level monitoring"
+        },
+        "markedForCancellation": {
+          "type": "boolean",
+          "description": "Checks if the job is cancelled",
+          "default": false
+        },
+        "statistics": {
+          "description": "Statistics of the volume copy",
+          "$ref": "#/definitions/Statistics"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Information abour the client who triggered the job"
+        },
+        "jobOutput": {
+          "type": "string",
+          "description": "Information about the job output"
+        },
+        "jobErrorCode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Error code"
+        },
+        "deviceId": {
+          "type": "string",
+          "description": "Device id of the resource"
+        },
+        "jobStateString": {
+          "type": "string",
+          "description": "Localized string for the job state"
+        },
+        "jobTypeString": {
+          "type": "string",
+          "description": "Localized string for the job type"
+        },
+        "checkpointData": {
+          "type": "array",
+          "xml": {
+            "name": "checkpointData",
+            "wrapped": true
+          },
+          "description": "Object containing the checkpoint data of individual volumes per stream",
+          "items": {
+            "$ref": "#/definitions/CheckpointData"
+          }
+        },
+        "progressInformation": {
+          "type": "array",
+          "xml": {
+            "name": "progressInformation",
+            "wrapped": true
+          },
+          "description": "Object containing the progress information of individual volumes",
+          "items": {
+            "$ref": "#/definitions/ProgressInformation"
+          }
+        }
+      },
+      "xml": {
+        "name": "Jobs"
+      }
+    },
+    "ProgressInformation": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Time of job update"
+        },
+        "jobProgress": {
+          "type": "string",
+          "description": "Information about the job progress"
+        }
+      }
+    },
+    "Statistics": {
+      "type": "object",
+      "properties": {
+        "volumeThreadDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds between volumes thread start and termination"
+        },
+        "volumeBlockWaitDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds the volume read thread spent waiting for blocks to be returned by the stream thread"
+        },
+        "volumeReadDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds spent in read()"
+        },
+        "numVolumeReads": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of calls to read()"
+        },
+        "volumeReadBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes read from the volume"
+        },
+        "volumeWriteDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds spent in write()"
+        },
+        "volumeFadviseDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds spent in posix_fadvise()"
+        },
+        "volumeFdatasyncDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds spent in fdatasync()"
+        },
+        "numVolumeWrites": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of microseconds spent in write()"
+        },
+        "volumeWrittenBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes written to the volume"
+        },
+        "volumeMapReadBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes of allocation map read or decoded"
+        },
+        "volumeAllocMapReadDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds spent reading or decoding allocation maps"
+        },
+        "volumeDiffMapReadDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds spent reading volume diff"
+        },
+        "objectThreadDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds between object thread start and termination"
+        },
+        "objectBlockWaitDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of microseconds the object read thread spent waiting for blocks to be returned by the stream thread"
+        }
+      },
+      "xml": {
+        "name": "Statistics"
+      }
+    },
+    "Target": {
+      "type": "object",
+      "required": [
+        "cbod"
+      ],
+      "properties": {
+        "cbod": {
+          "type": "string",
+          "description": "cbod"
+        },
+        "attachStatus": {
+          "type": "string",
+          "description": "Attach status(ATTACHED, NOTATTACHED, ATTACHING, VOLUMENOTAVAILABLE, or ERRORATTACHING) for ERT.",
+          "enum": [
+            "attached",
+            "notAttached",
+            "attaching",
+            "volumeNotAvailable",
+            "errorAttaching"
+          ]
+        },
+        "volumeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The size in bytes of the volume"
+        },
+        "rvllibVersion": {
+          "type": "string",
+          "description": "The current version of the rvllib"
+        },
+        "transportProtocol": {
+          "type": "string",
+          "description": "The protocol used",
+          "enum": [
+            "ISCSI"
+          ]
+        },
+        "iscsiTargetName": {
+          "type": "string",
+          "description": "The iSCSI Name of the Target"
+        },
+        "targetError": {
+          "description": "The Target error information.",
+          "$ref": "#/definitions/TargetError"
+        },
+        "attachStatusString": {
+          "type": "string",
+          "description": "Localized string for the attach status."
+        },
+        "hosts": {
+          "type": "array",
+          "xml": {
+            "name": "hosts",
+            "wrapped": true
+          },
+          "description": "A list containing entry for each initiator logged into the Target.",
+          "items": {
+            "$ref": "#/definitions/Hosts"
+          }
+        },
+        "initiators": {
+          "type": "array",
+          "xml": {
+            "name": "initiators",
+            "wrapped": true
+          },
+          "description": "Information about initiators in ERT config.",
+          "items": {
+            "$ref": "#/definitions/Initiators"
+          }
+        }
+      },
+      "xml": {
+        "name": "Target"
+      }
+    },
+    "TargetError": {
+      "type": "object",
+      "properties": {
+        "errorCode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ERT error code"
+        },
+        "errorString": {
+          "type": "string",
+          "description": "Textual description of error"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ]
+}

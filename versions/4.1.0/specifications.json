@@ -1,0 +1,102 @@
+[
+    {
+        "name": "eatlas-adapters-swagger_alertsEvents.json",
+        "path": "versions/4.1.0/eatlas-adapters-swagger_alertsEvents.json"
+    },
+    {
+        "name": "eatlas-adapters-swagger_userGroups.json",
+        "path": "versions/4.1.0/eatlas-adapters-swagger_userGroups.json"
+    },
+    {
+        "name": "email-subscriptions-swagger.json",
+        "path": "versions/4.1.0/email-subscriptions-swagger.json"
+    },
+    {
+        "name": "hpsp-hw-monitor-swagger.json",
+        "path": "versions/4.1.0/hpsp-hw-monitor-swagger.json"
+    },
+    {
+        "name": "hpsp-logcollection-swagger.json",
+        "path": "versions/4.1.0/hpsp-logcollection-swagger.json"
+    },
+    {
+        "name": "pml-core-module-swagger_asyncTask.json",
+        "path": "versions/4.1.0/pml-core-module-swagger_asyncTask.json"
+    },
+    {
+        "name": "pml-core-module-swagger_certificate.json",
+        "path": "versions/4.1.0/pml-core-module-swagger_certificate.json"
+    },
+    {
+        "name": "pml-core-module-swagger_sessions.json",
+        "path": "versions/4.1.0/pml-core-module-swagger_sessions.json"
+    },
+    {
+        "name": "swagger-storeonce-appliance-11.1.6-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-appliance-11.1.6-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-cat-10.3.8-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-cat-10.3.8-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-d2d-service-5.1.1-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-d2d-service-5.1.1-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-dashboard-6.1.3-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-dashboard-6.1.3-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-fc-3.0.3-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-fc-3.0.3-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-iscsi-2.0.4-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-iscsi-2.0.4-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-licensing-6.0.27-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-licensing-6.0.27-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-management-services-3.10.6-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-management-services-3.10.6-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-nas-3.1.4-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-nas-3.1.4-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-remote-logging-3.0.5-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-remote-logging-3.0.5-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-rep-3.3.10-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-rep-3.3.10-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-reporting-2.0.13-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-reporting-2.0.13-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-rmc-3.0.5-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-rmc-3.0.5-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-smm-2.0.9-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-smm-2.0.9-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-snmp-2.1.5-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-snmp-2.1.5-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-storage-4.3.12-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-storage-4.3.12-swagger-v1.json"
+    },
+    {
+        "name": "swagger-storeonce-vtl-3.1.7-swagger-v1.json",
+        "path": "versions/4.1.0/swagger-storeonce-vtl-3.1.7-swagger-v1.json"
+    }
+]

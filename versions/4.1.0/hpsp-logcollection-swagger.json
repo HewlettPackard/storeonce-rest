@@ -1,0 +1,207 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "View and manage log collections for support tickets",
+    "version" : "1.18-SNAPSHOT",
+    "title" : "Log Collection"
+  },
+  "basePath" : "/logcollection",
+  "tags" : [ {
+    "name" : "Log Collection (Support Ticket)"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/collections" : {
+      "get" : {
+        "tags" : [ "Log Collection (Support Ticket)" ],
+        "summary" : "Retrieve metadata associated with all log collections currently available on the system",
+        "description" : "Returns a list of metadata associated with all existing log collections",
+        "operationId" : "getLogCollectionList",
+        "produces" : [ "application/xml", "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/LogCollectionList"
+            }
+          }
+        },
+        "x-pmlPermissions" : [ "hpsp_log_collection:read", "hpsp_log_collection:write" ]
+      },
+      "post" : {
+        "tags" : [ "Log Collection (Support Ticket)" ],
+        "summary" : "Create a new log collection",
+        "description" : "Creates a new log collection based on supported collection type (COMPREHENSIVE, SLIM, USAGE or PERFORMANCE), and other properties passed in via the LogCollectionModel class object.  The following properties must be specified in the LogCollectionModel data: name (String), collectionType (COMPREHENSIVE, SLIM, USAGE, PERFORMANCE).  The description (String) is an optional property. The rest of the properties in the LogCollectionModel are ignored even when the values are specified. \n\nTo create a collection on a remote cluster or group , specify the remoteGroupId query parameter.  This will initiate a remote collection.  When finished, the remote collection will be copied to the initiating system , and deleted on the remote cluster or group.  The new remote collection can be viewed and retrieved from the initiating system the way a local collection would be.",
+        "operationId" : "createLogCollection",
+        "consumes" : [ "application/xml", "application/json" ],
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Used to specify collection properties.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/LogCollectionModel"
+          }
+        }, {
+          "name" : "remoteGroupId",
+          "in" : "query",
+          "description" : "Management Group ID or cluster name to get remote collection from",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        },
+        "x-pmlPermissions" : [ "hpsp_log_collection:write" ]
+      }
+    },
+    "/collections/{name}" : {
+      "get" : {
+        "tags" : [ "Log Collection (Support Ticket)" ],
+        "summary" : "Retrieve the metadata associated with a specific log collection",
+        "description" : "Returns the metadata associated with the log collection with the specified name.  The metadata is returned as a LogCollectionModel class object.",
+        "operationId" : "getLogCollection",
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "description" : "Name of logcollection",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/LogCollectionModel"
+            }
+          }
+        },
+        "x-pmlPermissions" : [ "hpsp_log_collection:read", "hpsp_log_collection:write" ]
+      },
+      "delete" : {
+        "tags" : [ "Log Collection (Support Ticket)" ],
+        "summary" : "Delete a log collection with a specified name",
+        "description" : "",
+        "operationId" : "deleteLogCollection",
+        "produces" : [ "application/xml", "application/json" ],
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "path",
+          "description" : "Name of logcollection",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        },
+        "x-pmlPermissions" : [ "hpsp_log_collection:write" ]
+      }
+    }
+  },
+  "definitions" : {
+    "LogCollectionList" : {
+      "type" : "object",
+      "required" : [ "logCollectionList" ],
+      "properties" : {
+        "logCollectionList" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/LogCollectionModel"
+          }
+        }
+      },
+      "xml" : {
+        "name" : "logcollectionlist"
+      }
+    },
+    "LogCollectionModel" : {
+      "type" : "object",
+      "required" : [ "collectionType", "name" ],
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "description" : "Log collection name"
+        },
+        "startTime" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "Log collection start time"
+        },
+        "collectionPath" : {
+          "type" : "string",
+          "description" : "Log collection path"
+        },
+        "downloadUri" : {
+          "type" : "string",
+          "description" : "Log collection download URI"
+        },
+        "sizeBytesLong" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Log collection size in bytes"
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "Log collection user-set description"
+        },
+        "clusterName" : {
+          "type" : "string",
+          "description" : "Cluster name"
+        },
+        "completedNodes" : {
+          "type" : "array",
+          "description" : "List of cluster nodes that have have sucessfully completed their collections",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "identifier" : {
+          "type" : "string",
+          "description" : "Identifier for automatically-generated collection"
+        },
+        "collectionMode" : {
+          "type" : "string",
+          "enum" : [ "Automatic", "Manual" ]
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "COMPLETE", "FAILED", "INPROGRESS", "PARTIALLY_COMPLETE", "REQUESTED" ]
+        },
+        "durationSeconds" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Duration in seconds"
+        },
+        "sizeBytes" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Deprecated, use sizeBytesLong"
+        },
+        "collectionType" : {
+          "type" : "string",
+          "enum" : [ "COMPREHENSIVE", "SLIM", "USAGE", "PERFORMANCE" ]
+        }
+      },
+      "xml" : {
+        "name" : "logcollection"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": []
+    }
+  ]
+}
