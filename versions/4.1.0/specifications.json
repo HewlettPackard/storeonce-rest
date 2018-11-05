@@ -80,10 +80,6 @@
         "path": "versions/4.1.0/swagger-storeonce-reporting-2.0.13-swagger-v1.json"
     },
     {
-        "name": "swagger-storeonce-rmc-3.0.5-swagger-v1.json",
-        "path": "versions/4.1.0/swagger-storeonce-rmc-3.0.5-swagger-v1.json"
-    },
-    {
         "name": "swagger-storeonce-smm-2.0.9-swagger-v1.json",
         "path": "versions/4.1.0/swagger-storeonce-smm-2.0.9-swagger-v1.json"
     },
