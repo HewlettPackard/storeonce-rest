@@ -5,220 +5,195 @@
 <p><a href="#Addresses">Addresses and Base URL</a></p>
 <p><a href="#Asynchronous">Asynchronous Task Management for Long Running Requests</a></p>
 <p><a href="#Command-flow">Typical command flow</a></p>
-<p><a href="#Example">Example: Adding a member to the federation</a></p>
+<p></p><a href="#Example">Example: Adding a member to the federation</a></p>
 <p>&nbsp;</p>
 
 <h1 id="Introduction">Introduction</h1>
-<p style="text-align: justify;">The StoreOnce REST API can be used by management and reporting applications to extract
+<p>The StoreOnce REST API can be used by management and reporting applications to extract
 	information from and execute commands on the StoreOnce appliances. This document lists the URIs that will be available
 	in the StoreOnce REST SDK and supported with StoreOnce appliance running software version 4.1.x and newer. It is not
 	compatible with StoreOnce appliances running software versions 3.x or older.</p>
-<h2 style="margin-left: 36.0pt;">Note:</h2>
-<p style="margin-left: 36.0pt; text-align: justify;">The REST URIs in this document only support the JSON response
+<h2>Note:</h2>
+<p>The REST URIs in this document only support the JSON response
 	format. Only the documented URIs are supported; any URIs not documented here might be changed or removed in a future
 	release. All REST resource URIs, properties, and query parameters are case-sensitive.</p>
-<p style="margin-left: 36.0pt; text-align: justify;">&nbsp;</p><br />
+<p>&nbsp;</p><br />
 
 
-<h1 id="Authentication" style="text-align: justify;">Authentication</h1>
-<p style="text-align: justify;">Every REST call requires authentication. All unauthenticated requests, or invalid
+<h1 id="Authentication">Authentication</h1>
+<p>Every REST call requires authentication. All unauthenticated requests, or invalid
 	credentials, will return <strong>401 Unauthorized.</strong></p><br />
 
 
-<h1 id="Authorization" style="text-align: justify;">Authorization</h1>
-<p style="text-align: justify;">Not every user and role is allowed to perform every action described in this
+<h1 id="Authorization">Authorization</h1>
+<p>Not every user and role is allowed to perform every action described in this
 	document.&nbsp; The Gen4 StoreOnce appliance supports five user roles which are described below. If a user that is not
 	authorized to execute a specific command, a <strong>403 Unauthorized </strong>&nbsp;will be returned.</p>
-<p style="text-align: justify;">When the system is installed, one default user account is created for the Admin role.
+<p>When the system is installed, one default user account is created for the Admin role.
 	The following roles define the permissions associated with a user:</p>
 <ul>
-	<li style="text-align: justify;">Admin: This role allows authorized users to create and edit
+	<li>Admin: This role allows authorized users to create and edit
 		management and StoreOnce functions on the StoreOnce appliance. You cannot delete this account, but you can modify its
 		password. (HPE recommends changing the password.) Once the administrator account password has been changed, its
 		password cannot be changed back to admin. (That password is not sufficiently complex).</li>
-	<li style="text-align: justify;">Observer: This role limits access to monitoring and viewing.</li>
-	<li style="text-align: justify;">Backup Admin: This role limits the user to creating, editing,
+	<li>Observer: This role limits access to monitoring and viewing.</li>
+	<li>Backup Admin: This role limits the user to creating, editing,
 		and managing data services features. It has limited read-only access to system functions</li>
-	<li style="text-align: justify;">Backup Operator: This role limits the user to monitoring and
+	<li>Backup Operator: This role limits the user to monitoring and
 		viewing the data services features.</li>
-	<li style="text-align: justify;">Security Officer: This role limits the user to creating,
+	<li>Security Officer: This role limits the user to creating,
 		editing, and managing security features. For example, key managers, SSL certificates, user management, and directory
 		management.</li>
-</ul><br />
+</ul>
 
-<h1 id="Addresses" style="text-align: justify;">Addresses and Base URL</h1>
-<p style="text-align: justify;">All REST calls on the StoreOnce appliance are served at port 443 over HTTPS. The
+<h1 id="Addresses">Addresses and Base URL</h1>
+<p>All REST calls on the StoreOnce appliance are served at port 443 over HTTPS. The
 	<strong>Base URL</strong> that need to be prefixed for each REST call are specified at the top of each section.</p>
-<p style="text-align: justify;">Example URI:</p>
+<p>Example URI:</p>
 <p>https://&lt;IP_address_or_hostname&gt;/api/v1/data/services/dashboard/overview</p>
 <p>&nbsp;</p>
 
 <h1 id="Asynchronous">Asynchronous Task Management for Long Running Requests</h1>
-<p style="text-align: justify;">REST commands that could take more than a couple seconds are implemented as
+<p>REST commands that could take more than a couple seconds are implemented as
 	asynchronous commands.</p>
-<p style="text-align: justify;">When initiated, an asynchronous command checks the preconditions and then submits a
+<p>When initiated, an asynchronous command checks the preconditions and then submits a
 	task to the StoreOnce task scheduler. If the command passes all the precondition checks and the task is scheduled, the
 	command returns an HTTP status code <strong>202 Accepted</strong>. If the command failed any preconditions or could
 	not be scheduled, the command returns an error code.</p>
-<p style="text-align: justify;">The body of the <strong>202 Accepted </strong>response includes a task identifier. Once
+<p>The body of the <strong>202 Accepted </strong>response includes a task identifier. Once
 	the task is scheduled, poll the task scheduler for the task status. To determine the status of the task, use</p>
-<p style="margin-left: 36.0pt;"><strong>GET https://&lt;IPAddress&gt;/pml/asynchronous_operation_task/&lt;ID&gt;</strong>.</p>
+<p><strong>GET https://&lt;IPAddress&gt;/pml/asynchronous_operation_task/&lt;ID&gt;</strong>.</p>
 <p>The response shows the state of the task. When the task is complete, the response also includes the operation status
 	and any information returned.</p>
 <p>&nbsp;</p>
 <h3 id="Command-flow">Typical command flow</h3>
 <ol>
-	<li style="">Send the URI for the command that will operate asynchronously.</li>
-	<li style="">Read the task ID from the <strong>202 Accepted </strong>response body.</li>
-	<li style="">Poll the task scheduler using <br /><strong>GET
+	<li>Send the URI for the command that will operate asynchronously.</li>
+	<li>Read the task ID from the <strong>202 Accepted </strong>response body.</li>
+	<li>Poll the task scheduler using <br /><strong>GET
 			https://&lt;IP-Address&gt;/pml/asynchronous_operation_task/&lt;ID&gt; </strong></li>
 </ol>
 <p>until the task completes.</p>
 <ol start="4">
-	<li style="">Read the command results from the task response body.</li>
+	<li>Read the command results from the task response body.</li>
 </ol>
 <p>The task list is transient, with completed tasks removed after about 10 minutes. To see the status of all jobs that
 	are in operation or have recently completed, use</p>
 <p><strong>GET https://&lt;IP-Address&gt;/pml/asynchronous_operation_task</strong>.</p>
 <p>&nbsp;</p>
-<h3 id="Example">Example: Adding a member to the federation</h3>
+<h3>Example: Adding a member to the federation</h3>
 <ol>
-	<li style="">Initiate the POST <strong>https://192.9.131.238/api/v1/management-services/federation/members
+	<li>Initiate the POST <strong>https://192.9.131.238/api/v1/management-services/federation/members
 		</strong>with the body:</li>
 </ol>
-<p style="margin: 0cm 0cm .0001pt 36.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">{</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"address":"192.9.132.38",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"password":"pwd1324!",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"user":"Admin"</span></p>
-<p style="margin: 0cm 0cm .0001pt 36.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p style="margin: 0cm 0cm .0001pt 36.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">&nbsp;</span></p>
+<pre>
+	{
+		"address":"192.9.132.38",
+		"password":"pwd1324!",
+		user":"Admin"
+	}
+
+</pre>
+
 <ol start="2">
-	<li style="">When the POST command has passed its preconditions and the task scheduled, the POST
+	<li>When the POST command has passed its preconditions and the task scheduled, the POST
 		command responds with <strong>202 Accepted </strong>and the body:</li>
 </ol>
-<p style="margin: 0cm 0cm .0001pt 36.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">{</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">state:
-		"RUNNING",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">startTime:
-		"2018-07-17T15:35:40.130+0000",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">status:[],</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">location:
-		"https://192.9.131.238/api/v1/management-services/federation/members",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">id:
-		"6bf12b13c69b47d9a6386984baef5c13",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">purposeMessage:
-		{</span></p>
-<p style="margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">catalogName:"storeonce-appliance-operation",</span></p>
-<p style="margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">messageKey:
-		"ADD_MEMBER_INITIATED"</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p style="margin: 0cm 0cm .0001pt 36.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p style="margin: 0cm 0cm .0001pt 36.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">&nbsp;</span></p>
+
+<pre>
+	{
+		state: "RUNNING",
+		startTime: "2018-07-17T15:35:40.130+0000",
+		status:[],
+		location: "https://192.9.131.238/api/v1/management-services/federation/members",
+		id: "6bf12b13c69b47d9a6386984baef5c13",
+		purposeMessage: {
+			catalogName: "storeonce-appliance-operation",
+			messageKey: "ADD_MEMBER_INITIATED"
+		}
+	}
+
+</pre>
+
 <p>The <strong>id</strong> field is the task identifier.</p>
 <ol start="3">
-	<li style="">Use the task identifier to start polling for the task results. Example:
+	<li>Use the task identifier to start polling for the task results. Example:
 		https://192.9.131.238/pml/asynchronous_operation_task/6bf12b13c69b47d9a6386984baef5c13</li>
-	<li style="">While the task is running, it responds with <strong>200 Good</strong> status and the
+	<li>While the task is running, it responds with <strong>200 Good</strong> status and the
 		body:</li>
 </ol>
-<p><span style="margin-left: 36.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">{</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"state":
-		"RUNNING",</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"startTime":
-		"2018-07-17T15:35:40.130+0000",</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"status":[],</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"location":
-		"https://192.9.131.238/api/v1/management-services/federation/members",</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"id":
-		"6bf12b13c69b47d9a6386984baef5c13",</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"purpose":
-		"Adding the system to the
-		federation",</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"purposeMessage":{</span></p>
-<p style="margin-left: 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"catalogName":
-		"storeonce-appliance-operation",</span></p>
-<p style="margin-left: 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageKey":
-		"ADD_MEMBER_INITIATED",</span></p>
-<p style="margin-left: 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageForCurrentLocale":
-		"Adding the
-		system to the federation"</span></p>
-<p style="margin-left: 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p><span style="margin-left: 36.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">&nbsp;</span></p>
+
+<pre>
+	{
+
+		"state": "RUNNING",
+		"startTime": "2018-07-17T15:35:40.130+0000",
+		"status":[],		
+		"location": "https://192.9.131.238/api/v1/management-services/federation/members",		
+		"id": "6bf12b13c69b47d9a6386984baef5c13",		
+		"purpose": "Adding the system to the federation",		
+		"purposeMessage": {		
+			"catalogName": "storeonce-appliance-operation",		
+			"messageKey": "ADD_MEMBER_INITIATED",		
+			"messageForCurrentLocale": "Adding the system to the federation"		
+		}		
+	}
+
+</pre>
+
 <ol start="5">
-	<li style="margin-bottom: .0001pt;  line-height: normal; text-autospace: none;">When the task is
-		completed, it responds with 200 Good status and the body:</li>
+	<li>When the task is completed, it responds with 200 Good status and the body:</li>
 </ol>
-<p style="margin: 0cm 0cm .0001pt 36.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">{</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"state":
-		"COMPLETED",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"startTime":
-		"2018-07-17T15:35:40.130+0000",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"endTime":
-		"2018-07-17T15:36:24.754+0000",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"status":[</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">{</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"node":
-		"soy2q7kt4e",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"error":
-		201,</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"suggestedAction":
-		"NOACTION",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageInfo":{</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 144.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"catalogName":
-		"storeonce-appliance-operation",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 144.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageKey":
-		"ADD_MEMBER_SUCCEED",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 144.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"arguments":["192.9.132.38"],</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 144.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageForCurrentLocale":
-		"System successfully added to the</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 144.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">federation"</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 144.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">],</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"location":
-		"https://192.9.131.238/api/v1/management-services/federation/</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">members",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"id":
-		"6bf12b13c69b47d9a6386984baef5c13",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"purpose":
-		"Adding the system to the federation",</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"purposeMessage":{</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 72.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"catalogName":
-		"storeonce-appliance-operation",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageKey":
-		"ADD_MEMBER_INITIATED",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageForCurrentLocale":
-		"Adding the system to the federation"</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">},</span></p>
-<p style="margin: 0cm 0cm .0001pt 76.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"extendedInfo":{</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"percentComplete":
-		100,</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"message":{"catalogName":
-		"infrastructure-businessExceptions",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageKey":
-		"successful.task.completion", "arguments":[{"catalogName":</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"storeonce-appliance-operation",&hellip;},</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageInfo":{"catalogName":
-		"infrastructure-businessExceptions",</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageKey":
-		"successful.task.completion", "arguments":[{"catalogName":</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"storeonce-appliance-operation",&hellip;},</span></p>
-<p style="line-height: normal; text-autospace: none; margin: 0cm 0cm .0001pt 108.0pt;"><span style="font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"timestamp":
-		"2018-07-17T15:36:24.754+0000"</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; font-family: 'Courier New';">},</span></p>
-<p style="margin: 0cm 0cm .0001pt 72.0pt; line-height: normal; text-autospace: none;"><span style="font-size: 10.0pt; font-family: 'Courier New';">"i18nResponse":{</span></p>
-<p><span style="margin: 0cm 0cm .0001pt 108.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"catalogName":
-		"storeonce-appliance-operation",</span></p>
-<p><span style="margin: 0cm 0cm .0001pt 108.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageKey":
-		"ADD_MEMBER_SUCCEED",</span></p>
-<p><span style="margin: 0cm 0cm .0001pt 108.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">"messageForCurrentLocale":
-		"System
-		successfully added to the federation"</span></p>
-<p><span style="margin: 0cm 0cm .0001pt 72.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p><span style="margin: 0cm 0cm .0001pt 36.0pt; font-size: 10.0pt; line-height: 107%; font-family: 'Courier New';">}</span></p>
-<p style="margin: 0cm 0cm .0001pt 36.0pt; text-align: justify;">The body includes the task results. The <strong>status.error</strong>
+
+<pre>
+	{
+		"state": "COMPLETED",			
+		"startTime": "2018-07-17T15:35:40.130+0000",			
+		"endTime": "2018-07-17T15:36:24.754+0000",			
+		"status":[			
+			{			
+			"node": "soy2q7kt4e",			
+			"error": 201,			
+			"suggestedAction": "NOACTION",			
+			"messageInfo":{			
+				"catalogName": "storeonce-appliance-operation",			
+				"messageKey": "ADD_MEMBER_SUCCEED",			
+				"arguments":["192.9.132.38"],			
+				"messageForCurrentLocale": "System successfully added to the federation"
+				}
+	
+			}
+		],			
+		"location": "https://192.9.131.238/api/v1/management-services/federation/			
+		members",			
+		"id": "6bf12b13c69b47d9a6386984baef5c13",			
+		"purpose": "Adding the system to the federation",			
+		"purposeMessage": {			
+			"catalogName": "storeonce-appliance-operation",			
+			"messageKey": "ADD_MEMBER_INITIATED",			
+			"messageForCurrentLocale": "Adding the system to the federation"
+		},			
+		"extendedInfo":{			
+			"percentComplete": 100,			
+			"message":{"catalogName": "infrastructure-businessExceptions",			
+			"messageKey": "successful.task.completion", "arguments":[{"catalogName":
+			"storeonce-appliance-operation",…},			
+			"messageInfo":{
+				"catalogName": "infrastructure-businessExceptions",			
+				"messageKey": "successful.task.completion", "arguments":[{"catalogName":
+				"storeonce-appliance-operation",…},			
+				"timestamp": "2018-07-17T15:36:24.754+0000"	
+		},	
+		"i18nResponse":{			
+			"catalogName": "storeonce-appliance-operation",			
+			"messageKey": "ADD_MEMBER_SUCCEED",			
+			"messageForCurrentLocale": "System successfully added to the federation"
+			}
+	}
+	
+	</pre>
+
+<p>The body includes the task results. The <strong>status.error</strong>
 	shows the HTTP status of the original command. In this example, the member was successfully added to the federation.
 	Status error codes 2xx show successful completion of the operation. Any other status error codes indicate that the
 	command failed. You can use the messageForCurrentLocale and messageKey for further debugging.</p>
-<p style="text-align: justify;">&nbsp;</p>

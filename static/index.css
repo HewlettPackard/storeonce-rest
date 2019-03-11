@@ -35,6 +35,12 @@ section.swagger-ui.container {
   padding-left: 50px;
 }
 
+pre {
+  font-size: 10.0pt;
+  line-height: 107%;
+  font-family: 'Courier New';
+}
+
 /* Side Bar */
 
 ul.navList {
@@ -118,6 +124,10 @@ ul.navList {
   font-size: 15px;
 }
 
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 #selector {
   float: right;
   pointer-events: none;
@@ -152,6 +162,7 @@ ul.navList {
 }
 
 .dropdown a:hover {
+  color: black;
   background-color: #ddd;
 }
 
