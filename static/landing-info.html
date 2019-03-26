@@ -17,7 +17,7 @@
 <p>The REST URIs in this document only support the JSON response
 	format. Only the documented URIs are supported; any URIs not documented here might be changed or removed in a future
 	release. All REST resource URIs, properties, and query parameters are case-sensitive.</p>
-<p>&nbsp;</p><br />
+<p>&nbsp;</p>
 
 
 <h1 id="Authentication">Authentication</h1>
@@ -66,134 +66,202 @@
 <p>The response shows the state of the task. When the task is complete, the response also includes the operation status
 	and any information returned.</p>
 <p>&nbsp;</p>
+
 <h3 id="Command-flow">Typical command flow</h3>
 <ol>
 	<li>Send the URI for the command that will operate asynchronously.</li>
 	<li>Read the task ID from the <strong>202 Accepted </strong>response body.</li>
 	<li>Poll the task scheduler using <br /><strong>GET
-			https://&lt;IP-Address&gt;/pml/asynchronous_operation_task/&lt;ID&gt; </strong></li>
-</ol>
-<p>until the task completes.</p>
-<ol start="4">
+		https://&lt;IP-Address&gt;/pml/asynchronous_operation_task/&lt;ID&gt;</strong><br />
+		until the task completes.</li>
 	<li>Read the command results from the task response body.</li>
 </ol>
+
 <p>The task list is transient, with completed tasks removed after about 10 minutes. To see the status of all jobs that
 	are in operation or have recently completed, use</p>
 <p><strong>GET https://&lt;IP-Address&gt;/pml/asynchronous_operation_task</strong>.</p>
 <p>&nbsp;</p>
+
 <h3>Example: Adding a member to the federation</h3>
 <ol>
-	<li>Initiate the POST <strong>https://192.9.131.238/api/v1/management-services/federation/members
-		</strong>with the body:</li>
+	<li>Login to the StoreOnce system and obtain the access token (username used here 
+		is “Admin” and password is “Pwd123”</li>
 </ol>
 <pre>
-	{
-		"address":"192.9.132.38",
-		"password":"pwd1324!",
-		user":"Admin"
-	}
+	curl -i -X POST \
+		-H "Content-Type:application/json" \
+		-H "Accept:application/json" \
+		-d \
+		'{"username":"Admin","password":"Pwd123","grant_type":"password"}' \
+		'https://192.168.0.1/pml/login/authenticatewithobject'
 
 </pre>
 
 <ol start="2">
-	<li>When the POST command has passed its preconditions and the task scheduled, the POST
-		command responds with <strong>202 Accepted </strong>and the body:</li>
+	<li>When the POST command has passed, it responds with a <strong>200 OK</strong> and the body:</li>
 </ol>
 
 <pre>
 	{
-		state: "RUNNING",
-		startTime: "2018-07-17T15:35:40.130+0000",
-		status:[],
-		location: "https://192.9.131.238/api/v1/management-services/federation/members",
-		id: "6bf12b13c69b47d9a6386984baef5c13",
-		purposeMessage: {
-			catalogName: "storeonce-appliance-operation",
-			messageKey: "ADD_MEMBER_INITIATED"
+		"expires_in": "2700",
+		"refresh_token": "a6389099-0aec-419e-8c6b-86d5ba2f1650",
+		"access_token": "1ba67d70-68fe-45cf-9d2f-4e24a3501b7f",
+		"sessionID": "268ef148-2e0b-4a66-adda-1bf87c0cb86a",
+		"userName": "Admin"
+	}
+
+</pre>
+
+<p>The access token is to be used in future REST requests sent as part of the same session.</p>
+<ol start="3">
+	<li>Add a member to the federation. The request body includes the IP address of the member and the login credentials 
+		of the member. The header includes the access token obtained from the login reponse. 
+		Initiate the POST https://192.9.131.238/api/v1/management-services/federation/members with the body:</li>
+</ol>
+
+<pre>
+	curl -i -X POST \
+		-H "Content-Type:application/json" \
+		-H "Accept:application/json" \
+		-H "Authorization:Bearer 1ba67d70-68fe-45cf-9d2f-4e24a3501b7f" \
+		-d \
+		'{"user":"Admin","password":" Pwd123","address":"192.168.0.100"}' \
+		'https://192.168.0.1/api/v1/management-services/federation/members'
+
+</pre>
+
+<ol start="4">
+	<li>When the POST command has passed its preconditions and the task scheduled, 
+		the POST command responds with <strong>202 Accepted </strong> and the body:</li>
+</ol>
+
+<pre>
+	{
+		"state":"RUNNING",
+		"startTime":"2019-01-10T14:41:48.086+0000",
+		"status":[],
+		"location":"https://192.168.0.1/api/v1/management-services/federation/members",
+		"id":"637b0b5960d143f3ae726cd9b3fd5981",
+		"purposeMessage": {
+			"catalogName":"storeonce-appliance-operation",
+			"messageKey":"ADD_MEMBER_INITIATED"
+		}
+	}			
+	
+</pre>
+
+<p>The <strong>id</strong> field is the task identifier.</p>
+<ol start="5">
+	<li>Use the task identifier to start polling for the task results. Include the access token in the header 
+		Example:</li>
+</ol>
+
+<pre>
+	curl -i -X GET \
+		-H "Accept:application/json" \
+		-H "Authorization:Bearer 1ba67d70-68fe-45cf-9d2f-4e24a3501b7f" \
+		'https://192.168.0.1/pml/asynchronous_operation_task/637b0b5960d143f3ae726cd9b3fd5981
+
+</pre>
+
+<ol start="6">
+	<li>While the task is running, it responds with <strong>200 Good</strong> status and the body:</li>
+</ol>
+	
+<pre>
+	{
+		"state": "RUNNING",
+		"startTime": "2019-01-10T14:59:27.310+0000",
+		"status": [],
+		"location": "https://192.168.0.1/api/v1/management-services/federation/members",
+		"id": "637b0b5960d143f3ae726cd9b3fd5981",
+		"purpose": "Adding the system to the federation",
+		"purposeMessage": {
+			"catalogName": "storeonce-appliance-operation",
+			"messageKey": "ADD_MEMBER_INITIATED",
+			"messageForCurrentLocale": "Adding the system to the federation"
 		}
 	}
 
 </pre>
 
-<p>The <strong>id</strong> field is the task identifier.</p>
-<ol start="3">
-	<li>Use the task identifier to start polling for the task results. Example:
-		https://192.9.131.238/pml/asynchronous_operation_task/6bf12b13c69b47d9a6386984baef5c13</li>
-	<li>While the task is running, it responds with <strong>200 Good</strong> status and the
-		body:</li>
+<ol start="7">
+	<li>When the task is completed, it responds with 200 Good status and the body:</li>
 </ol>
-
+	
 <pre>
-	{
-
-		"state": "RUNNING",
-		"startTime": "2018-07-17T15:35:40.130+0000",
-		"status":[],		
-		"location": "https://192.9.131.238/api/v1/management-services/federation/members",		
-		"id": "6bf12b13c69b47d9a6386984baef5c13",		
-		"purpose": "Adding the system to the federation",		
-		"purposeMessage": {		
-			"catalogName": "storeonce-appliance-operation",		
-			"messageKey": "ADD_MEMBER_INITIATED",		
-			"messageForCurrentLocale": "Adding the system to the federation"		
-		}		
+	{	
+		"state": "COMPLETED",
+		"startTime": "2019-01-10T14:55:15.394+0000",
+		"endTime": "2019-01-10T14:55:38.045+0000",
+		"status": [
+			{
+			"node": "so273100bw",
+			"error": 201,
+			"suggestedAction": "NOACTION",
+			"messageInfo": {
+				"catalogName": "storeonce-appliance-operation",
+				"messageKey": "ADD_MEMBER_SUCCEED",
+				"arguments": ["192.168.0.100"],
+				"messageForCurrentLocale": "System successfully added to the federation"
+			}
+		}],
+		"location": "https://192.168.0.1/api/v1/management-services/federation/members",
+		"id": "75f952589fdf461d8a128b15e354746e",
+		"purpose": "Adding the system to the federation",
+		"purposeMessage": {
+			"catalogName": "storeonce-appliance-operation",
+			"messageKey": "ADD_MEMBER_INITIATED",
+			"messageForCurrentLocale": "Adding the system to the federation"
+		},
+		"extendedInfo": {
+			"percentComplete": 100,
+			"message": {
+				"catalogName": "infrastructure-businessExceptions",
+				"messageKey": "successful.task.completion",
+				"arguments": [{
+					"catalogName": "storeonce-appliance-operation",
+					"messageKey": "ADD_MEMBER_SUCCEED",
+					"messageForCurrentLocale": "System successfully added to the federation"
+				}],
+				"messageForCurrentLocale": "System successfully added to the federation"
+			},
+			"messageInfo": {
+				"catalogName": "infrastructure-businessExceptions",
+				"messageKey": "successful.task.completion",
+				"arguments": [{
+					"catalogName": "storeonce-appliance-operation",
+					"messageKey": "ADD_MEMBER_SUCCEED",
+					"messageForCurrentLocale": "System successfully added to the federation"
+				}],
+				"messageForCurrentLocale": "System successfully added to the federation"
+			},
+			"timestamp": "2019-01-10T14:55:38.045+0000"
+		},
+		"i18nResponse": {
+			"catalogName": "storeonce-appliance-operation",
+			"messageKey": "ADD_MEMBER_SUCCEED",
+			"messageForCurrentLocale": "System successfully added to the federation"
+		}
 	}
 
 </pre>
-
-<ol start="5">
-	<li>When the task is completed, it responds with 200 Good status and the body:</li>
-</ol>
-
-<pre>
-	{
-		"state": "COMPLETED",			
-		"startTime": "2018-07-17T15:35:40.130+0000",			
-		"endTime": "2018-07-17T15:36:24.754+0000",			
-		"status":[			
-			{			
-			"node": "soy2q7kt4e",			
-			"error": 201,			
-			"suggestedAction": "NOACTION",			
-			"messageInfo":{			
-				"catalogName": "storeonce-appliance-operation",			
-				"messageKey": "ADD_MEMBER_SUCCEED",			
-				"arguments":["192.9.132.38"],			
-				"messageForCurrentLocale": "System successfully added to the federation"
-				}
-	
-			}
-		],			
-		"location": "https://192.9.131.238/api/v1/management-services/federation/			
-		members",			
-		"id": "6bf12b13c69b47d9a6386984baef5c13",			
-		"purpose": "Adding the system to the federation",			
-		"purposeMessage": {			
-			"catalogName": "storeonce-appliance-operation",			
-			"messageKey": "ADD_MEMBER_INITIATED",			
-			"messageForCurrentLocale": "Adding the system to the federation"
-		},			
-		"extendedInfo":{			
-			"percentComplete": 100,			
-			"message":{"catalogName": "infrastructure-businessExceptions",			
-			"messageKey": "successful.task.completion", "arguments":[{"catalogName":
-			"storeonce-appliance-operation",…},			
-			"messageInfo":{
-				"catalogName": "infrastructure-businessExceptions",			
-				"messageKey": "successful.task.completion", "arguments":[{"catalogName":
-				"storeonce-appliance-operation",…},			
-				"timestamp": "2018-07-17T15:36:24.754+0000"	
-		},	
-		"i18nResponse":{			
-			"catalogName": "storeonce-appliance-operation",			
-			"messageKey": "ADD_MEMBER_SUCCEED",			
-			"messageForCurrentLocale": "System successfully added to the federation"
-			}
-	}
-	
-	</pre>
 
 <p>The body includes the task results. The <strong>status.error</strong>
 	shows the HTTP status of the original command. In this example, the member was successfully added to the federation.
 	Status error codes 2xx show successful completion of the operation. Any other status error codes indicate that the
 	command failed. You can use the messageForCurrentLocale and messageKey for further debugging.</p>
+
+<ol start="8">
+	<li>While the task is running, it responds with <strong>200 Good</strong> status and the body:</li>
+</ol>
+	
+<pre>
+	curl -i -X DELETE \
+		-H "Accept:application/json" \
+		-H "Authorization:Bearer 1ba67d70-68fe-45cf-9d2f-4e24a3501b7f " \
+		'https://192.168.0.1/pml/login/delete'
+
+</pre>
+
+<p>If successful it will respond with a <strong>204</strong>.</p>
