@@ -1,0 +1,1766 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "6.0.34-SNAPSHOT",
+    "title": "Licensing"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Cloud Archive Resource. System API, Should only be used for the D2DStack REST for cloud archive operation. "
+    },
+    {
+      "name": "Cloud Demo License Resource"
+    },
+    {
+      "name": "Floating License Resource"
+    },
+    {
+      "name": "License Category Status Resource"
+    },
+    {
+      "name": "Licensing Metadata"
+    },
+    {
+      "name": "Licensing Root Resource"
+    },
+    {
+      "name": "Seat License Resource"
+    },
+    {
+      "name": "Server Installed Licenses Resource"
+    },
+    {
+      "name": "Server config"
+    },
+    {
+      "name": "System mode selection and activation"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/licensing": {
+      "get": {
+        "tags": [
+          "Licensing Root Resource"
+        ],
+        "summary": "Returns a summary of the licensing status for the system.",
+        "description": "",
+        "operationId": "performRootGet",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Summary"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      }
+    },
+    "/licensing/float-license": {
+      "get": {
+        "tags": [
+          "Floating License Resource"
+        ],
+        "summary": "Returns a list of currently installed licenses",
+        "description": "Can be filtered by license category.",
+        "operationId": "performGetAllFloatLicenses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "categoryType",
+            "in": "query",
+            "description": "CategoryType, if set will filter the licenses by category",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LicenseCollectionWrapper"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Floating License Resource"
+        ],
+        "summary": "Attempts to checkout the tokens specified in the given license feature object",
+        "description": "Will not chekcout a partial request.",
+        "operationId": "acquireTokenPost",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "LicenseFeature, Object holding the feature ID of the token and the qty",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LicenseFeature"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LicenseCollectionWrapper"
+            }
+          },
+          "400": {
+            "description": "Server not configured"
+          },
+          "404": {
+            "description": "No license with UID found"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "502": {
+            "description": "Server update in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:create"
+        ]
+      }
+    },
+    "/licensing/float-license/featureType/{featureType}": {
+      "delete": {
+        "tags": [
+          "Floating License Resource"
+        ],
+        "summary": "Will release tokens for the given feature. The default quantity is one token unless specified. Attempts to release more than the number of tokens installed with be rejected. Local capacity licenses cannot be released via this resource.",
+        "description": "Releases requested capacity licenses back to the server pool.",
+        "operationId": "releaseFeatureQuantity",
+        "parameters": [
+          {
+            "name": "featureType",
+            "in": "path",
+            "description": "The feature for which to return licenses.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "numberOfTokens",
+            "in": "query",
+            "description": "The quantity of license tokens to be released.",
+            "required": false,
+            "type": "string",
+            "default": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Request to release more tokens than are installed"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "502": {
+            "description": "Server update in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:delete"
+        ]
+      }
+    },
+    "/licensing/float-license/license/{id}": {
+      "get": {
+        "tags": [
+          "Floating License Resource"
+        ],
+        "summary": "Searches the store and returns the license specified if found",
+        "description": "Can be filtered by license category.",
+        "operationId": "performGetFloatingbyID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The UID of the license to be returned",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StoreonceLicense"
+            }
+          },
+          "400": {
+            "description": "Server not configured"
+          },
+          "404": {
+            "description": "No license with UID found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:read"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Floating License Resource"
+        ],
+        "summary": "Release the given token if found.",
+        "description": "The license token with the matching UID is released back to the server pool.When connected to a license server, deleting the base license or all of the capacity will result in all other licenses being deleted.",
+        "operationId": "releaseToken",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The UID of the license to be released",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LicenseCollectionWrapper"
+            }
+          },
+          "400": {
+            "description": "Server not configured"
+          },
+          "404": {
+            "description": "No license with UID found"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "502": {
+            "description": "Server update in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:delete"
+        ]
+      }
+    },
+    "/licensing/float-license/local-capacity": {
+      "delete": {
+        "tags": [
+          "Floating License Resource"
+        ],
+        "summary": "Any unused capacity licenses for the specified feature.",
+        "description": "Releases unused capacity licenses back to the server pool.When connected to a license server, if this results in all capacity licenses being release (no configured storage) then all other licenses will be released and the client will disconnect from the server.",
+        "operationId": "releaseAllUnusedLocal",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Request to release more tokens than are installed"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "502": {
+            "description": "Server update in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:delete"
+        ]
+      }
+    },
+    "/licensing/licenses": {
+      "get": {
+        "tags": [
+          "Licensing Root Resource"
+        ],
+        "summary": "Returns a list of currently installed licenses",
+        "description": "Returns a list of all currently install licenses (excluding instant on license).",
+        "operationId": "performGetAllLicenses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "featureType",
+            "in": "query",
+            "description": "The integers value representing the featureType filter if required",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LicenseCollectionWrapper"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      }
+    },
+    "/licensing/mode": {
+      "get": {
+        "tags": [
+          "System mode selection and activation"
+        ],
+        "summary": "Returns the current mode of the system",
+        "description": "",
+        "operationId": "performGetCurrent",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/SystemLicenseMode"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      }
+    },
+    "/licensing/seat-license": {
+      "get": {
+        "tags": [
+          "Seat License Resource"
+        ],
+        "summary": "Returns a list of currently installed seat licenses",
+        "description": "A list of installed licenses. Note: instant on licenses will not be listed.",
+        "operationId": "performGetAllSeatLicenses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "categoryType",
+            "in": "query",
+            "description": "CategoryType, if set will filter the licenses by category",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LicenseCollectionWrapper"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Seat License Resource"
+        ],
+        "summary": "Validates and installs the licenses",
+        "description": "Parses the xml document and extract the HPE license keys. Each key is then validated and added to the store or rejected as needed.The HTTP response determines the success of the POST and NOT if the licenses were valid or accepted. If the xml was a valid list of licenses, a 200 response is returned.The validity of each individual license key must be determined by the caller by checking the validation result and the valid flag in the response.",
+        "operationId": "newLicenseFile",
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file",
+            "description": "The license file",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation - Called must check status of individual licenses",
+            "schema": {
+              "$ref": "#/definitions/LicenseCollectionWrapper"
+            }
+          },
+          "400": {
+            "description": "Invalid file. The file did not contain valid license key xmls"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "509": {
+            "description": "Incompatible mode"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:create"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ]
+      }
+    },
+    "/licensing/seat-license/license/{id}": {
+      "get": {
+        "tags": [
+          "Seat License Resource"
+        ],
+        "summary": "Searches the store and returns the license specified if found",
+        "description": "",
+        "operationId": "performGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique ID of the license to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StoreonceLicense"
+            }
+          },
+          "404": {
+            "description": "No license with UID found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Seat License Resource"
+        ],
+        "summary": "Deletes the licenses identified but the UID",
+        "description": "",
+        "operationId": "performDelete",
+        "produces": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique ID of the license to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation - More than one license may be deleted"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "509": {
+            "description": "Incompatible mode"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:delete"
+        ]
+      }
+    },
+    "/licensing/server": {
+      "get": {
+        "tags": [
+          "Server config"
+        ],
+        "summary": "Returns the current primary server configuration and its status data.",
+        "description": "Contains server status and the base license id (if base license installed).",
+        "operationId": "getLicenseServer",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StoreonceLicenseServer"
+            }
+          },
+          "409": {
+            "description": "Incompatible mode"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Server config"
+        ],
+        "summary": "Sets the current primary server configuration",
+        "description": "On initial configuration client will connect to server and attempt to checkout the minimum license set.On server change, a check will be made to ensure the new server has sufficient licenses before the clientwill release existing tokens, connect to the new server and reaquire its license token set.If the enabled flag is set false, then the server is disconnected and licenses released.",
+        "operationId": "modifyServer",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The server config to be applied",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StoreonceLicenseServer"
+            }
+          }
+        ],
+        "responses": {
+          "409": {
+            "description": "Incompatible mode"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "202": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:create"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Server config"
+        ],
+        "summary": "Disconnects from the server and releases all tokens.",
+        "description": "Attempts to disconnect from the license server. All license tokens are returned to the server and the server configuration data is deleted.If the license server is offline, tokens cannot be returned and the disconnect request will abort.",
+        "operationId": "disconnectServer",
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "409": {
+            "description": "Incompatible mode"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "503": {
+            "description": "Server offline/unresponsive"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:delete"
+        ]
+      }
+    },
+    "/licensing/server-license": {
+      "get": {
+        "tags": [
+          "Server Installed Licenses Resource"
+        ],
+        "summary": "Interrogates the connected license server and returns a list licenses available on the server.",
+        "description": "This may take a shirt time depending on network speed and server load.",
+        "operationId": "performGetFloating",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LicenseFeatureCollectionWrapper"
+            }
+          },
+          "400": {
+            "description": "Server not configured"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "509": {
+            "description": "Incompatible mode"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:read"
+        ]
+      }
+    },
+    "/licensing/server/force": {
+      "delete": {
+        "tags": [
+          "Server config"
+        ],
+        "summary": "Force disconnects from the server and releases all tokens.",
+        "description": "If the license server is offline, a normal disconnect will abort. This forces the disconnection by destroying any license tokens currently leased to the client.Those token will be unavailable until they expire at which point then will automatically be added back to the server pool. Cloud detach licenses do not expire so will not be visable on the client or server after this point. This will not affect cloud stores as the license key is embedded in the store.This operation should not be used unless absolutely needed.",
+        "operationId": "forceDisconnectServer",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StoreonceLicenseServer"
+            }
+          },
+          "409": {
+            "description": "Incompatible mode"
+          },
+          "500": {
+            "description": "Internal Error"
+          },
+          "503": {
+            "description": "Server offline/unresponsive"
+          }
+        },
+        "x-pmlPermissions": [
+          "licenseserver:delete"
+        ]
+      }
+    },
+    "/licensing/status": {
+      "get": {
+        "tags": [
+          "License Category Status Resource"
+        ],
+        "summary": "Returns the status of each licensable category.",
+        "description": "Returns a list of status objects, one for each category that can be licensed.",
+        "operationId": "getLicenseCategoryStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StatusCollectionWrapper"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "licensing:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CloudArchiveAvailablility": {
+      "type": "object",
+      "required": [
+        "cloudArchiveAvailableBytes"
+      ],
+      "properties": {
+        "cloudArchiveAvailableBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Cloud Archive Available Bytes"
+        }
+      }
+    },
+    "CloudArchiveReservation": {
+      "type": "object",
+      "required": [
+        "bytes",
+        "licenseUID",
+        "rawLicense",
+        "ssid",
+        "store",
+        "uid",
+        "validUntil",
+        "validUntilDate"
+      ],
+      "properties": {
+        "rawLicense": {
+          "type": "string",
+          "description": "Raw license key"
+        },
+        "licenseUID": {
+          "type": "string",
+          "description": "License UID is reserved"
+        },
+        "validUntil": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Licenseexpiry date or 0 if permenent"
+        },
+        "validUntilDate": {
+          "type": "string",
+          "description": "ISO formatted expiry date",
+          "format": "date-time"
+        },
+        "bytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Reserved/Consumed bytes"
+        },
+        "uid": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Request Unique id"
+        },
+        "ssid": {
+          "type": "integer",
+          "format": "int32",
+          "description": "SSID or originating store"
+        },
+        "store": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID or originating store"
+        }
+      }
+    },
+    "CloudArchiveReservationStatus": {
+      "type": "object",
+      "required": [
+        "cloudArchiveConsumedBytes",
+        "cloudArchiveReservedBytes"
+      ],
+      "properties": {
+        "cloudArchiveReservedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Cloud Archive reserved Bytes"
+        },
+        "cloudArchiveConsumedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Cloud Archive Consumed Bytes"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "InputStream": {
+      "type": "object"
+    },
+    "LicenseCollectionWrapper": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/StoreonceLicense"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "LicenseFeature": {
+      "type": "object",
+      "required": [
+        "featureId",
+        "featureVersion",
+        "tokens"
+      ],
+      "properties": {
+        "categoryString": {
+          "type": "string",
+          "description": "Category"
+        },
+        "category": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Category"
+        },
+        "featureTypeString": {
+          "type": "string",
+          "description": "Feature Type"
+        },
+        "featureType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Feature type"
+        },
+        "tokens": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of Tokens (capacity)"
+        },
+        "featureId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Feature ID"
+        },
+        "featureVersion": {
+          "type": "string",
+          "description": "Feature Version"
+        }
+      },
+      "description": "Status"
+    },
+    "LicenseFeatureCollectionWrapper": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/LicenseFeature"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "LicenseServerConfig": {
+      "type": "object",
+      "required": [
+        "address",
+        "port",
+        "secondary",
+        "serverEnabled",
+        "valid"
+      ],
+      "properties": {
+        "address": {
+          "type": "string",
+          "description": "Server address"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Server port"
+        },
+        "serverEnabled": {
+          "type": "boolean",
+          "description": "Server enabled flag",
+          "default": false
+        },
+        "secondary": {
+          "type": "string",
+          "description": "Secondary Server address"
+        },
+        "valid": {
+          "type": "boolean",
+          "description": "Server config valid",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "LicenseServerConfig"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "format": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "ReservationCollectionWrapper": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/CloudArchiveReservation"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "Status": {
+      "type": "object",
+      "required": [
+        "categoryType",
+        "categoryTypeEnum",
+        "categoryTypeString",
+        "featureActive",
+        "featureType",
+        "featureTypeEnum",
+        "featureTypeString",
+        "licenseCategory",
+        "licenseCategoryEnum",
+        "licenseCategoryString",
+        "licenseState",
+        "licenseStateEnum",
+        "licenseStateString",
+        "trialActive"
+      ],
+      "properties": {
+        "licenseCategoryEnum": {
+          "type": "string",
+          "description": "The licensing group this category belongs to; e.g. software, hardware etc",
+          "enum": [
+            "UNKNOWN",
+            "SOFTWARE",
+            "STORAGE",
+            "HARDWARE",
+            "SYSTEM"
+          ]
+        },
+        "licenseCategoryString": {
+          "type": "string",
+          "description": "Licensable Category"
+        },
+        "licenseCategory": {
+          "type": "integer",
+          "format": "int32",
+          "description": "category"
+        },
+        "featureTypeEnum": {
+          "type": "string",
+          "description": "The feature that this category represents; e.g. encryption or capacity etc",
+          "enum": [
+            "UNKNOWN",
+            "BASE",
+            "CAPACITY",
+            "ENCRYPTION",
+            "CLOUD",
+            "CLOUD_ARCHIVE",
+            "SERVICE",
+            "FLEXIO_FC",
+            "FLEXIO_NIC",
+            "UPGRADE",
+            "CATALYST",
+            "REPLICATION",
+            "DEMO",
+            "MEMORY",
+            "ARCHIVE"
+          ]
+        },
+        "featureTypeString": {
+          "type": "string",
+          "description": "Feature Type"
+        },
+        "featureType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Feature Type"
+        },
+        "categoryTypeEnum": {
+          "type": "string",
+          "description": "The licensing mechanism for this category; enabled by default, requiring a license or disabled.",
+          "enum": [
+            "LOCKED",
+            "UNSET",
+            "ENABLED",
+            "DISABLED",
+            "LICENSE",
+            "NOTAVAILABLE"
+          ]
+        },
+        "categoryTypeString": {
+          "type": "string",
+          "description": "Category String"
+        },
+        "categoryType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Category Type"
+        },
+        "licenseStateEnum": {
+          "type": "string",
+          "description": "The current license state enum for this category. Shows if this category is enabled, disabled, licensed or unlicensed.",
+          "enum": [
+            "TRIALLICENSE",
+            "LICENSED",
+            "UNLICENSED",
+            "SEEOTHER",
+            "FREEWARE"
+          ]
+        },
+        "licenseStateString": {
+          "type": "string",
+          "description": "License state"
+        },
+        "licenseState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "License state"
+        },
+        "featureActive": {
+          "type": "boolean",
+          "description": "True is this feature is active - i.e. licensed",
+          "default": false
+        },
+        "trialActive": {
+          "type": "boolean",
+          "description": "Trial active flag",
+          "default": false
+        },
+        "detail": {
+          "type": "string",
+          "description": "Extra details"
+        },
+        "capacity": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Capacity"
+        },
+        "licenseDefinedCapacity": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The licens defined capacity."
+        },
+        "supportQtyRelease": {
+          "type": "boolean",
+          "description": "True if token release is supported by quantity.",
+          "default": false
+        },
+        "supportUnusedRelease": {
+          "type": "boolean",
+          "description": "True if release all uinused tokens is supported",
+          "default": false
+        }
+      },
+      "description": "Status"
+    },
+    "StatusCollectionWrapper": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Status"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "StoreonceLicense": {
+      "type": "object",
+      "required": [
+        "category",
+        "categoryString",
+        "descriptionString",
+        "expiryDate",
+        "featureId",
+        "featureString",
+        "featureType",
+        "featureTypeEnum",
+        "featureVersion",
+        "licenseCategoryEnum",
+        "licenseLTU",
+        "nameString",
+        "onGracePeriod",
+        "passwordType",
+        "passwordTypeString",
+        "startDate",
+        "uid",
+        "valid"
+      ],
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "License UID"
+        },
+        "nameString": {
+          "type": "string",
+          "description": "Name"
+        },
+        "descriptionString": {
+          "type": "string",
+          "description": "Description"
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date",
+          "format": "date-time"
+        },
+        "expiryDate": {
+          "type": "string",
+          "description": "Expiry date",
+          "format": "date-time"
+        },
+        "demoRemaining": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Demo license days remaining"
+        },
+        "licenseLTU": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Calculated LTU"
+        },
+        "capacityBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Capacity License Bytes"
+        },
+        "licenseDefinedCapacity": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The capacity value as defined by the license."
+        },
+        "passwordTypeString": {
+          "type": "string",
+          "description": "Password Type"
+        },
+        "passwordType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Passwrod Type"
+        },
+        "featureString": {
+          "type": "string",
+          "description": "License Feature type"
+        },
+        "featureTypeEnum": {
+          "type": "string",
+          "description": "License Feature type",
+          "enum": [
+            "UNKNOWN",
+            "BASE",
+            "CAPACITY",
+            "ENCRYPTION",
+            "CLOUD",
+            "CLOUD_ARCHIVE",
+            "SERVICE",
+            "FLEXIO_FC",
+            "FLEXIO_NIC",
+            "UPGRADE",
+            "CATALYST",
+            "REPLICATION",
+            "DEMO",
+            "MEMORY",
+            "ARCHIVE"
+          ]
+        },
+        "featureType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "License Feature Type"
+        },
+        "categoryString": {
+          "type": "string",
+          "description": "License category"
+        },
+        "licenseCategoryEnum": {
+          "type": "string",
+          "description": "License category",
+          "enum": [
+            "UNKNOWN",
+            "SOFTWARE",
+            "STORAGE",
+            "HARDWARE",
+            "SYSTEM"
+          ]
+        },
+        "category": {
+          "type": "integer",
+          "format": "int32",
+          "description": "License category"
+        },
+        "validationResult": {
+          "type": "string",
+          "description": "validation result"
+        },
+        "valid": {
+          "type": "boolean",
+          "description": "License Valid flag.",
+          "default": false
+        },
+        "onGracePeriod": {
+          "type": "boolean",
+          "default": false
+        },
+        "triallicense": {
+          "type": "boolean",
+          "description": "Trial License flag.",
+          "default": false
+        },
+        "allowRemoval": {
+          "type": "boolean",
+          "description": "True if this can be removed.",
+          "default": false
+        },
+        "featureId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Feature id for key."
+        },
+        "featureVersion": {
+          "type": "string",
+          "description": "Feature version for key."
+        }
+      }
+    },
+    "StoreonceLicenseServer": {
+      "type": "object",
+      "required": [
+        "status",
+        "statusString",
+        "LicenseServerConfig"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "description": "Server status"
+        },
+        "statusString": {
+          "type": "string",
+          "description": "Localised status"
+        },
+        "baseLicenseId": {
+          "type": "string",
+          "description": "Base license UID"
+        },
+        "LicenseServerConfig": {
+          "xml": {
+            "name": "LicenseServerConfig"
+          },
+          "description": "Server Config data",
+          "$ref": "#/definitions/LicenseServerConfig"
+        }
+      },
+      "xml": {
+        "name": "StoreonceLicenseServer"
+      }
+    },
+    "Summary": {
+      "type": "object",
+      "required": [
+        "capacityBytes",
+        "capacityBytesFS",
+        "demoStatus",
+        "inGracePeriod",
+        "licenseDefinedCapacity",
+        "licenseLockId",
+        "licensingStatus",
+        "licensingStatusEnum",
+        "mode",
+        "modeName",
+        "modeString",
+        "serverStatus",
+        "statusSummary"
+      ],
+      "properties": {
+        "modeName": {
+          "type": "string",
+          "description": "System mode enum name"
+        },
+        "modeString": {
+          "type": "string",
+          "description": "System mode description"
+        },
+        "mode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "System mode enum value"
+        },
+        "capacityBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Licensed raw capacity in bytes"
+        },
+        "capacityBytesFS": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Max FS available in bytes"
+        },
+        "licenseDefinedCapacity": {
+          "type": "string",
+          "description": "Capacity display."
+        },
+        "storageDemoLicenseStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Demo license status. -1 : not yet activated, 0 : expired, > 0 : Active; number of days remaining or null if on physical products"
+        },
+        "demoStatus": {
+          "type": "string",
+          "description": "Demo license status; not yet activated, expired, or Active with number of days remaining."
+        },
+        "licensingStatusEnum": {
+          "type": "string",
+          "description": "Top level summary of licensing component status.",
+          "enum": [
+            "GOOD",
+            "ATTENTION",
+            "LOCKED",
+            "FAULT",
+            "WARNING"
+          ]
+        },
+        "licensingStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Top level summary of licensing component status."
+        },
+        "statusSummary": {
+          "type": "string",
+          "description": "Localised string for top level summary of licensing component status."
+        },
+        "licenseLockId": {
+          "type": "string",
+          "description": "The locking Id used by the license module to verify licenses."
+        },
+        "serverStatus": {
+          "type": "string",
+          "description": "The server status string or null if not in enterprise mode"
+        },
+        "inGracePeriod": {
+          "type": "boolean",
+          "description": "If true system is unlicensed and in grace period.",
+          "default": false
+        },
+        "daysTillLock": {
+          "type": "integer",
+          "format": "int32",
+          "description": "If unlicnesed, the remaining days before system locks."
+        }
+      }
+    },
+    "SystemLicenseMode": {
+      "type": "object",
+      "required": [
+        "systemMode"
+      ],
+      "properties": {
+        "systemMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "System mode enum value"
+        }
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "catalogName": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

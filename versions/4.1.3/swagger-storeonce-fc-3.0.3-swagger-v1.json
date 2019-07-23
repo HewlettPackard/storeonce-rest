@@ -1,0 +1,938 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "3.0.3-SNAPSHOT",
+    "title": "Fibre Channel"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Initiators"
+    },
+    {
+      "name": "Ports"
+    },
+    {
+      "name": "Target Logins"
+    },
+    {
+      "name": "Targets"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/fibre-channel/initiators": {
+      "get": {
+        "tags": [
+          "Initiators"
+        ],
+        "summary": "Get Fibre Channel Initiators",
+        "description": "Returns details of the current Fibre Channel initiators on the appliance",
+        "operationId": "getInitiators",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcInitiatorCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "fcinitiator:read"
+        ]
+      }
+    },
+    "/fibre-channel/initiators/port/{port}": {
+      "get": {
+        "tags": [
+          "Initiators"
+        ],
+        "summary": "Get Fibre Channel Initiator for Port",
+        "description": "Returns details of a single Fibre Channel initiator on the appliance",
+        "operationId": "getFcInitiator",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "port",
+            "in": "path",
+            "description": "ID of the FC Port",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcInitiator"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        }
+      }
+    },
+    "/fibre-channel/ports": {
+      "get": {
+        "tags": [
+          "Ports"
+        ],
+        "summary": "Get Fibre Channel Ports",
+        "description": "Returns details of the current Fibre Channel ports on the appliance",
+        "operationId": "getAllFcPorts",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcPortCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "fcport:read"
+        ]
+      }
+    },
+    "/fibre-channel/ports/port/{port}": {
+      "get": {
+        "tags": [
+          "Ports"
+        ],
+        "summary": "Get Fibre Channel Port",
+        "description": "Returns details of a single Fibre Channel port on the appliance",
+        "operationId": "getFcPort",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "port",
+            "in": "path",
+            "description": "ID of the FC Port",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcPort"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "fcport:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Ports"
+        ],
+        "summary": "Modify Fibre Channel Port",
+        "description": "Modifies details of a single Fibre Channel port on the appliance",
+        "operationId": "modifyFcPort",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "port",
+            "in": "path",
+            "description": "ID of the port to modify",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Modifiable settings",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ModifyFcPort"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "fcport:update"
+        ]
+      }
+    },
+    "/fibre-channel/target-logins/wwn/{wwn}": {
+      "get": {
+        "tags": [
+          "Target Logins"
+        ],
+        "summary": "Get Fibre Channel Logins",
+        "description": "Returns details of initiators logged into a specific device on the appliance",
+        "operationId": "getLoginsForTarget",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "wwn",
+            "in": "path",
+            "description": "WWN of the Target.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcTargetLoginCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid Parameters"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "fctarget:read"
+        ]
+      }
+    },
+    "/fibre-channel/targets": {
+      "get": {
+        "tags": [
+          "Targets"
+        ],
+        "summary": "Get Fibre Channel Targets",
+        "description": "Returns details of a  Fibre Channel Targets on the appliance",
+        "operationId": "getTargets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcTargetCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "fctarget:read"
+        ]
+      }
+    },
+    "/fibre-channel/targets/port/{port}": {
+      "get": {
+        "tags": [
+          "Targets"
+        ],
+        "summary": "Get Fibre Channel Port Targets",
+        "description": "Returns details of a Fibre Channel Targets on the appliance for the specified port",
+        "operationId": "getPortTargets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "port",
+            "in": "path",
+            "description": "ID of the FC Port",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/FcTargetCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "FcInitiator": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the FC Port that the Initiator is on."
+        },
+        "wwnn": {
+          "type": "string",
+          "description": "World Wide Node Name of the initiator."
+        },
+        "wwpn": {
+          "type": "string",
+          "description": "World Wide Port Name of the initiator."
+        },
+        "online": {
+          "type": "boolean",
+          "description": "True/false initiator is online.",
+          "default": false
+        },
+        "fcid": {
+          "type": "string",
+          "description": "Hexadecimal string representing the FCID of the initiator. Valid only if the initiator is logged in."
+        }
+      },
+      "xml": {
+        "name": "FcInitiator"
+      }
+    },
+    "FcInitiatorCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/FcInitiator"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "FcPort": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The ID of the Fibre Channel Port."
+        },
+        "configuredSpeed": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Configured speed of the Fibre Channel Port."
+        },
+        "configuredSpeedString": {
+          "description": "Localised version of configuredSpeed.",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "currentSpeed": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current speed of the Fibre Channel port. Valid only if linkState is not down."
+        },
+        "currentSpeedString": {
+          "description": "Localised version of currentSpeed. Valid only if linkState is not down.",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "portLocation": {
+          "description": "Physical location of the port on the appliance.",
+          "$ref": "#/definitions/FcPortLocation"
+        },
+        "beaconEnabled": {
+          "type": "boolean",
+          "description": "Status of the beacon on the port.",
+          "default": false
+        },
+        "linkState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current link state of the Fibre Channel port."
+        },
+        "linkStateString": {
+          "description": "Localised version of linkState.",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "linkDownReason": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Reason why the link is down. Valid only if linkState is down."
+        },
+        "linkDownReasonString": {
+          "description": "Localised version of linkDownReason. Valid only if linkState is down.",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "topology": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Configured topology of the Fibre Channel port."
+        },
+        "topologyString": {
+          "description": "Localised version of topology.",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "portLicensed": {
+          "type": "boolean",
+          "description": "Is the port licensed?",
+          "default": false
+        },
+        "portModel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Configured topology of the Fibre Channel port."
+        }
+      },
+      "xml": {
+        "name": "FcPort"
+      }
+    },
+    "FcPortCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/FcPort"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "FcPortLocation": {
+      "type": "object",
+      "properties": {
+        "slot": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Slot that the Fibre Channel card is installed in."
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the individual port on the Fibre Channel card."
+        },
+        "portLocationString": {
+          "description": "Localised string representing the location of the port in the appliance.",
+          "$ref": "#/definitions/L10nStringStruct"
+        }
+      }
+    },
+    "FcTarget": {
+      "type": "object",
+      "properties": {
+        "portId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the FC Port that the target is on."
+        },
+        "wwnn": {
+          "type": "string",
+          "description": "World Wide Node Name of the target."
+        },
+        "wwpn": {
+          "type": "string",
+          "description": "World Wide Port Name of the target."
+        },
+        "fcid": {
+          "type": "string",
+          "description": "Hexadecimal string representing the FCID of the target. Valid only if the target is logged in."
+        },
+        "fcidState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Representation of the current state of the FCID. If no FCID has been acquired, this will provide more information as to why this occurred."
+        },
+        "fcidStateString": {
+          "description": "Localised version of fcidState.",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "maxLoginsReached": {
+          "type": "boolean",
+          "description": "Has the target reached the maximum number of logins it can support?",
+          "default": false
+        },
+        "numLogins": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of initiators currently logged into the device."
+        },
+        "deviceUrl": {
+          "type": "string",
+          "description": "URL to follow to find more information about the device."
+        }
+      },
+      "xml": {
+        "name": "FcTarget"
+      }
+    },
+    "FcTargetCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/FcTarget"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "FcTargetLogin": {
+      "type": "object",
+      "properties": {
+        "fcid": {
+          "type": "string",
+          "description": "Hexadecimal string representing the FCID of the logged in device."
+        },
+        "wwnn": {
+          "type": "string",
+          "description": "World Wide Node Name of the logged in device."
+        },
+        "wwpn": {
+          "type": "string",
+          "description": "World Wide Port Name of the logged in device."
+        },
+        "numAborts": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of Aborts (ABTS) that have been received from this device."
+        },
+        "numRetransmissions": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of Selective Retransmission Requests (SRR) that have been received from this device."
+        }
+      },
+      "xml": {
+        "name": "FcTargetLogin"
+      }
+    },
+    "FcTargetLoginCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/FcTargetLogin"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "L10nStringStruct": {
+      "type": "object"
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "ModifyFcPort": {
+      "type": "object",
+      "properties": {
+        "configuredSpeed": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Configured speed to use."
+        },
+        "beaconEnabled": {
+          "type": "boolean",
+          "description": "Enable/Disable the beacon on the port.",
+          "default": false
+        },
+        "topology": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Configured topology to use."
+        }
+      },
+      "xml": {
+        "name": "ModifyFcPort"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "format": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

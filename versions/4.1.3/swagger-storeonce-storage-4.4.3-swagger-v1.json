@@ -1,0 +1,967 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "4.4.3-SNAPSHOT",
+    "title": "Storage"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Storage Alert Thresholds"
+    },
+    {
+      "name": "Storage Overview"
+    },
+    {
+      "name": "Storage Volumes"
+    },
+    {
+      "name": "Storage fsck"
+    },
+    {
+      "name": "Storage"
+    },
+    {
+      "name": "StoreOne Storage"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/local-storage/overview": {
+      "get": {
+        "tags": [
+          "Storage Overview"
+        ],
+        "summary": "Retrieve the local storage configuration",
+        "description": "The response will contain the configuration details of the user defined storage for the appliance",
+        "operationId": "getStorageOverview",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StorageConfigOverview"
+            }
+          },
+          "500": {
+            "description": "Unable to retrieve information"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      }
+    },
+    "/local-storage/scan": {
+      "get": {
+        "tags": [
+          "Storage"
+        ],
+        "summary": "Get the current status of the Scan operation or, if complete, the completion status of the last Scan operation.",
+        "description": "",
+        "operationId": "getScanDetails",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StorageOperationStatus"
+            }
+          },
+          "500": {
+            "description": "Unable to retrieve information"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Storage"
+        ],
+        "summary": "Scan attached hardware for new storage",
+        "description": "No body in the POST is required",
+        "operationId": "postScanStorage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "Request Accepted",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "409": {
+            "description": "Operation already in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:create"
+        ]
+      }
+    },
+    "/local-storage/storage": {
+      "get": {
+        "tags": [
+          "Storage"
+        ],
+        "summary": "Get the current status of the Create or Expand operation or, if complete, the completion status of the last Create or Expand operation.",
+        "description": "",
+        "operationId": "getStorageDetails",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StorageOperationStatus"
+            }
+          },
+          "500": {
+            "description": "Unable to retrieve information"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Storage"
+        ],
+        "summary": "Create user data storage up to the limit allowed in the storage licenses",
+        "description": "No body in the POST is required",
+        "operationId": "postCreateStorage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "Request Accepted",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "409": {
+            "description": "Operation already in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:create"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Storage"
+        ],
+        "summary": "Expand existing user data storage up to the limit allowed in the storage licenses",
+        "description": "No body in the PUT is required",
+        "operationId": "putExpandStorage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "Request Accepted",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "409": {
+            "description": "Operation already in progress"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:create"
+        ]
+      }
+    },
+    "/local-storage/thresholds": {
+      "get": {
+        "tags": [
+          "Storage Alert Thresholds"
+        ],
+        "summary": "Get the storage threshold alert information",
+        "description": "",
+        "operationId": "getThresholds",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Thresholds"
+            }
+          },
+          "500": {
+            "description": "Internal error reading thresholds"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Storage Alert Thresholds"
+        ],
+        "summary": "Set the storage threshold alert information",
+        "description": "",
+        "operationId": "setThresholds",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The set of thresholds",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/Thresholds"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Too many thresholds supplied"
+          },
+          "500": {
+            "description": "Internal error setting thresholds"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:update"
+        ]
+      }
+    },
+    "/local-storage/volumes": {
+      "get": {
+        "tags": [
+          "Storage Volumes"
+        ],
+        "summary": "Get the storage volumes",
+        "description": "",
+        "operationId": "getVolumes",
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StorageVolumeWrapper"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      }
+    },
+    "/local-storage/volumes/volume/{uuid}": {
+      "get": {
+        "tags": [
+          "Storage Volumes"
+        ],
+        "summary": "Get the storage volumes",
+        "description": "",
+        "operationId": "getVolume",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the volume",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StorageVolume"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "FsckProperties": {
+      "type": "object",
+      "properties": {
+        "repair": {
+          "type": "boolean",
+          "description": "True if check and repair is to be initiated, false if check only is to be initiated",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "FsckProperties"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "messageKey": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "StatusEvent": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Event message"
+        },
+        "diagnosticMessage": {
+          "type": "string",
+          "description": "Event diagnostic message"
+        }
+      },
+      "xml": {
+        "name": "StatusEvent"
+      }
+    },
+    "StorageConfigOverview": {
+      "type": "object",
+      "required": [
+        "capacityLicensedBytes",
+        "capacityUnlicensedBytes",
+        "configuredStorageBytes",
+        "freeBytes",
+        "maxCapacityBytes",
+        "maxExpansions",
+        "simplifiedStatus",
+        "simplifiedStatusString",
+        "storageHealth",
+        "unconfiguredStorageBytes",
+        "usedBytes"
+      ],
+      "properties": {
+        "storageHealth": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Storage Health"
+        },
+        "storageHealthString": {
+          "type": "string",
+          "description": "Storage Health String"
+        },
+        "simplifiedStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Storage health simplified status"
+        },
+        "simplifiedStatusString": {
+          "type": "string",
+          "description": "Storage health simplified status string"
+        },
+        "unconfiguredStorageBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Storage unconfigured bytes"
+        },
+        "configuredStorageBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Storage configured bytes"
+        },
+        "usedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Storage used bytes"
+        },
+        "freeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Storage free bytes"
+        },
+        "capacityLicensedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total available licensed storage capacity in bytes (accuracy is TB)."
+        },
+        "capacityUnlicensedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total configured storage capacity not covered by a license, in bytes"
+        },
+        "maxCapacityBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The maximum supported capacity in bytes"
+        },
+        "maxExpansions": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The maximum supported number of expansions"
+        }
+      }
+    },
+    "StorageLocationDetail": {
+      "type": "object",
+      "properties": {
+        "jbod": {
+          "type": "integer",
+          "format": "int32",
+          "description": "JBOD ID"
+        },
+        "drawer": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Drawer ID"
+        }
+      }
+    },
+    "StorageLocationModel": {
+      "type": "object",
+      "properties": {
+        "controllerSlot": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Controller slot location (Deprecated in version 4.1.2 - Use controllerSlots instead)"
+        },
+        "enclosureBox": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enclosure box number (Deprecated in version 4.1.2 - Use enclosureBoxes instead)"
+        },
+        "controllerSlots": {
+          "type": "array",
+          "description": "List containing the controller slot location",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "enclosureBoxes": {
+          "type": "array",
+          "description": "List containing the enclosure box numbers",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "storageLocations": {
+          "type": "array",
+          "description": "List containing the specific JBOD and Drawer IDs for this expansion",
+          "items": {
+            "$ref": "#/definitions/StorageLocationDetail"
+          }
+        }
+      }
+    },
+    "StorageOperationStatus": {
+      "type": "object",
+      "required": [
+        "operationState"
+      ],
+      "properties": {
+        "operationState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "State of storage operation"
+        },
+        "operationStateString": {
+          "type": "string",
+          "description": "Localised string representation of the operation state"
+        },
+        "startedDate": {
+          "type": "string",
+          "description": "Time at which the last creation or expansion operation started",
+          "format": "date-time"
+        },
+        "completedDate": {
+          "type": "string",
+          "description": "Time at which the last creation or expansion ended",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Shows extra status operation about the ongoing or last run storage operation"
+        }
+      }
+    },
+    "StorageVolume": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Volume Name"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Volume size in bytes"
+        },
+        "status": {
+          "type": "string",
+          "description": "Volume status enum name",
+          "enum": [
+            "UNUSED",
+            "OK",
+            "OFFLINE",
+            "UNAUTHORIZED",
+            "DEGRADED",
+            "FAILED",
+            "UNKNOWN",
+            "MISSING"
+          ]
+        },
+        "statusString": {
+          "type": "string",
+          "description": "Volume status localized string"
+        },
+        "beaconEnabled": {
+          "type": "boolean",
+          "description": "True if beacon enabled (on or flashing)",
+          "default": false
+        },
+        "volumeUUID": {
+          "type": "string",
+          "description": "Volume UUID"
+        },
+        "poolUUID": {
+          "type": "string",
+          "description": "Pool UUID"
+        },
+        "poolName": {
+          "type": "string",
+          "description": "Pool name"
+        },
+        "poolStatus": {
+          "type": "string",
+          "description": "Pool status enum name"
+        },
+        "poolStatusString": {
+          "type": "string",
+          "description": "Localized pool status string"
+        },
+        "jobDescription": {
+          "type": "string",
+          "description": "Job description, null if not jobs"
+        },
+        "jobPercentageComplete": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Job percent complete, null if not jobs"
+        },
+        "attached": {
+          "type": "boolean",
+          "description": "True is volume is attached",
+          "default": false
+        },
+        "enclosureSerialNumber": {
+          "type": "string",
+          "description": "Enclosure serial number."
+        },
+        "licenseType": {
+          "type": "string",
+          "description": "License type required for this volume"
+        },
+        "diskLocations": {
+          "type": "array",
+          "description": "List of disk locations",
+          "items": {
+            "type": "string"
+          }
+        },
+        "statusReasons": {
+          "type": "array",
+          "description": "List of events or empty if none.",
+          "items": {
+            "$ref": "#/definitions/StatusEvent"
+          }
+        },
+        "actualConnection": {
+          "description": "Actual location of the associated pool",
+          "$ref": "#/definitions/StorageLocationModel"
+        },
+        "expectedConnection": {
+          "description": "Expected location of the associated pool (if different from actual)",
+          "$ref": "#/definitions/StorageLocationModel"
+        },
+        "spareDiskLocations": {
+          "type": "array",
+          "description": "List of spare disk locations",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "StorageVolume"
+      }
+    },
+    "StorageVolumeWrapper": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/StorageVolume"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "ThresholdProperties": {
+      "type": "object",
+      "required": [
+        "percentageThreshold",
+        "thresholdLevel"
+      ],
+      "properties": {
+        "percentageThreshold": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Defines the percentage of the used capacity required to trigger the threshold event"
+        },
+        "thresholdLevelString": {
+          "type": "string",
+          "description": "Localised representation of the threshold event level",
+          "readOnly": true
+        },
+        "thresholdLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Level of the event to raise when the threshold is triggered"
+        }
+      },
+      "xml": {
+        "name": "ThresholdProperties"
+      }
+    },
+    "Thresholds": {
+      "type": "object",
+      "required": [
+        "userThresholds"
+      ],
+      "properties": {
+        "userThresholds": {
+          "type": "array",
+          "description": "List of user thresholds",
+          "items": {
+            "$ref": "#/definitions/ThresholdProperties"
+          }
+        },
+        "systemThresholds": {
+          "type": "array",
+          "description": "List of system thresholds",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/ThresholdProperties"
+          }
+        },
+        "numUserThresholds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of user thresholds",
+          "readOnly": true
+        },
+        "numSystemThresholds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of system thresholds",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "Thresholds"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

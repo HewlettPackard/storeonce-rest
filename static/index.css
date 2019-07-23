@@ -169,3 +169,7 @@ ul.navList {
 .show {
   display: block;
 }
+
+.try-out__btn{
+  display: none;
+}
