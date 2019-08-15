@@ -248,7 +248,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -296,7 +296,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -348,7 +348,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -453,7 +453,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -501,7 +501,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -553,7 +553,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -588,7 +588,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -677,7 +677,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -857,7 +857,7 @@
           "500": {
             "description": "Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -896,7 +896,7 @@
           "500": {
             "description": "Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -938,7 +938,7 @@
           "500": {
             "description": "Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -984,7 +984,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1021,7 +1021,7 @@
           "500": {
             "description": "Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1060,7 +1060,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1108,7 +1108,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1160,7 +1160,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1210,7 +1210,7 @@
           "500": {
             "description": "Failed to start / Internal error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1243,7 +1243,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1282,7 +1282,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1339,7 +1339,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1381,7 +1381,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1441,7 +1441,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1490,7 +1490,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1540,7 +1540,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1587,7 +1587,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1640,7 +1640,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1700,7 +1700,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1741,7 +1741,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1794,7 +1794,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1851,7 +1851,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1892,7 +1892,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1939,7 +1939,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -1978,7 +1978,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2029,7 +2029,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2068,7 +2068,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2120,7 +2120,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2171,7 +2171,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2217,7 +2217,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2284,7 +2284,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2348,7 +2348,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2419,7 +2419,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2478,7 +2478,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2544,7 +2544,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2607,7 +2607,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2664,7 +2664,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2728,7 +2728,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2777,7 +2777,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2838,7 +2838,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2896,7 +2896,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -2962,7 +2962,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3015,7 +3015,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3063,7 +3063,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3124,7 +3124,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3200,7 +3200,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3261,7 +3261,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3337,7 +3337,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3398,7 +3398,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3474,7 +3474,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3509,7 +3509,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3553,7 +3553,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3608,7 +3608,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3639,7 +3639,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3686,7 +3686,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3726,7 +3726,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3779,7 +3779,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3840,7 +3840,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3880,7 +3880,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3927,7 +3927,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -3975,7 +3975,7 @@
           "500": {
             "description": "Catalyst service is not available",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -4036,7 +4036,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -4104,7 +4104,7 @@
           "500": {
             "description": "Internal Server Error",
             "schema": {
-              "$ref": "#definitions/ExtendedError"
+              "$ref": "#/definitions/ExtendedError"
             }
           }
         },
@@ -4583,6 +4583,29 @@
       },
       "xml": {
         "name": "extendedError"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
       }
     },
     "BandwidthCalculator": {
