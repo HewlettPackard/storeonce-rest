@@ -173,3 +173,8 @@ ul.navList {
 .try-out__btn{
   display: none;
 }
+
+#copyright{
+  padding-left: 50px;
+  font-family: "Metric", Arial, sans-serif;
+}
