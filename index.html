@@ -14,30 +14,32 @@
   </head>
 
   <body>
-    <div class="sidenav">
-      <div id="StoreOnce" onclick="goHome()">
-        <img id="logo" src="static/logo.png" class="logo" alt="Logo" />
-        <p>StoreOnce REST API</p>
+    <div class="container">
+      <div class="sidenav">
+        <div id="StoreOnce" onclick="goHome()">
+          <img id="logo" src="static/logo.png" class="logo" alt="Logo" />
+          <p>StoreOnce REST API</p>
+        </div>
+        <div class="dropdown">
+          <button onclick="dropdown()" class="dropbtn">
+            <span id="selectedAPI"></span> <span id="selector">+</span>
+          </button>
+          <div id="myDropdown" class="dropdown-content"></div>
+        </div>
+        <div id="sidebar-content">
+          <input
+            type="text"
+            placeholder="Search APIs"
+            id="myInput"
+            onkeyup="filterFunction()"/>
+          <ul class="navList" id="list"></ul>
+        </div>
       </div>
-      <div class="dropdown">
-        <button onclick="dropdown()" class="dropbtn">
-          <span id="selectedAPI"></span> <span id="selector">+</span>
-        </button>
-        <div id="myDropdown" class="dropdown-content"></div>
+      <div class="content" id="landing-desc"></div>
+      <div class="content" id="swagger-ui"></div>
+      <div id="copyright">
+        <p>© Copyright 2018-2019 Hewlett Packard Enterprise Development LP</p>
       </div>
-      <div id="sidebar-content">
-        <input
-          type="text"
-          placeholder="Search APIs"
-          id="myInput"
-          onkeyup="filterFunction()"/>
-        <ul class="navList" id="list"></ul>
-      </div>
-    </div>
-    <div class="content" id="landing-desc"></div>
-    <div class="content" id="swagger-ui"></div>
-    <div class="content" id="copyright">
-      <p>(C) Copyright 2018-2019 Hewlett Packard Enterprise Development LP</p>
     </div>
   </body>
 </html>
