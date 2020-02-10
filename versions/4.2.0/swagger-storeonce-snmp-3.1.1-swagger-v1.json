@@ -1,0 +1,1060 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "3.1.1-SNAPSHOT",
+    "title": "SNMP"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Snmp Api Operations"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/snmp/configuration": {
+      "get": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Retrieve the Snmp agent configuration",
+        "description": "",
+        "operationId": "getConfiguration",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/AgentConfiguration"
+            }
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Modify the Snmp agent configuration",
+        "description": "",
+        "operationId": "setConfiguration",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The new agent configuration",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AgentConfiguration"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:update"
+        ]
+      }
+    },
+    "/snmp/overview": {
+      "get": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Retrieve the Snmp Overview",
+        "description": "",
+        "operationId": "getSnmpOverview",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/SnmpOverview"
+            }
+          },
+          "500": {
+            "description": "Unknown error while getting SNMP overview"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:read"
+        ]
+      }
+    },
+    "/snmp/test-event": {
+      "post": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Test SMNP Trapsink forwarding by raising a test event",
+        "description": "",
+        "operationId": "raiseSnmpTestEvent",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to raise test event",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SnmpTestEvent"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "500": {
+            "description": "Unknown error while raising test event"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:create"
+        ]
+      }
+    },
+    "/snmp/trapsinks": {
+      "get": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Retrieve the list of configured trapsinks",
+        "description": "",
+        "operationId": "getTrapsinks",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/TrapsinkListDecorator"
+            }
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Configure a new trapsink",
+        "description": "",
+        "operationId": "addTrapsink",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to add new trapsink",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TrapsinkV3"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/TrapsinkV3"
+            }
+          },
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "No such user exists with the given username"
+          },
+          "409": {
+            "description": "Trapsink is already configured for the given host address"
+          },
+          "500": {
+            "description": "Unknown error adding trapsink"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:create"
+        ]
+      }
+    },
+    "/snmp/trapsinks/{uuid}": {
+      "get": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Retrieve a trapsink with the given UUID",
+        "description": "",
+        "operationId": "getTrapsinkByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the trapsink",
+            "required": true,
+            "type": "string",
+            "x-example": "b0b3836e-c138-43a1-a81d-cfaf6a881700"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/TrapsinkV3"
+            }
+          },
+          "404": {
+            "description": "No trapsink exists with the given UUID"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Modify a trapsink with a given UUID",
+        "description": "",
+        "operationId": "modifyTrapsinkByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the trapsink",
+            "required": true,
+            "type": "string",
+            "x-example": "b0b3836e-c138-43a1-a81d-cfaf6a881700"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify trapsink",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Trapsink"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "No such user exists with the given username"
+          },
+          "404": {
+            "description": "No trapsink exists with the given UUID"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Delete a trapsink with the given UUID",
+        "description": "",
+        "operationId": "removeTrapsinkByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the trapsink",
+            "required": true,
+            "type": "string",
+            "x-example": "b0b3836e-c138-43a1-a81d-cfaf6a881700"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "No trapsink exists with the given UUID"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:delete"
+        ]
+      }
+    },
+    "/snmp/users": {
+      "get": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Retrieve the list of configured users",
+        "description": "",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/SnmpUserListDecorator"
+            }
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Configure a new user",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to create SNMP user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SnmpUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SnmpUser"
+            }
+          },
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "409": {
+            "description": "A user is already configured with the given username"
+          },
+          "500": {
+            "description": "Unknown error adding user"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:create"
+        ]
+      }
+    },
+    "/snmp/users/{uuid}": {
+      "get": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Retrieve a user with the given uuid",
+        "description": "",
+        "operationId": "getUserByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of SNMP user",
+            "required": true,
+            "type": "string",
+            "x-example": "b0b3836e-c138-43a1-a81d-cfaf6a881700"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/SnmpUser"
+            }
+          },
+          "404": {
+            "description": "No user exists with the given UUID"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Modify a user with the given uuid",
+        "description": "",
+        "operationId": "modifyUserByUuid",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of SNMP user",
+            "required": true,
+            "type": "string",
+            "x-example": "b0b3836e-c138-43a1-a81d-cfaf6a881700"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify SNMP user details",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SnmpUser"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "409": {
+            "description": "A user is already configured with the given username"
+          },
+          "500": {
+            "description": "Unknown error adding user"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Snmp Api Operations"
+        ],
+        "summary": "Delete a user with the given uuid",
+        "description": "",
+        "operationId": "removeUserByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of SNMP user",
+            "required": true,
+            "type": "string",
+            "x-example": "b0b3836e-c138-43a1-a81d-cfaf6a881700"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "No trapsink exists with the given UUID"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "snmp:delete"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AgentConfiguration": {
+      "type": "object",
+      "required": [
+        "agentState",
+        "engineId"
+      ],
+      "properties": {
+        "agentState": {
+          "type": "string",
+          "example": "ENABLED",
+          "description": "The state of the snmp agent",
+          "enum": [
+            "ENABLED",
+            "DISABLED"
+          ]
+        },
+        "agentStateString": {
+          "type": "string",
+          "example": "enabled",
+          "description": "The localized form of the state enum",
+          "readOnly": true
+        },
+        "engineId": {
+          "type": "string",
+          "example": "8000000001020304",
+          "description": "The agent's engine id as a hexadecimal string"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "SnmpOverview": {
+      "type": "object",
+      "required": [
+        "agentState",
+        "numTrapsinks",
+        "numTrapsinksAlert",
+        "numTrapsinksInfo",
+        "numTrapsinksWarn",
+        "numUsers",
+        "numUsersAuthNoPriv",
+        "numUsersAuthPriv",
+        "numUsersNoAuthNoPriv"
+      ],
+      "properties": {
+        "agentState": {
+          "type": "string",
+          "example": "ENABLED",
+          "description": "The state of the SNMP agent",
+          "enum": [
+            "ENABLED",
+            "DISABLED"
+          ]
+        },
+        "agentStateString": {
+          "type": "string",
+          "example": "enabled",
+          "description": "The localized String representation of the Agent state",
+          "readOnly": true
+        },
+        "numTrapsinks": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of trapsinks"
+        },
+        "numTrapsinksInfo": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of INFO trapsinks"
+        },
+        "numTrapsinksWarn": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of WARN trapsinks"
+        },
+        "numTrapsinksAlert": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of ALERT trapsinks"
+        },
+        "numUsers": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of users"
+        },
+        "numUsersNoAuthNoPriv": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of no authentication no privacy users"
+        },
+        "numUsersAuthNoPriv": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of with authentication no privacy users"
+        },
+        "numUsersAuthPriv": {
+          "type": "integer",
+          "format": "int32",
+          "example": 1,
+          "description": "Total number of users with authentication and privacy"
+        }
+      }
+    },
+    "SnmpTestEvent": {
+      "type": "object",
+      "required": [
+        "eventType"
+      ],
+      "properties": {
+        "eventType": {
+          "type": "string",
+          "example": "INFO",
+          "description": "Type of event to raise",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT"
+          ]
+        }
+      }
+    },
+    "SnmpUser": {
+      "type": "object",
+      "required": [
+        "securityLevel",
+        "username"
+      ],
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "example": "067e6162-3b6f-4ae2-a171-2470b63dff00",
+          "description": "UUID for the SNMP user",
+          "readOnly": true
+        },
+        "username": {
+          "type": "string",
+          "example": "tom",
+          "description": "The username"
+        },
+        "securityLevel": {
+          "type": "string",
+          "example": "authPriv",
+          "description": "The user's security level",
+          "enum": [
+            "noAuthNoPriv",
+            "authNoPriv",
+            "authPriv"
+          ]
+        },
+        "securityLevelString": {
+          "type": "string",
+          "example": "authNoPriv",
+          "description": "A localized string representation for the securityLevel",
+          "readOnly": true
+        },
+        "authAlgorithm": {
+          "type": "string",
+          "example": "MD5",
+          "description": "The authentication algorithm",
+          "enum": [
+            "MD5",
+            "SHA"
+          ]
+        },
+        "authAlgorithmString": {
+          "type": "string",
+          "example": "MD5",
+          "description": "A localized string representation for the authentication algorithm",
+          "readOnly": true
+        },
+        "authPassword": {
+          "type": "string",
+          "example": "hunter1",
+          "description": "The authentication password"
+        },
+        "privAlgorithm": {
+          "type": "string",
+          "example": "AES",
+          "description": "The privacy algorithm",
+          "enum": [
+            "AES",
+            "DES"
+          ]
+        },
+        "privAlgorithmString": {
+          "type": "string",
+          "example": "MD5",
+          "description": "A localized string representation for privacy algorithm",
+          "readOnly": true
+        },
+        "privPassword": {
+          "type": "string",
+          "example": "hunter2",
+          "description": "The privacy password"
+        }
+      }
+    },
+    "SnmpUserListDecorator": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/SnmpUser"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "Trapsink": {
+      "type": "object",
+      "required": [
+        "eventType",
+        "host",
+        "port",
+        "protocolVersion",
+        "trapsinkState"
+      ],
+      "discriminator": "protocolVersion",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "example": "067e6162-3b6f-4ae2-a171-2470b63dff00",
+          "description": "UUID for the trapsink",
+          "readOnly": true
+        },
+        "trapsinkState": {
+          "type": "string",
+          "example": "ENABLED",
+          "description": "The trapsink state. describes whether the trapsink is enabled or disabled",
+          "enum": [
+            "ENABLED",
+            "DISABLED"
+          ]
+        },
+        "trapsinkStateString": {
+          "type": "string",
+          "example": "enabled",
+          "description": "Localized String representation of the Trapsink state",
+          "readOnly": true
+        },
+        "host": {
+          "type": "string",
+          "example": "monitoring.example.org",
+          "description": "The hostname or ip address of the remote SNMP manager"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "example": 162,
+          "description": "The port number of the remote SNMP manager"
+        },
+        "eventType": {
+          "type": "string",
+          "example": "INFO",
+          "description": "The type of events to send to this trapsink",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT"
+          ]
+        },
+        "eventTypeString": {
+          "type": "string",
+          "example": "INFO",
+          "description": "Localized String representation of the event type",
+          "readOnly": true
+        },
+        "protocolVersion": {
+          "type": "string",
+          "example": "3",
+          "description": "The SNMP protocol version",
+          "readOnly": true,
+          "enum": [
+            "3"
+          ]
+        }
+      }
+    },
+    "TrapsinkListDecorator": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/TrapsinkV3"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "TrapsinkV3": {
+      "type": "object",
+      "required": [
+        "eventType",
+        "host",
+        "port",
+        "protocolVersion",
+        "trapsinkState",
+        "username"
+      ],
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "example": "067e6162-3b6f-4ae2-a171-2470b63dff00",
+          "description": "UUID for the trapsink",
+          "readOnly": true
+        },
+        "trapsinkState": {
+          "type": "string",
+          "example": "ENABLED",
+          "description": "The trapsink state. describes whether the trapsink is enabled or disabled",
+          "enum": [
+            "ENABLED",
+            "DISABLED"
+          ]
+        },
+        "trapsinkStateString": {
+          "type": "string",
+          "example": "enabled",
+          "description": "Localized String representation of the Trapsink state",
+          "readOnly": true
+        },
+        "host": {
+          "type": "string",
+          "example": "monitoring.example.org",
+          "description": "The hostname or ip address of the remote SNMP manager"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "example": 162,
+          "description": "The port number of the remote SNMP manager"
+        },
+        "eventType": {
+          "type": "string",
+          "example": "INFO",
+          "description": "The type of events to send to this trapsink",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT"
+          ]
+        },
+        "eventTypeString": {
+          "type": "string",
+          "example": "INFO",
+          "description": "Localized String representation of the event type",
+          "readOnly": true
+        },
+        "protocolVersion": {
+          "type": "string",
+          "example": "3",
+          "description": "The SNMP protocol version",
+          "readOnly": true,
+          "enum": [
+            "3"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "example": "tom",
+          "description": "The username of the user to authenticate traps with"
+        },
+        "context": {
+          "type": "string",
+          "example": "mycontext",
+          "description": "The Snmp context"
+        }
+      }
+    },
+    "TrapsinkV3Decorator": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/TrapsinkV3"
+        },
+        {
+          "type": "object"
+        }
+      ]
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

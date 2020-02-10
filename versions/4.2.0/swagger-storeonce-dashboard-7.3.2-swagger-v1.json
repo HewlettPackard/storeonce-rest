@@ -1,0 +1,605 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "7.3.2-SNAPSHOT",
+    "title": "Dashboard"
+  },
+  "basePath": "/api/v1/data-services",
+  "tags": [
+    {
+      "name": "StoreOnce dashboard resource"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/dashboard/appliance/{uuid}": {
+      "get": {
+        "tags": [
+          "StoreOnce dashboard resource"
+        ],
+        "summary": "Produces the summary view used for the appliance dashboard",
+        "description": "",
+        "operationId": "getApplianceOverview",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "The UUID of the appliance to provide an overview for.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Successful",
+            "schema": {
+              "$ref": "#/definitions/ApplianceDashboardOverview"
+            }
+          },
+          "404": {
+            "description": "Could not find requested appliance"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "dashboard:read"
+        ]
+      }
+    },
+    "/dashboard/overview": {
+      "get": {
+        "tags": [
+          "StoreOnce dashboard resource"
+        ],
+        "summary": "Produces the summary view used for the federation dashboard",
+        "description": "",
+        "operationId": "getFederationOverview",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Successful",
+            "schema": {
+              "$ref": "#/definitions/FederatedDashboardOverview"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "dashboard:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ApplianceDashboardOverview": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the appliance"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "hostname of the appliance"
+        },
+        "platformType": {
+          "type": "string",
+          "description": "product platform name of the appliance"
+        },
+        "softwareVersion": {
+          "type": "string",
+          "description": "software version of the appliance"
+        },
+        "softwareUpdateRecommended": {
+          "type": "boolean",
+          "description": "software update is recommended",
+          "default": false
+        },
+        "recommendedSoftwareVersion": {
+          "type": "string",
+          "description": "recommended software version to update to"
+        },
+        "localDiskBytes": {
+          "type": "integer",
+          "description": "total stored on local disk for the appliance in bytes"
+        },
+        "localUserBytes": {
+          "type": "integer",
+          "description": "user data stored on the appliance in bytes"
+        },
+        "localFreeBytes": {
+          "type": "integer",
+          "description": "available storage on the appliance in bytes"
+        },
+        "localCapacityBytes": {
+          "type": "integer",
+          "description": "total storage capacity of the appliance in bytes"
+        },
+        "cloudDiskBytes": {
+          "type": "integer",
+          "description": "total stored in the cloud for the appliance in bytes"
+        },
+        "cloudUserBytes": {
+          "type": "integer",
+          "description": "total user data stored in the cloud for the appliance in bytes"
+        },
+        "cloudFreeBytes": {
+          "type": "integer",
+          "description": "available cloud storage for the appliance in bytes"
+        },
+        "cloudCapacityBytes": {
+          "type": "integer",
+          "description": "total capacity of cloud storage for the appliance in bytes"
+        },
+        "catalystDataJobSessions": {
+          "type": "integer",
+          "description": "catalyst number of data job sessions"
+        },
+        "nasNumDedupeSessions": {
+          "type": "integer",
+          "description": "nas numbler of open dedupe sessions"
+        },
+        "vtlNumActiveSessions": {
+          "type": "integer",
+          "description": "vtl number of active sessions"
+        },
+        "catalystInboundCopyJobSessions": {
+          "type": "integer",
+          "description": "catalyst number of inbound copy job sessions"
+        },
+        "catalystOutboundCopyJobSessions": {
+          "type": "integer",
+          "description": "catalyst number of outbound copy job sessions"
+        },
+        "repNumSourceJobs": {
+          "type": "integer",
+          "description": "replication number of source jobs"
+        },
+        "repNumTargetJobs": {
+          "type": "integer",
+          "description": "replication number of target jobs"
+        },
+        "maxStreamsLimit": {
+          "type": "integer",
+          "description": "smm number of maximum streams limit"
+        },
+        "metricsCpuTotal": {
+          "type": "number",
+          "format": "double",
+          "description": "total cpu"
+        },
+        "metricsMemoryTotalPhysical": {
+          "type": "integer",
+          "format": "int64",
+          "description": "total physical memory"
+        },
+        "metricsMemoryUsedPercent": {
+          "type": "number",
+          "format": "double",
+          "description": "used memory percentage"
+        },
+        "metricsDataDiskUtilisationPercent": {
+          "type": "number",
+          "format": "double",
+          "description": "disk utilisation percentage"
+        },
+        "applianceStatus": {
+          "type": "string",
+          "description": "enum simplified status of the appliance",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "applianceStatusString": {
+          "type": "string",
+          "description": "localised simplified status of the appliance",
+          "readOnly": true
+        },
+        "dataServicesStatus": {
+          "type": "string",
+          "description": "enum simplified status of the data services",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "dataServicesStatusString": {
+          "type": "string",
+          "description": "localised simplified status of the data services",
+          "readOnly": true
+        },
+        "licenseStatus": {
+          "type": "string",
+          "description": "enum simplified status of the licencing",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "licenseStatusString": {
+          "type": "string",
+          "description": "localised simplified status of the licencing",
+          "readOnly": true
+        },
+        "userStorageStatus": {
+          "type": "string",
+          "description": "enum simplified status of the user storage",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "userStorageStatusString": {
+          "type": "string",
+          "description": "localised simplified status of the user storage",
+          "readOnly": true
+        },
+        "hardwareStatus": {
+          "type": "string",
+          "description": "enum simplified status of the hardware",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "hardwareStatusString": {
+          "type": "string",
+          "description": "localised simplified status of the hardware",
+          "readOnly": true
+        },
+        "remoteSupportStatus": {
+          "type": "string",
+          "description": "enum simplified status of remote support",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "remoteSupportStatusString": {
+          "type": "string",
+          "description": "localised simplified status of remote support",
+          "readOnly": true
+        },
+        "hamaStatus": {
+          "type": "string",
+          "description": "enum simplified status of hama support",
+          "enum": [
+            "OK",
+            "WARNING",
+            "CRITICAL",
+            "NOT_HARDWARE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "hamaStatusString": {
+          "type": "string",
+          "description": "localised simplified status of hama support",
+          "readOnly": true
+        },
+        "catStoresSummary": {
+          "description": "summary of catalyst (non cloud bank) stores for the appliance",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "cloudBankStoresSummary": {
+          "description": "summary of catalyst cloud bank stores for the appliance",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "nasSharesSummary": {
+          "description": "summary of nas shares for the appliance",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "vtlLibrariesSummary": {
+          "description": "summary of vtl libraries for the appliance",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "nasRepMappingSummary": {
+          "description": "summary of nas replication mappings for the appliance",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "vtlRepMappingSummary": {
+          "description": "summary of vtl replication mappings for the appliance",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "systemLocation": {
+          "type": "string",
+          "description": "location of the appliance"
+        },
+        "contactName": {
+          "type": "string",
+          "description": "contact name for the appliance"
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "contact number for the appliance"
+        },
+        "contactEmail": {
+          "type": "string",
+          "description": "contact email for the appliance"
+        },
+        "totalActiveSessions": {
+          "type": "integer",
+          "description": "total number of active sessions",
+          "readOnly": true
+        },
+        "userBytes": {
+          "type": "integer",
+          "description": "total user data stored (both locally and in cloud) for the appliance in bytes",
+          "readOnly": true
+        },
+        "diskBytes": {
+          "type": "integer",
+          "description": "total data stored (both locally and in cloud) for the appliance in bytes",
+          "readOnly": true
+        },
+        "dedupeRatio": {
+          "type": "number",
+          "description": "overall dedupe ratio for the appliance",
+          "readOnly": true
+        },
+        "capacitySavedBytes": {
+          "type": "integer",
+          "description": "total saving in bytes through deduplication of user data for the appliance",
+          "readOnly": true
+        },
+        "capacitySavedPercent": {
+          "type": "number",
+          "description": "percentage saving due to deduplication of user data for the appliance",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "ApplianceDashboardOverview"
+      }
+    },
+    "FederatedDashboardOverview": {
+      "type": "object",
+      "properties": {
+        "numReportedSystems": {
+          "type": "integer",
+          "format": "int32",
+          "description": "number of reported systems"
+        },
+        "numUnreachableSystems": {
+          "type": "integer",
+          "format": "int32",
+          "description": "number of unreachable systems"
+        },
+        "numSynchronisingSystems": {
+          "type": "integer",
+          "format": "int32",
+          "description": "number of systems in the member list which have no data in the cache"
+        },
+        "softwareUpdateRecommended": {
+          "type": "boolean",
+          "description": "a software update is recommended on at least one system in the federation",
+          "default": false
+        },
+        "overallLocalDiskBytes": {
+          "type": "integer",
+          "description": "total stored on local disk for all reported appliances in bytes"
+        },
+        "overallLocalUserBytes": {
+          "type": "integer",
+          "description": "total user data stored on all reported appliances in bytes"
+        },
+        "overallLocalFreeBytes": {
+          "type": "integer",
+          "description": "total available storage on all reported appliances in bytes"
+        },
+        "overallLocalCapacityBytes": {
+          "type": "integer",
+          "description": "total storage capacity of all reported appliances in bytes"
+        },
+        "overallCloudDiskBytes": {
+          "type": "integer",
+          "description": "total stored in the cloud for all reported appliances in bytes"
+        },
+        "overallCloudUserBytes": {
+          "type": "integer",
+          "description": "total user data stored in the cloud for all reported appliances in bytes"
+        },
+        "overallCloudFreeBytes": {
+          "type": "integer",
+          "description": "total available cloud storage for all reported appliances in bytes"
+        },
+        "overallCloudCapacityBytes": {
+          "type": "integer",
+          "description": "total capacity in the cloud for all reported appliances in bytes"
+        },
+        "systemHealthSummary": {
+          "description": "summary of health statuses for all appliances",
+          "$ref": "#/definitions/UnknownStatusSummary"
+        },
+        "catStoresSummary": {
+          "description": "overall summary of catalyst (non cloud bank) stores for all reported appliances",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "cloudBankStoresSummary": {
+          "description": "overall summary of cloud bank stores for all reported appliances",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "nasSharesSummary": {
+          "description": "overall summary of nas shares for all reported appliances",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "vtlLibrariesSummary": {
+          "description": "overall summary of vtl libraries for all reported appliances",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "nasRepMappingSummary": {
+          "description": "overall summary of nas replication mappings for all reported appliances",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "vtlRepMappingSummary": {
+          "description": "overall summary of vtl replication mappings for all reported appliances",
+          "$ref": "#/definitions/ServiceSummary"
+        },
+        "softwareVersions": {
+          "type": "object",
+          "description": "summary of software versions for all reported appliances",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "platformTypes": {
+          "type": "object",
+          "description": "summary of product platform names for all appliances",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "lowestSoftwareVersion": {
+          "type": "string",
+          "description": "the lowest software version in the federation"
+        },
+        "highestSoftwareVersion": {
+          "type": "string",
+          "description": "the highest software version in the federation"
+        },
+        "overallUserBytes": {
+          "type": "integer",
+          "description": "total user data stored (both locally and in cloud) for all reported appliances",
+          "readOnly": true
+        },
+        "overallDiskBytes": {
+          "type": "integer",
+          "description": "total data stored (both locally and in cloud) for all reported appliances",
+          "readOnly": true
+        },
+        "overallDedupeRatio": {
+          "type": "number",
+          "description": "overall dedupe ratio for all reported appliances",
+          "readOnly": true
+        },
+        "overallCapacitySavedBytes": {
+          "type": "integer",
+          "description": "overall saving in bytes through deduplication of user data for all reported appliances",
+          "readOnly": true
+        },
+        "overallCapacitySavedPercent": {
+          "type": "number",
+          "description": "overall percentage saving due to deduplication of user data for all reported appliances",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "FederationDashboardOverview"
+      }
+    },
+    "ServiceSummary": {
+      "type": "object",
+      "properties": {
+        "statusSummary": {
+          "$ref": "#/definitions/StatusSummary"
+        }
+      }
+    },
+    "StatusSummary": {
+      "type": "object",
+      "properties": {
+        "numOk": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numWarning": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numCritical": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numUnknown": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "readOnly": true
+        }
+      }
+    },
+    "UnknownStatusSummary": {
+      "type": "object",
+      "properties": {
+        "numUnreachable": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numSynchronising": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "readOnly": true
+        },
+        "numOk": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numWarning": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numCritical": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "numUnknown": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

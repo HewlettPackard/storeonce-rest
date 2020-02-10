@@ -1,0 +1,4013 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "4.14.1-SNAPSHOT",
+    "title": "VTL"
+  },
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "StoreOnce VTL"
+    },
+    {
+      "name": "Barcode template"
+    },
+    {
+      "name": "Cartridge"
+    },
+    {
+      "name": "Device"
+    },
+    {
+      "name": "Drive"
+    },
+    {
+      "name": "Library"
+    },
+    {
+      "name": "Mail slot"
+    },
+    {
+      "name": "Metadata"
+    },
+    {
+      "name": "Service"
+    },
+    {
+      "name": "Slot"
+    },
+    {
+      "name": "storage parametrics"
+    },
+    {
+      "name": "throughput parametrics"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/data-services/vtl/barcode-template/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "Barcode template"
+        ],
+        "summary": "Get Library Barcode Template",
+        "description": "Provides the barcode termplate of a single library",
+        "operationId": "getVtlBarcodeTemplate",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/BarcodeTemplate"
+            }
+          },
+          "400": {
+            "description": "Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Barcode template"
+        ],
+        "summary": "Modifies properties of a Barcode template",
+        "description": "Operation used to modify a Barcode template",
+        "operationId": "updateVtlBarcodeTemplate",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify a VTL Library barcode template",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyBarcodeTemplate"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Barcode template updated successfully."
+          },
+          "400": {
+            "description": "Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      }
+    },
+    "/data-services/vtl/batch-modify-barcodes/library/{libraryid}": {
+      "put": {
+        "tags": [
+          "StoreOnce VTL"
+        ],
+        "summary": "Update barcodes for a range of cartridges in a library.",
+        "description": "Operation used to update batch of barcodes in library.",
+        "operationId": "updateVtlBatchBarcode",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to batch modify barcodes in library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BatchBarcodeAction"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation."
+          },
+          "400": {
+            "description": "Invalid parameters. <br/>Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Insufficient Barcodes to complete the request.<br/> Barcode clashes with another in the library.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      }
+    },
+    "/data-services/vtl/cartridges/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "Cartridge"
+        ],
+        "summary": "Get All Cartridges for Library",
+        "description": "Provides the status and key properties of all cartridges for a specified library",
+        "operationId": "getVtlCartridges",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/CartridgeModelCollection"
+            }
+          },
+          "400": {
+            "description": "Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Cartridge"
+        ],
+        "summary": "Create a new Cartridge",
+        "description": "Operation used to create a new Cartridge in Library",
+        "operationId": "createVtlCartridge",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to create new Cartridge in Library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateVtlCartridge"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cartridge created successfully."
+          },
+          "400": {
+            "description": "Invalid / missing parameters. <br/>Library / Slot / Mail slot ID in invalid ",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Slot / Mail slot not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Location requested is not empty.<br/> Insufficient barcodes exist in the template, to create the requested cartridges.<br/> Barcode clashes with another cartridge in the library.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:create"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cartridge"
+        ],
+        "summary": "Deletes all VTL Cartridges in the given library",
+        "description": "Operation used to delete all VTL Cartridge by given library ID",
+        "operationId": "deleteVtlCartridgesV1",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "204": {
+            "description": "Cartridge deleted successfully."
+          },
+          "400": {
+            "description": "Invalid Library ID.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Cartridge is loaded into a drive.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:delete"
+        ]
+      }
+    },
+    "/data-services/vtl/cartridges/library/{libraryid}/cartridge/{cartridgeId}": {
+      "get": {
+        "tags": [
+          "Cartridge"
+        ],
+        "summary": "Get Single Cartridge for Library",
+        "description": "Provides the status and key properties of a single cartridge for a specified library",
+        "operationId": "getVtlCartridge",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cartridgeId",
+            "in": "path",
+            "description": "Cartridge ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/Cartridge"
+            }
+          },
+          "400": {
+            "description": "Library / Cartridge ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Cartridge"
+        ],
+        "summary": "Modifies / Moves / Erase single Cartridge",
+        "description": "Operation used to modify / move / erase single Cartridge by given cartridge ID",
+        "operationId": "updateVtlCartridge",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cartridgeId",
+            "in": "path",
+            "description": "Cartridge ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify / move / erase a VTL Cartridge in library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyVtlCartridge"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cartridge updated successfully."
+          },
+          "400": {
+            "description": "Invalid parameters.<br/>Library / Slot / Mail slot / Drive ID is invalid",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Slot / Mail slot / Drive not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Barcode clashes with another cartridge in the library. <br/> Cartridge is loaded into a drive.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cartridge"
+        ],
+        "summary": "Deletes a VTL Cartridge by given ID",
+        "description": "Operation used to delete a VTL Cartridge by given Cartridge ID",
+        "operationId": "deleteVtlCartridge",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cartridgeId",
+            "in": "path",
+            "description": "Cartridge ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Cartridge deleted successfully."
+          },
+          "400": {
+            "description": "Invalid Library / Cartridge ID.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Cartridge not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Cartridge is loaded into a drive.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:delete"
+        ]
+      }
+    },
+    "/data-services/vtl/drives/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "Drive"
+        ],
+        "summary": "Get All Drives for Library",
+        "description": "Provides the status and key properties of all drives for a specified library",
+        "operationId": "getVtlDrives",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/DriveModelCollection"
+            }
+          },
+          "400": {
+            "description": "Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/drives/library/{libraryid}/drive/{driveid}": {
+      "get": {
+        "tags": [
+          "Drive"
+        ],
+        "summary": "Get Single Drive for Library",
+        "description": "Provides the status and key properties of a single drive for a specified library",
+        "operationId": "getVtlDrive",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "driveid",
+            "in": "path",
+            "description": "Drive ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/Drive"
+            }
+          },
+          "400": {
+            "description": "Library / Drive ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Drive not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Drive"
+        ],
+        "summary": "Modifies Properties of a Drive",
+        "description": "Operation used to modify a drive.Only drives in Fibre channel libraries can be modified",
+        "operationId": "updateVtlDrive",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "driveid",
+            "in": "path",
+            "description": "Drive ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify a VTL Drive in library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyVtlDrive"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A Drive updated successfully."
+          },
+          "400": {
+            "description": "Invalid parameters. <br/>Library / Drive ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Drive not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "WWN provided clashes with another on the appliance.<br/> Port does not have enough capacity to facilitate request.<br/> Attempting to modify a non-FC drive."
+          },
+          "500": {
+            "description": "All other errors",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      }
+    },
+    "/data-services/vtl/libraries": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "summary": "Get All Libraries",
+        "description": "All the properties that describes each VTL library can be retrieved",
+        "operationId": "getVtlLibraries",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/LibraryModelCollection"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Library"
+        ],
+        "summary": "Create a new library",
+        "description": "Operation used to create a new VTL Library",
+        "operationId": "createVtlLibrary",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to create new VTL Library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateVtlLibrary"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "A Library created successfully."
+          },
+          "400": {
+            "description": "Invalid / missing parameters.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Port not found",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Insufficient remaining Drives / Libraries to complete the request.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:create"
+        ]
+      }
+    },
+    "/data-services/vtl/libraries/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "Library"
+        ],
+        "summary": "Get Single Library by given ID",
+        "description": "Provides the status and key properties of a single library",
+        "operationId": "getVtlLibrary",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/Library"
+            }
+          },
+          "400": {
+            "description": "Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Library"
+        ],
+        "summary": "Modifies Properties of a library",
+        "description": "Operation used to modify a VTL Library",
+        "operationId": "updateVtlLibrary",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify a VTL Library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyVtlLibrary"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A Library updated successfully."
+          },
+          "400": {
+            "description": "Invalid parameters. <br/>Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Library"
+        ],
+        "summary": "Deletes a VTL library by given ID",
+        "description": "Operation used to delete a VTL Library by given Library ID",
+        "operationId": "deleteVtlLibrary",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "A Library deleted successfully."
+          },
+          "400": {
+            "description": "Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:delete"
+        ]
+      }
+    },
+    "/data-services/vtl/mail-slots/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "Mail slot"
+        ],
+        "summary": "Get All Mail Slots for Library",
+        "description": "Provides the status and key properties of all mail slots for a specified library",
+        "operationId": "getVtlMailSlots",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/MailSlotModelCollection"
+            }
+          },
+          "400": {
+            "description": "Library ID is invalid",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/mail-slots/library/{libraryid}/mail-slot/{mailSlotId}": {
+      "get": {
+        "tags": [
+          "Mail slot"
+        ],
+        "summary": "Get Single Mail Slot for Library",
+        "description": "Provides the status and key properties of a single mail slot for a specified library",
+        "operationId": "getVtlMailSlot",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "mailSlotId",
+            "in": "path",
+            "description": "Mail Slot ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/MailSlot"
+            }
+          },
+          "400": {
+            "description": "Library / Mail slot ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Mail slot not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/modify-drives/library/{libraryid}": {
+      "put": {
+        "tags": [
+          "StoreOnce VTL"
+        ],
+        "summary": "Update number of drives in a library",
+        "description": "Operation used to update number of drives in Library",
+        "operationId": "updateNumberOfDrives",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to modify number of drives in library",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ModifyLibraryDrive"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Number of Drives in library updated successfully."
+          },
+          "400": {
+            "description": "Invalid parameters. <br/>Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Port does not have enough capacity to facilitate request.<br/> Insufficient remaining Drives / Libraries to complete the request.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      }
+    },
+    "/data-services/vtl/parametrics-storage": {
+      "get": {
+        "tags": [
+          "storage parametrics"
+        ],
+        "summary": "Get storage parametrics for VTL service",
+        "description": "Provides storage metrics sample for the VTL service",
+        "operationId": "getVtlServiceStorageParametrics",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The date from which samples should be returned",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The date samples should be returned up until",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "The maximum number of  samples to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/LibraryStorageParametricsCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/parametrics-storage/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "storage parametrics"
+        ],
+        "summary": "Get storage parametrics for single library",
+        "description": "Provides list of storage metrics samples for the VTL library",
+        "operationId": "getVtlLibraryStorageParametrics",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "libraryId to get library throughput parametrics",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The date from which samples should be returned",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The date samples should be returned up until",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "The maximum number of  samples to return",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeHistorical",
+            "in": "query",
+            "description": "True/False if data, which was recorded before a given Library ID was created, should be included",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/LibraryStorageParametricsCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters. <br/>Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/parametrics-throughput": {
+      "get": {
+        "tags": [
+          "throughput parametrics"
+        ],
+        "summary": "Get throughput parametrics for VTL service",
+        "description": "Provides throughput metrics sample for the VTL service",
+        "operationId": "getVtlServiceThroughputParametrics",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The date from which samples should be returned",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The date samples should be returned up until",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "The maximum number of samples to return",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/LibraryThroughputParametricsCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/parametrics-throughput/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "throughput parametrics"
+        ],
+        "summary": "Get throughput parametrics for single library",
+        "description": "Provides list of throughput metrics samples for the VTL library",
+        "operationId": "getVtlLibraryThroughputParametrics",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "libraryId to get library throughput parametrics",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The date from which samples should be returned",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The date samples should be returned up until",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "The maximum number of samples to return",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeHistorical",
+            "in": "query",
+            "description": "True/False if data, which was recorded before a given Library ID was created, should be included",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/LibraryThroughputParametricsCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid parameters. <br/>Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/populate-empty-slots/library/{libraryid}": {
+      "post": {
+        "tags": [
+          "StoreOnce VTL"
+        ],
+        "summary": "Create new cartridges in all empty slots",
+        "description": "Operation used to create a new Cartridge in in all empty slots of a library",
+        "operationId": "createVtlCartridgeInAllEmptySlots",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Properties used to create cartridge in all empty slot",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CreateVtlCartridgeInEmptySlot"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Cartridge created successfully."
+          },
+          "400": {
+            "description": "Invalid Parameters.<br/>Library ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Insufficient barcodes exist in the template, to create the requested cartridges.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:create"
+        ]
+      }
+    },
+    "/data-services/vtl/services": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get VTL Service",
+        "description": "Gets the VTL service information",
+        "operationId": "getVtlService",
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/Service"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/slots/library/{libraryid}": {
+      "get": {
+        "tags": [
+          "Slot"
+        ],
+        "summary": "Get All Slots for Library",
+        "description": "Provides the status and key properties of all slots for a specified library",
+        "operationId": "getVtlSlots",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of members in the collection to skip before returning",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/SlotModelCollection"
+            }
+          },
+          "400": {
+            "description": "Library ID is invalid",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/slots/library/{libraryid}/slot/{slotId}": {
+      "get": {
+        "tags": [
+          "Slot"
+        ],
+        "summary": "Get Single Slot for Library",
+        "description": "Provides the status and key properties of a single slot for a specified library",
+        "operationId": "getVtlSlot",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "slotId",
+            "in": "path",
+            "description": "Slot ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/Slot"
+            }
+          },
+          "400": {
+            "description": "Library / Slot ID is invalid",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library / Slot not found",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/unload-all-cartridges/library/{libraryid}": {
+      "put": {
+        "tags": [
+          "StoreOnce VTL"
+        ],
+        "summary": "Unload all cartridges from Drives",
+        "description": "Operation used to unload all cartridges in drives into slots of library",
+        "operationId": "unloadAllCartridgesFromDrive",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "libraryid",
+            "in": "path",
+            "description": "Library ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "All cartridges unloaded successfully."
+          },
+          "400": {
+            "description": "Invalid Library ID.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Library not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "Library is not iSCSI or FC.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:update"
+        ]
+      }
+    },
+    "/data-services/vtl/vtl-devices": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get All Devices",
+        "description": "All the properties that describes each VTL device can be retrieved",
+        "operationId": "getVtlDevices",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/DevicesGetV1ModelCollection"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    },
+    "/data-services/vtl/vtl-devices/device/{deviceid}": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get Single VTL device by given ID",
+        "description": "Provides the status and key properties of a single device",
+        "operationId": "getVtlDevice",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "deviceid",
+            "in": "path",
+            "description": "Device ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "schema": {
+              "$ref": "#/definitions/Device"
+            }
+          },
+          "400": {
+            "description": "Device ID is invalid.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "404": {
+            "description": "Device ID not found.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "409": {
+            "description": "FC is not supported",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          },
+          "500": {
+            "description": "All other errors.",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "vtllibraries:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "CreateLibraryPort": {
+      "type": "object",
+      "properties": {
+        "portId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the FC Port"
+        }
+      }
+    },
+    "CreateVtlBarcodeTemplate": {
+      "type": "object",
+      "properties": {
+        "barcodeTemplateEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides library uses a custom barcode. Optional: if not present, defaults to false",
+          "default": false
+        },
+        "barcodeTemplatePrefix": {
+          "type": "string",
+          "description": "Alphanumeric string representing the barcode template prefix. Can be 0-3 characters. Ignored if barcodeTemplateEnabled is false"
+        },
+        "barcodeTemplateStartValue": {
+          "type": "string",
+          "description": "Alphanumeric string representing the initial value of the incremental part of the barcode template. Required if barcode template enabled is true. Ignored if barcode template enabled is false."
+        },
+        "barcodeTemplateSuffix": {
+          "type": "string",
+          "description": "Alphanumeric string representing the barcode template suffix. Can be 0-2 characters. Ignored if barcodeTemplateEnabled is false."
+        }
+      }
+    },
+    "CreateVtlCartridge": {
+      "type": "object",
+      "properties": {
+        "slotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Slot to create the cartridge in. Optional as long as field mailSlotId is defined"
+        },
+        "mailSlotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Mail Slot to create the cartridge in. Optional as long as field slotId is defined"
+        },
+        "barcode": {
+          "type": "string",
+          "description": "8 character alphanumeric barcode used for the cartridge. Optional: If not present, barcode will be set to the next value in the barcode template"
+        },
+        "cartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Maximum amount of data that can be stored in the cartridge, in bytes. Optional: If not present, will default to size specified in library configuration"
+        },
+        "writeProtectionEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides cartridge should be write protected. Optional: If not present, will default to false",
+          "default": false
+        },
+        "cartridgeSizeBytesEnum": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "CreateVtlCartridge"
+      }
+    },
+    "CreateVtlCartridgeInEmptySlot": {
+      "type": "object",
+      "properties": {
+        "cartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Maximum amount of data that can be stored in the cartridge, in bytes. Optional: If not present, will default to size specified in library configuration."
+        }
+      },
+      "xml": {
+        "name": "CreateVtlCartridgeInEmptySlot"
+      }
+    },
+    "CreateVtlLibrary": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the Library."
+        },
+        "numSlots": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of slots currently in the library. If present, must be more than min slots and less than max slots for the given library type. Optional: If not present, library will be created with the default number of drives for the library emulation selected"
+        },
+        "defaultCartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Default size for all new cartridges created in this library. If specified, must be in whole GB. Optional: If not present, cartridge size will be the default cartridge size for the drive emulation selected"
+        },
+        "numDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of drives in this library. If present, must be more than Minimum Drives and less than Maximum Drives for the given library type. If present, must be less than number of remaining drives specified by the VTL Service properties. Optional: If not present, library will be created with the default number of drives for the library emulation selected."
+        },
+        "libraryEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of library emulation used for this library. Optional: If not present, library will be created with a default library type, dependent on the protocol selected"
+        },
+        "driveEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of drive emulation used for this library. Optional: If not present, library will be created with a default drive type, dependent on the libraryEmulation selected"
+        },
+        "barcodeLength": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Barcode length used in this library. Optional: If not present, defaults to 8"
+        },
+        "encryptionEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides encryption is enabled on this library. Optional: If not present, defaults to false",
+          "default": false
+        },
+        "userDataStoredQuotaEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides logical data size quota is enabled. Optional: If not present, defaults to false",
+          "default": false
+        },
+        "userDataStoredQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The logical data size quota in bytes. Required if user data stored quota enabled is true. Ignored if user data stored quota enabled is false"
+        },
+        "sizeOnDiskQuotaEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides physical data size quota is enabled. Optional: if not present, defaults to false",
+          "default": false
+        },
+        "sizeOnDiskQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The physical data size quota in bytes. Required if size on disk quota enabled is true. Ignored if size on disk quota enabled is false"
+        },
+        "backupApplication": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Backup application used. Optional: if not present, defaults to OTHER"
+        },
+        "backupApplicationOther": {
+          "type": "string",
+          "description": "The name of the backup application used, Ignored if field backupApplication is not OTHER. Optional: if not present, field is not set"
+        },
+        "backupData": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The backup data type used. Optional: if not present, defaults to OTHER"
+        },
+        "backupDataOther": {
+          "type": "string",
+          "description": "The name of the backup data type used. Ignored if field backupData is not OTHER. Optional: if not present, field is not set"
+        },
+        "barcodeTemplate": {
+          "description": "Information about the barcode template assigned to this library. Optional: If not present, defaults will be used for all parameters in this object",
+          "$ref": "#/definitions/CreateVtlBarcodeTemplate"
+        },
+        "protocol": {
+          "description": "Information related to the protocol used by this library",
+          "$ref": "#/definitions/CreateVtlProtocol"
+        }
+      },
+      "xml": {
+        "name": "CreateVtlLibrary"
+      }
+    },
+    "CreateVtlProtocol": {
+      "type": "object",
+      "properties": {
+        "initiatorName": {
+          "type": "string",
+          "description": "ISCSI Initiator that will be used to connect to this library"
+        },
+        "initiatorLogonRequired": {
+          "type": "boolean",
+          "description": "Flag true or false decides iSCSI initiator must logon to target using CHAP. Optional: if not present, defaults to false.",
+          "default": false
+        },
+        "initiatorChapUsername": {
+          "type": "string",
+          "description": "CHAP username that the initiator must use to logon to target. Required if initiator logon required is true. Ignored if initiator logon required is false."
+        },
+        "initiatorChapSecret": {
+          "type": "string",
+          "description": "CHAP secret that the initiator must use to logon to target. Must be a minimum of 12 characters, Required if initiator logon Required is true. Ignored if initiator logon required is false."
+        },
+        "targetLogonRequired": {
+          "type": "boolean",
+          "description": "Flag true or false decides target must logon to initiator using CHAP. Optional: if not present, defaults to false.",
+          "default": false
+        },
+        "targetChapUsername": {
+          "type": "string",
+          "description": "CHAP username that the target must use to logon to the initiator, Required if target logon required is true. Ignored if target logon required is false."
+        },
+        "targetChapSecret": {
+          "type": "string",
+          "description": "CHAP secret that the target must use to logon to initiator. Must be a minimum of 12 characters. Required if target logon required is true. Ignored if target logon required is false."
+        },
+        "ports": {
+          "type": "array",
+          "description": "List of port(s), the devices will be presented on. Optional: if not present, an appropriate default will be selected, based on the system configuration. If specified, at least one port is required.",
+          "items": {
+            "$ref": "#/definitions/CreateLibraryPort"
+          }
+        },
+        "protocolType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Type of protocol used for this library. Optional: if not present, an appropriate default will be selected, based on the system configuration."
+        }
+      },
+      "xml": {
+        "name": "CreateVtlProtocol"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "L10nStringStruct": {
+      "type": "object"
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "ModifyBarcodeTemplate": {
+      "type": "object",
+      "properties": {
+        "barcodeTemplateEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides library uses a custom barcode",
+          "default": false
+        },
+        "barcodeTemplatePrefix": {
+          "type": "string",
+          "description": "Alphanumeric string representing the barcode template prefix. Can be 0-3 characters. Ignored if barcode template enabled is false."
+        },
+        "barcodeTemplateStartValue": {
+          "type": "string",
+          "description": "Alphanumeric string representing the initial value of the incremental part of the barcode template. Required if barcode template enabled is modified to true. Ignored if barcode template enabled is false."
+        },
+        "barcodeTemplateSuffix": {
+          "type": "string",
+          "description": "Alphanumeric string representing the barcode template suffix. Can be 0-2 characters. Ignored if barcode template enabled is false."
+        }
+      },
+      "xml": {
+        "name": "ModifyBarcodeTemplate"
+      }
+    },
+    "ModifyLibraryDrive": {
+      "type": "object",
+      "properties": {
+        "numDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of drives in the library. If modified to less than original value, drives will be removed in reverse order. If modified to more than original value, drives will be added, using appropriate defaults for the library"
+        }
+      },
+      "xml": {
+        "name": "ModifyLibraryDrive"
+      }
+    },
+    "ModifyVtlCartridge": {
+      "type": "object",
+      "properties": {
+        "barcode": {
+          "type": "string",
+          "description": "Barcode to use for the cartridge"
+        },
+        "slotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Slot the cartridge is currently located in"
+        },
+        "mailSlotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Mail Slot the cartridge is currently located in"
+        },
+        "driveId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Drive the cartridge is currently located in"
+        },
+        "cartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Maximum amount of data that can be stored in the cartridge, in bytes. May not be modified to less than field usedBytes"
+        },
+        "writeProtectionEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides cartridge is write protected"
+        },
+        "eraseData": {
+          "type": "boolean",
+          "description": "Delete the data on cartridge. Defaults to false."
+        },
+        "locationString": {
+          "description": "Localised string representing the location of the cartridge in the library",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "cartridgeSizeBytesEnum": {
+          "type": "integer",
+          "format": "int64",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "ModifyVtlCartridge"
+      }
+    },
+    "ModifyVtlDrive": {
+      "type": "object",
+      "properties": {
+        "portId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the FC port that the drive is presented on"
+        },
+        "portName": {
+          "type": "string",
+          "description": "World Wide Port Name for the port the drive is presented on"
+        },
+        "nodeName": {
+          "type": "string",
+          "description": "The World Wide Node Name for the drive"
+        }
+      },
+      "xml": {
+        "name": "ModifyVtlDrive"
+      }
+    },
+    "ModifyVtlLibrary": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the Library"
+        },
+        "numSlots": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of slots currently in the library"
+        },
+        "libraryEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of library emulation used for this library"
+        },
+        "driveEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of drive emulation used for this library"
+        },
+        "barcodeLength": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Barcode length used in this library"
+        },
+        "userDataStoredQuotaEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides logical data size quota is enabled",
+          "default": false
+        },
+        "userDataStoredQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The logical data size quota in bytes. Required if user data stored quota enabled is modified to true. Ignored if user data stored quota enabled is false"
+        },
+        "sizeOnDiskQuotaEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides physical data size quota is enabled.",
+          "default": false
+        },
+        "sizeOnDiskQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The physical data size quota in bytes. Required if size on disk quota enabled is modified to true. Ignored if size on disk quota enabled is false"
+        },
+        "backupApplication": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Backup application used"
+        },
+        "backupApplicationOther": {
+          "type": "string",
+          "description": "The name of the backup application used, Ignored if backup application is not set to OTHER."
+        },
+        "backupData": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Backup data type used"
+        },
+        "backupDataOther": {
+          "type": "string",
+          "description": "The name of the backup data type used. Ignored if backup data is not set to OTHER."
+        },
+        "secureEraseMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Configured mode for Secure Erase"
+        },
+        "protocol": {
+          "description": "Information relating to the protocol used by this library",
+          "$ref": "#/definitions/ModifyVtlProtocol"
+        },
+        "numDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of drives in this library"
+        }
+      },
+      "xml": {
+        "name": "ModifyVtlLibrary"
+      }
+    },
+    "ModifyVtlPort": {
+      "type": "object",
+      "properties": {
+        "portId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Port ID of the port in the list"
+        },
+        "portName": {
+          "type": "string",
+          "description": "World Wide Port Name for the port the Media Changer is presented on"
+        }
+      },
+      "xml": {
+        "name": "ModifyVtlPort"
+      }
+    },
+    "ModifyVtlProtocol": {
+      "type": "object",
+      "properties": {
+        "nodeName": {
+          "type": "string",
+          "description": "The World Wide Node Name for the Media Changer in the library"
+        },
+        "initiatorName": {
+          "type": "string",
+          "description": "ISCSI Initiator that will be used to connect to this library"
+        },
+        "initiatorLogonRequired": {
+          "type": "boolean",
+          "description": "Flag true or false decides iSCSI initiator must logon to target using CHAP",
+          "default": false
+        },
+        "initiatorChapUsername": {
+          "type": "string",
+          "description": "CHAP username that the initiator must use to logon to target. Required if initiator logon required is modified to true. Ignored if initiator logon required is false. Required if initiator logon required is modified to true. Ignored if initiator logon required is false"
+        },
+        "initiatorChapSecret": {
+          "type": "string",
+          "description": "CHAP secret that the initiator must use to logon to target. Must be a minimum of 12 characters. Required if initiator logon required is modified to true. Ignored if initiator logon required is false. Required if initiator logon required is modified to true. Ignored if initiator logon required is false"
+        },
+        "targetLogonRequired": {
+          "type": "boolean",
+          "description": "Flag true or false decides target must logon to initiator using CHAP",
+          "default": false
+        },
+        "targetChapUsername": {
+          "type": "string",
+          "description": "CHAP username that the target must use to logon to the initiator. Required if target logon required is modified to true. Ignored if target logon required is false"
+        },
+        "targetChapSecret": {
+          "type": "string",
+          "description": "CHAP secret that the target must use to logon to initiator. Must be a minimum of 12 characters. Required if target logon required is modified to true. Ignored if target logon required is false"
+        },
+        "ports": {
+          "type": "array",
+          "description": "List of port(s), the media changer will be presented on. Optional: if not present and protocol type has been modified to FC, an appropriate default will be selected, based on the system configuration. If specified, at least one port is required.",
+          "items": {
+            "$ref": "#/definitions/ModifyVtlPort"
+          }
+        },
+        "protocolType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Type of protocol used for this library"
+        }
+      },
+      "xml": {
+        "name": "ModifyVtlProtocol"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "format": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "BarcodeGetModel": {
+      "type": "object",
+      "properties": {
+        "barcodeTemplateEnabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "barcodeTemplatePrefix": {
+          "type": "string"
+        },
+        "barcodeTemplateStartValue": {
+          "type": "string"
+        },
+        "barcodeTemplateSuffix": {
+          "type": "string"
+        },
+        "barcodeTemplateNextValue": {
+          "type": "string"
+        },
+        "barcodeTemplateNextBarcode": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "VtlBarcodeTemplate"
+      }
+    },
+    "BarcodeTemplate": {
+      "type": "object",
+      "properties": {
+        "barcodeTemplateEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides library uses a custom barcode",
+          "default": false
+        },
+        "barcodeTemplatePrefix": {
+          "type": "string",
+          "description": "Alphanumeric string representing the barcode template prefix. Can be 0-3 characters. Only valid if barcode template enabled is true"
+        },
+        "barcodeTemplateStartValue": {
+          "type": "string",
+          "description": "Alphanumeric string representing the initial value of the incremental part of the barcode template. Only valid if barcode template enabled is true"
+        },
+        "barcodeTemplateSuffix": {
+          "type": "string",
+          "description": "Alphanumeric string representing the barcode template suffix. Can be 0-2 characters. Only valid if barcode template enabled is true"
+        },
+        "barcodeTemplateNextValue": {
+          "type": "string",
+          "description": "Alphanumeric string representing the next value of the incremental part of the template. Only valid if there are remaining barcodes in the template"
+        },
+        "barcodeTemplateNextBarcode": {
+          "type": "string",
+          "description": "Hexadecimal string representing the next barcode that can be displayed. This string is a concatenation of the barcodeTemplatePrefix, barcodeTemplateNextValue  and barcodeTemplateSuffix strings"
+        }
+      },
+      "xml": {
+        "name": "VtlBarcodeTemplate"
+      }
+    },
+    "BatchBarcodeAction": {
+      "type": "object",
+      "properties": {
+        "firstSlotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The first slot ID in the target range. Inclusive"
+        },
+        "lastSlotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The last slot ID in the target range. Inclusive."
+        },
+        "prefix": {
+          "type": "string",
+          "description": "Alphanumeric String representing a fixed barcode prefix. Maximum length: 3",
+          "default": ""
+        },
+        "suffix": {
+          "type": "string",
+          "description": "Alphanumeric String representing a fixed barcode suffix. Maximum length: 2",
+          "default": ""
+        },
+        "initialValue": {
+          "type": "string",
+          "description": "Alphanumeric string used as the variable section of the barcode. Is used as a starting value and incremented for each cartridge"
+        }
+      },
+      "xml": {
+        "name": "VtlBatchBarcodeAction"
+      },
+      "required": [
+        "firstSlotId",
+        "lastSlotId",
+        "initialValue"
+      ]
+    },
+    "Cartridge": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Cartridge ID which this object corresponds to"
+        },
+        "barcode": {
+          "type": "string",
+          "description": "8 character alphanumeric barcode used for the cartridge"
+        },
+        "slotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Slot the cartridge is currently located in. Valid only if cartridge is located in a slot."
+        },
+        "mailSlotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Mail Slot the cartridge is currently located in. Valid only if cartridge is located in a mail slot."
+        },
+        "driveId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Drive the cartridge is currently located in. Valid only if cartridge is located in a drive"
+        },
+        "locationString": {
+          "type": "string",
+          "description": "Localised string representing the location of the cartridge in the library"
+        },
+        "cartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Maximum amount of data that can be stored in the cartridge, in bytes"
+        },
+        "usedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Size of the current data on the cartridge in bytes"
+        },
+        "writeProtectionEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides cartridge is write protected",
+          "default": false
+        },
+        "lastWritten": {
+          "type": "string",
+          "description": "Time this cartridge was last written to. Defined only if the cartridge has been previously written to."
+        },
+        "replicationMapped": {
+          "type": "boolean",
+          "description": "Flag true or false decides cartridge is in a replication mapping",
+          "default": false
+        },
+        "ownerAlias": {
+          "type": "string",
+          "description": "Localized string representing the slot that this cartridge was recently removed from home slot). This value is only available if the cartridge current location is a drive or mail slot"
+        },
+        "cartridgeWritten": {
+          "type": "boolean",
+          "description": "Flag true or false decides cartridge was previously written",
+          "default": false
+        },
+        "ownerAliasId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the slot that this cartridge was moved from its home slot. This value is only available if the cartridge current location is a drive or mail slot"
+        }
+      },
+      "xml": {
+        "name": "VtlCartridge"
+      }
+    },
+    "CartridgeModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Cartridge"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "Device": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the FC device"
+        },
+        "deviceName": {
+          "description": "Name of the VTL FC device",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "wwnn": {
+          "type": "string",
+          "description": "The World Wide Node Name for the device"
+        },
+        "wwpn": {
+          "type": "string",
+          "description": "The World Wide Port Name for the device"
+        },
+        "numLogins": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of logins for the device"
+        },
+        "numLuns": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of logical unit numbers the device represents"
+        },
+        "fcaddress": {
+          "type": "string",
+          "description": "Fibre channel address of the device"
+        },
+        "fcdeviceStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current status of the FC device"
+        },
+        "fcdeviceStatusString": {
+          "description": "Localised String representing fcDeviceStatus",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "fcdeviceInfo": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Reason FC Address was not acquired. Only returned when the address is not acquired"
+        },
+        "fcdeviceInfoString": {
+          "description": "Localised String representing fcDeviceStatusInfo. Only returned when the address is not acquired",
+          "$ref": "#/definitions/L10nStringStruct"
+        }
+      },
+      "xml": {
+        "name": "VtlDevice"
+      }
+    },
+    "DevicesGetV1ModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Device"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "Drive": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The drive ID which this object corresponds to"
+        },
+        "driveStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the status of the drive"
+        },
+        "driveStatusString": {
+          "type": "string",
+          "description": "Localised string representing drive status."
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "Serial number of the drive"
+        },
+        "driveEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of drive emulation used for this drive"
+        },
+        "driveEmulationString": {
+          "type": "string",
+          "description": "Localised string representing drive emulation."
+        },
+        "fibreChannelProperties": {
+          "description": "Fibre Channel related properties. Valid only if the library is set to FC",
+          "$ref": "#/definitions/FibreChannelProperties"
+        },
+        "iscsiProperties": {
+          "description": "iSCSI related properties. Valid only if the library is set to iSCSI",
+          "$ref": "#/definitions/ISCSIProperties"
+        },
+        "cartridge": {
+          "description": "Properties of the cartridge loaded in the drive. Valid only if a cartridge is loaded into the drive",
+          "$ref": "#/definitions/DriveCartridgeGetModel"
+        },
+        "name": {
+          "type": "string",
+          "description": "Localized string representing the drive name as string (Drive 1, Drive 2)"
+        },
+        "protocolType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Type of protocol used for this drive."
+        },
+        "protocolTypeString": {
+          "type": "string",
+          "description": "Localised string representing type of protocol type."
+        },
+        "healthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the health level of the drive"
+        },
+        "healthLevelString": {
+          "type": "string",
+          "description": "Localised string representing Health level"
+        },
+        "clientDeviceConnected": {
+          "type": "boolean",
+          "description": "True/False whether a client device is connected to any device in the library",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "VtlDrive"
+      }
+    },
+    "DriveCartridgeGetModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Cartridge ID which this object corresponds to"
+        },
+        "barcode": {
+          "type": "string",
+          "description": "8 character Hexadecimal Barcode used for the cartridge"
+        },
+        "cartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Maximum amount of data that can be stored in the cartridge, in bytes"
+        },
+        "usedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Size of the current data on the cartridge in bytes"
+        },
+        "writeProtectionEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false, decides cartridge is write protected",
+          "default": false
+        },
+        "replicationMapped": {
+          "type": "boolean",
+          "description": "Flag true or false, decides cartridge is in a replication mapping",
+          "default": false
+        },
+        "cartridgeWritten": {
+          "type": "boolean",
+          "description": "Flag true or false decides cartridge was previously written",
+          "default": false
+        },
+        "ownerAlias": {
+          "type": "string",
+          "description": "Localized string representing the slot that this cartridge was recently removed from"
+        },
+        "ownerAliasId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the slot that this cartridge was moved from its home slot."
+        },
+        "lastWrittenDate": {
+          "type": "string",
+          "description": "Time this cartridge was last written to. Defined only if the cartridge has been previously written to",
+          "format": "date-time"
+        }
+      }
+    },
+    "DriveModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Drive"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "FibreChannelProperties": {
+      "type": "object",
+      "properties": {
+        "portId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the FC port that the drive is presented on"
+        },
+        "portIdString": {
+          "type": "string",
+          "description": "Localised string representing port id"
+        },
+        "portName": {
+          "type": "string",
+          "description": "World Wide Port Name for the port the drive is presented on"
+        },
+        "nodeName": {
+          "type": "string",
+          "description": "The World Wide Node Name for the drive"
+        },
+        "fcid": {
+          "type": "string",
+          "description": "Hexadecimal string representing the FCID for this drive. Valid only if the drive is logged in."
+        },
+        "numLogins": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of logins on this port"
+        }
+      }
+    },
+    "ISCSIProperties": {
+      "type": "object",
+      "properties": {
+        "targetName": {
+          "type": "string",
+          "description": "ISCSI qualified name for the drive"
+        },
+        "targetAlias": {
+          "type": "string",
+          "description": "ISCSI alias for the drive"
+        },
+        "nodeName": {
+          "type": "string",
+          "description": "The World Wide Node Name for the drive"
+        },
+        "portString": {
+          "type": "string",
+          "description": "Localised string representing port (iSCSI Port)"
+        }
+      }
+    },
+    "Library": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The library ID which this object corresponds to"
+        },
+        "createdDate": {
+          "type": "string",
+          "description": "Date of library creation",
+          "format": "date-time"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Library"
+        },
+        "healthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the health level of the library"
+        },
+        "healthLevelString": {
+          "type": "string",
+          "description": "Localised string representing Health level"
+        },
+        "libraryStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the status of the library"
+        },
+        "libraryStatusString": {
+          "type": "string",
+          "description": "Localised string representing Library status"
+        },
+        "replication": {
+          "description": "Replication Information for the library",
+          "$ref": "#/definitions/LibraryReplicationModel"
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "Serial Number of the Media Changer in the library"
+        },
+        "numSlots": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of slots currently in the library"
+        },
+        "numMailSlots": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of mail slots currently in the library"
+        },
+        "defaultCartridgeSizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Default size for all new cartridges created in this library"
+        },
+        "numCartridges": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of cartridges currently in the library"
+        },
+        "numDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of drives in this library"
+        },
+        "numOnlineDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of drives in this library that are online and ready for use"
+        },
+        "userBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total logical size of the user data that has been stored in this library, in bytes"
+        },
+        "diskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Total physical size of the user data that has been stored in this library, in bytes"
+        },
+        "dedupeRatio": {
+          "type": "number",
+          "format": "double",
+          "description": "Current deduplication ratio for this library"
+        },
+        "libraryEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of library emulation used for this library"
+        },
+        "libraryEmulationString": {
+          "type": "string",
+          "description": "Localised string representing Library emulation"
+        },
+        "driveEmulation": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The type of drive emulation used for this library"
+        },
+        "driveEmulationString": {
+          "type": "string",
+          "description": "Localised string representing Drive emulation"
+        },
+        "barcodeLength": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Barcode length used in this library"
+        },
+        "encryptionEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides encryption is enabled on this library",
+          "default": false
+        },
+        "userDataStoredQuotaEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides logical data size quota is enabled",
+          "default": false
+        },
+        "userDataStoredQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The logical data size quota in bytes. Valid only if field userDataStoredQuotaEnabled is true."
+        },
+        "sizeOnDiskQuotaEnabled": {
+          "type": "boolean",
+          "description": "Flag true or false decides physical data size quota is enabled.",
+          "default": false
+        },
+        "sizeOnDiskQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The physical data size quota in bytes. Valid only if field sizeOnDiskQuotaEnabled is true."
+        },
+        "backupApplication": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Backup application used"
+        },
+        "backupApplicationString": {
+          "type": "string",
+          "description": "Localised string representing Backup application"
+        },
+        "backupApplicationOther": {
+          "type": "string",
+          "description": "The name of the backup application used. Valid only if backup application is set to OTHER."
+        },
+        "backupData": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The data type used"
+        },
+        "backupDataString": {
+          "type": "string",
+          "description": "Localised string representing Backup Data"
+        },
+        "backupDataOther": {
+          "type": "string",
+          "description": "The name of the backup data type used. Valid only if backup data is set to OTHER."
+        },
+        "secureEraseMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Configured mode for Secure Erase"
+        },
+        "secureEraseModeString": {
+          "type": "string",
+          "description": "Localised string representing Secure Erase Mode"
+        },
+        "barcodeTemplate": {
+          "description": "Information about the barcode template assigned to this library",
+          "$ref": "#/definitions/BarcodeGetModel"
+        },
+        "protocol": {
+          "description": "Information relating to the protocol used by this library",
+          "$ref": "#/definitions/ProtocolGetModel"
+        },
+        "dedupeStoreId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique identifier for dedupe store."
+        },
+        "mediaChangerDevice": {
+          "type": "string",
+          "description": "Localized string representing device name (Media Changer)"
+        },
+        "mediaChangerStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the status of the media changer"
+        },
+        "mediaChangerStatusString": {
+          "type": "string",
+          "description": "Localised string representing media changer status"
+        },
+        "clientDeviceConnected": {
+          "type": "boolean",
+          "description": "True/False whether a client device is connected to any device in the library",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "VtlLibrary"
+      }
+    },
+    "LibraryModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Library"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "LibraryReplicationModel": {
+      "type": "object",
+      "properties": {
+        "repRole": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "repRoleString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repHealthLevel": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "repHealthLevelString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repStatus": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "repStatusString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repMappings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReplicationMappingModel"
+          }
+        }
+      }
+    },
+    "LibraryStorageParametrics": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp for the metric sample"
+        },
+        "userBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Amount of user data stored, in bytes"
+        },
+        "diskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Amount of disk capacity used, in bytes"
+        },
+        "averageConfiguredCartridges": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The average number of configured cartridges"
+        },
+        "peakConfiguredCartridges": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The peak number of configured cartridges."
+        },
+        "dedupeRatio": {
+          "type": "number",
+          "format": "double",
+          "description": "The dedupe ratio of the library"
+        }
+      },
+      "xml": {
+        "name": "VtlLibraryStorageParametrics"
+      }
+    },
+    "LibraryStorageParametricsCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/LibraryStorageParametrics"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "LibraryThroughputParametrics": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp for the metric sample"
+        },
+        "readThroughput": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Average library read throughput, in bytes per second"
+        },
+        "writeThroughput": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Average library write throughput, in bytes per second"
+        },
+        "averageOpenCartridges": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Average number of cartridges loaded in drives"
+        },
+        "peakOpenCartridges": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Peak number of cartridges loaded in drives"
+        }
+      },
+      "xml": {
+        "name": "VtlLibraryThroughputParametrics"
+      }
+    },
+    "LibraryThroughputParametricsCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/LibraryThroughputParametrics"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "MailSlot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The Mail Slot ID which this object corresponds to"
+        },
+        "cartridge": {
+          "description": "Properties of the cartridge present in the slot. Valid only if a cartridge is present in the slot",
+          "$ref": "#/definitions/DriveCartridgeGetModel"
+        },
+        "name": {
+          "type": "string",
+          "description": "Localized string representing the mail slot name  as a string"
+        }
+      },
+      "xml": {
+        "name": "VtlMailSlot"
+      }
+    },
+    "MailSlotModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/MailSlot"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "PortGetModel": {
+      "type": "object",
+      "properties": {
+        "portId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "portIdString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "portName": {
+          "type": "string"
+        },
+        "fcid": {
+          "type": "string"
+        },
+        "numLogins": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "VtlPort"
+      }
+    },
+    "ProtocolGetModel": {
+      "type": "object",
+      "properties": {
+        "protocolTypeString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "nodeName": {
+          "type": "string"
+        },
+        "initiatorName": {
+          "type": "string"
+        },
+        "initiatorLogonRequired": {
+          "type": "boolean",
+          "default": false
+        },
+        "initiatorChapUsername": {
+          "type": "string"
+        },
+        "initiatorChapSecretSet": {
+          "type": "boolean",
+          "default": false
+        },
+        "targetLogonRequired": {
+          "type": "boolean",
+          "default": false
+        },
+        "targetChapUsername": {
+          "type": "string"
+        },
+        "targetChapSecretSet": {
+          "type": "boolean",
+          "default": false
+        },
+        "targetName": {
+          "type": "string"
+        },
+        "targetAlias": {
+          "type": "string"
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PortGetModel"
+          }
+        },
+        "protocolType": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "VtlProtocol"
+      }
+    },
+    "Replication": {
+      "type": "object",
+      "properties": {
+        "repHealthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Health level of the replication configuration"
+        },
+        "repHealthLevelString": {
+          "type": "string",
+          "description": "Localised String representing the replication health level"
+        },
+        "repStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Status of the replication configuration"
+        },
+        "repStatusString": {
+          "type": "string",
+          "description": "Localised String representing the replication status"
+        }
+      }
+    },
+    "ReplicationMappingModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "synchronisationStatus": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "synchronisationStatusString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "url": {
+          "type": "string"
+        },
+        "repHealthLevel": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "repHealthLevelString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repStatus": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "repStatusString": {
+          "$ref": "#/definitions/L10nStringStruct"
+        }
+      }
+    },
+    "Service": {
+      "type": "object",
+      "properties": {
+        "healthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Health level of the service"
+        },
+        "healthLevelString": {
+          "type": "string",
+          "description": "Localised String representing the health level"
+        },
+        "vtlStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Status of the service"
+        },
+        "vtlStatusString": {
+          "type": "string",
+          "description": "Localised String representing the status"
+        },
+        "replication": {
+          "description": "Replication information for the service",
+          "$ref": "#/definitions/Replication"
+        },
+        "numRemainingDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The remaining size of the drive pool. The drive pool is the total number of drives which can be configured across the service set"
+        },
+        "numRemainingLibraries": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of remaining libraries that can be created on this service"
+        },
+        "maxLibraries": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum number of libraries that can be created on this service"
+        },
+        "maxDrives": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum number of drives that can be created on this service"
+        }
+      },
+      "xml": {
+        "name": "VtlService"
+      }
+    },
+    "Slot": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The slot ID which this object corresponds to"
+        },
+        "cartridge": {
+          "description": "Properties of the cartridge present in the slot. Valid only if a cartridge is present into the slot.",
+          "$ref": "#/definitions/DriveCartridgeGetModel"
+        },
+        "name": {
+          "type": "string",
+          "description": "Localized string representing the slot as a string (Slot 1, Slot 2)"
+        },
+        "currentCartridgeLocation": {
+          "type": "string",
+          "description": "Localized string representing location of cartridge if it is moved out of slot"
+        },
+        "mailSlotId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Mail Slot the cartridge is currently located in"
+        },
+        "driveId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the Drive Slot the cartridge is currently located in"
+        }
+      },
+      "xml": {
+        "name": "VtlSlot"
+      }
+    },
+    "SlotModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Slot"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
