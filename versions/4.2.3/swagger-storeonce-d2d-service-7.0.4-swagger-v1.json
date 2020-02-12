@@ -1,0 +1,272 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "7.0.4-SNAPSHOT",
+    "title": "D2D Service"
+  },
+  "basePath": "/api/v1/data-services",
+  "tags": [
+    {
+      "name": "StoreOnce Service Set Management"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/d2d-service/restart": {
+      "post": {
+        "tags": [
+          "StoreOnce Service Set Management"
+        ],
+        "summary": "Restart Service Set",
+        "description": "Attempts to restart the Service Set",
+        "operationId": "postAsyncRestart",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted Operation"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "d2dservice:start"
+        ]
+      }
+    },
+    "/d2d-service/start": {
+      "post": {
+        "tags": [
+          "StoreOnce Service Set Management"
+        ],
+        "summary": "Start Service Set",
+        "description": "Attempts to start the Service Set",
+        "operationId": "postStart",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "d2dservice:start"
+        ]
+      }
+    },
+    "/d2d-service/status": {
+      "get": {
+        "tags": [
+          "StoreOnce Service Set Management"
+        ],
+        "summary": "Get Sub System Service Status",
+        "description": "Returns the status of the running subsytem services.",
+        "operationId": "getServiceHealthMap",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/D2DSystemHealth"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "d2dservice:read"
+        ]
+      }
+    },
+    "/d2d-service/stop": {
+      "post": {
+        "tags": [
+          "StoreOnce Service Set Management"
+        ],
+        "summary": "Stop Service Set",
+        "description": "Attempts to stop the Service Set",
+        "operationId": "postStop",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "d2dservice:stop"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "D2DSubsystemHealth": {
+      "type": "object",
+      "properties": {
+        "subsystemDescription": {
+          "type": "string",
+          "description": "Subsystem Description"
+        },
+        "subsystemState": {
+          "type": "string",
+          "description": "Subsystem systemd state string."
+        },
+        "subsystemStateEnum": {
+          "type": "string",
+          "enum": [
+            "ACTIVE",
+            "ACTIVATING",
+            "TERMINATING",
+            "STOPPING",
+            "DEACTIVATING",
+            "INACTIVE",
+            "FAILED",
+            "NOT_FOUND",
+            "DEAD",
+            "INVALID"
+          ]
+        },
+        "health": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current health status of the subsystem service."
+        },
+        "healthString": {
+          "type": "string",
+          "description": "Current status string of the subsystem service."
+        },
+        "healthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current health status level of the subsystem service."
+        },
+        "subSystemName": {
+          "type": "string",
+          "description": "Subsystem Name."
+        },
+        "healthLevelString": {
+          "type": "string",
+          "description": "Current status string of the subsystem service."
+        }
+      }
+    },
+    "D2DSystemHealth": {
+      "type": "object",
+      "properties": {
+        "services": {
+          "type": "object",
+          "description": "Complete list of sub system states.",
+          "additionalProperties": {
+            "$ref": "#/definitions/D2DSubsystemHealth"
+          }
+        },
+        "overallHealthKey": {
+          "type": "string",
+          "description": "Most significant sub system status."
+        }
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
