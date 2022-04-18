@@ -24,7 +24,7 @@
 	"path": "versions/4.2.3"
     },
     {
-        "name": "4.3.0_unreleased",
+        "name": "4.3.0",
         "path": "versions/4.3.0"
     }
 ]
