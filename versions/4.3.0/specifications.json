@@ -1,6 +1,126 @@
 [
     {
-        "name": "storeonce-appliance-component-swagger.json",
-        "path": "versions/4.3.0/storeonce-appliance-component-swagger.json"
+        "name": "d2d_service.json",
+        "path": "versions/4.3.0/d2d_service.json"
+    },
+    {
+        "name": "dashboard.json",
+        "path": "versions/4.3.0/dashboard.json"
+    },
+    {
+        "name": "fc.json",
+        "path": "versions/4.3.0/fc.json"
+    },
+    {
+        "name": "iscsi.json",
+        "path": "versions/4.3.0/iscsi.json"
+    },
+    {
+        "name": "licensing.json",
+        "path": "versions/4.3.0/licensing.json"
+    },
+    {
+        "name": "remote_logging.json",
+        "path": "versions/4.3.0/remote_logging.json"
+    },
+    {
+        "name": "rep.json",
+        "path": "versions/4.3.0/rep.json"
+    },
+    {
+        "name": "reporting.json",
+        "path": "versions/4.3.0/reporting.json"
+    },
+    {
+        "name": "smm.json",
+        "path": "versions/4.3.0/smm.json"
+    },
+    {
+        "name": "snmp.json",
+        "path": "versions/4.3.0/snmp.json"
+    },
+    {
+        "name": "storage.json",
+        "path": "versions/4.3.0/storage.json"
+    },
+    {
+        "name": "alerts_and_events.json",
+        "path": "versions/4.3.0/alerts_and_events.json"
+    },
+    {
+        "name": "users_and_groups.json",
+        "path": "versions/4.3.0/users_and_groups.json"
+    },
+    {
+        "name": "hardware_monitoring.json",
+        "path": "versions/4.3.0/hardware_monitoring.json"
+    },
+    {
+        "name": "log_collection.json",
+        "path": "versions/4.3.0/log_collection.json"
+    },
+    {
+        "name": "asynchronous_tasks.json",
+        "path": "versions/4.3.0/asynchronous_tasks.json"
+    },
+    {
+        "name": "certificate_management.json",
+        "path": "versions/4.3.0/certificate_management.json"
+    },
+    {
+        "name": "session_management.json",
+        "path": "versions/4.3.0/session_management.json"
+    },
+    {
+        "name": "email-subscriptions-swagger.json",
+        "path": "versions/4.3.0/email-subscriptions-swagger.json"
+    },
+    {
+        "name": "hpsp-hacoordinator-swagger.json",
+        "path": "versions/4.3.0/hpsp-hacoordinator-swagger.json"
+    },
+    {
+        "name": "hpsp-hostcontrol-swagger.json",
+        "path": "versions/4.3.0/hpsp-hostcontrol-swagger.json"
+    },
+    {
+        "name": "hpsp-hw-monitor-swagger.json",
+        "path": "versions/4.3.0/hpsp-hw-monitor-swagger.json"
+    },
+    {
+        "name": "hpsp-logcollection-swagger.json",
+        "path": "versions/4.3.0/hpsp-logcollection-swagger.json"
+    },
+    {
+        "name": "mgmt-serverstatus-swagger.json",
+        "path": "versions/4.3.0/mgmt-serverstatus-swagger.json"
+    },
+    {
+        "name": "pml-core-module-swagger.json",
+        "path": "versions/4.3.0/pml-core-module-swagger.json"
+    },
+    {
+        "name": "eatlas-adapters-swagger.json",
+        "path": "versions/4.3.0/eatlas-adapters-swagger.json"
     }
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

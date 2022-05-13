@@ -1,0 +1,1976 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "4.19-SNAPSHOT",
+    "title": "SSL Certificate Management"
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "basePath": "/pml",
+  "tags": [
+    {
+      "name": "SSL Certificates"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/certificates/backup": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "backs up the server keystore for later restoration",
+        "description": "",
+        "operationId": "backupKeyStore",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/cachedcsr": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "returns a cached csr, or blank if there is no cached csr",
+        "description": "",
+        "operationId": "getCachedCsr",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/certificateinfo/{alias}": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "returns lots of different fields about the certificate",
+        "description": "",
+        "operationId": "getCertificateInfo",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "description": "the alias to use",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SSLCertificate"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/chain": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "returns array of certificates that form the chain of the signed certificate",
+        "description": "",
+        "operationId": "getChain",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateList"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/csr": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "return certificate signing request from server keystore with pml alias",
+        "description": "",
+        "operationId": "getServerCsr",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "ext",
+            "in": "query",
+            "description": "a value of 'true' will add extensions to the CSR",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/db": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "generate a certificate for this node to be used by the database",
+        "description": "",
+        "operationId": "generateDBCertificate",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "san",
+            "in": "query",
+            "description": "The Subject Alternative Name for the certificate",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "cn",
+            "in": "query",
+            "description": "The Common Name for the certificate",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ou",
+            "in": "query",
+            "description": "The Organizational Unit for the certificate",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "o",
+            "in": "query",
+            "description": "The Organization for the certificate",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/distinguishedname": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "returns the current distinguished name of the certificate with pml alias",
+        "description": "",
+        "operationId": "getDistinguishedName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DistinguishedName"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/distributekeystore": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "forces the server keystore to be distributed to all cluster nodes; this command restarts the server, meaning it will be temporarily unavailable during the restart",
+        "description": "",
+        "operationId": "distributeKeyStore",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/importca": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "imports a CA certificate into the server keystore under a generated alias",
+        "description": "",
+        "operationId": "importCertificate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the certificate to import",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/importcatrust": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "imports a CA certificate into the server truststore under a generated alias; this command restarts the server, meaning it will be temporarily unavailable during the restart",
+        "description": "",
+        "operationId": "importCertificateTrust",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the certificate to import",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/importkeypair": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "used to import a public/private key pair into the server keystore; this command restarts the server, meaning it will be temporarily unavailable during the restart",
+        "description": "",
+        "operationId": "importKeyPair",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The public and private key pair to be imported (with optional privateKeyPass)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/KeyPair"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/importsigned": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "imports a signed certificate into the server keystore under the 'pml' alias; this command restarts the server, meaning it will be temporarily unavailable during the restart",
+        "description": "",
+        "operationId": "importSignedCertificate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the certificate to import",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/payload": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "returns information specified by certFile in a serialized form for convenient use in other operations",
+        "description": "",
+        "operationId": "getServerPayload",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "certFile",
+            "in": "query",
+            "description": "the full path to the file to put into serialized form",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/restore": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "restores the server keystore from a previous backup; this command restarts the server, meaning it will be temporarily unavailable during the restart",
+        "description": "",
+        "operationId": "restoreKeyStore",
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/server": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "return certificate information from server keystore with pml alias",
+        "description": "",
+        "operationId": "getServerCertificate",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/server/{alias}": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "return certificate information from server keystore with specified alias",
+        "description": "",
+        "operationId": "getServerCertificateWithAlias",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "description": "the alias of the certificate to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateDto"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "deletes the certificate with the specified alias from the server keystore",
+        "description": "",
+        "operationId": "deleteCertificate",
+        "parameters": [
+          {
+            "name": "alias",
+            "in": "path",
+            "description": "the alias of the certificate to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/servercertificates": {
+      "get": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "returns array of all certificates in the server keystore",
+        "description": "",
+        "operationId": "getServerCertificates",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CertificateList"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:read",
+          "pml_PKI:write"
+        ]
+      }
+    },
+    "/certificates/updateselfsigned": {
+      "post": {
+        "tags": [
+          "SSL Certificates"
+        ],
+        "summary": "generates a new public/private key pair for the PML self-signed certificate; this command restarts the server, meaning it will be temporarily unavailable during the restart",
+        "description": "",
+        "operationId": "updateSelfSigned",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the distinguished name",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/DNameFields"
+            }
+          },
+          {
+            "name": "san",
+            "in": "query",
+            "description": "the SubjectAlternativeName",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "santype",
+            "in": "query",
+            "description": "the SubjectAlternativeName type",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_PKI:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "AuthCheckResponse": {
+      "type": "object",
+      "properties": {
+        "authenticated": {
+          "type": "boolean",
+          "xml": {
+            "name": "val"
+          },
+          "description": "value of the check",
+          "default": false
+        }
+      }
+    },
+    "AuthenticationTransfer": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "grant_type": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "AuthTransfer"
+      }
+    },
+    "BaseSessionToken": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "clientHost": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "uniqueKey": {
+          "type": "string"
+        },
+        "loginDomain": {
+          "type": "string"
+        },
+        "sessionId": {
+          "type": "string"
+        },
+        "lastAccessed": {
+          "type": "string"
+        },
+        "lastHeartBeat": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "valid": {
+          "type": "boolean",
+          "default": false
+        },
+        "sharedToken": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "Session"
+      }
+    },
+    "Catalog": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "CatalogKeys": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "xml": {
+            "name": "key"
+          },
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "keys"
+      }
+    },
+    "CatalogMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "message"
+      }
+    },
+    "Catalogs": {
+      "type": "object",
+      "properties": {
+        "catalogs": {
+          "type": "array",
+          "xml": {
+            "name": "catalog"
+          },
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "catalogs"
+      }
+    },
+    "CertificateDto": {
+      "type": "object",
+      "properties": {
+        "base64Data": {
+          "type": "string"
+        }
+      }
+    },
+    "CertificateList": {
+      "type": "object",
+      "properties": {
+        "certificates": {
+          "type": "array",
+          "xml": {
+            "name": "certificate"
+          },
+          "items": {
+            "$ref": "#/definitions/SSLCertificate"
+          }
+        }
+      },
+      "xml": {
+        "name": "certificates"
+      }
+    },
+    "ClusterFormationInfo": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ComponentHealthState": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "xml": {
+            "name": "ComponentName"
+          }
+        },
+        "state": {
+          "xml": {
+            "name": "ComponentHealth"
+          },
+          "$ref": "#/definitions/HealthState"
+        }
+      },
+      "xml": {
+        "name": "HealthState"
+      }
+    },
+    "ContextResolverJAXBContext": {
+      "type": "object"
+    },
+    "CookieSessionToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSessionToken"
+        },
+        {
+          "type": "object",
+          "xml": {
+            "name": "CookieSessionToken"
+          }
+        }
+      ]
+    },
+    "DNameFields": {
+      "type": "object",
+      "properties": {
+        "cn": {
+          "type": "string"
+        },
+        "ou": {
+          "type": "string"
+        },
+        "o": {
+          "type": "string"
+        },
+        "l": {
+          "type": "string"
+        },
+        "st": {
+          "type": "string"
+        },
+        "c": {
+          "type": "string"
+        }
+      }
+    },
+    "DirectoryRealmStatus": {
+      "type": "object",
+      "properties": {
+        "connected": {
+          "type": "boolean",
+          "default": false
+        },
+        "realmName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "baseDNs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "userNamingAttribute": {
+          "type": "string"
+        },
+        "supportedControls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supportedLDAPVersion": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "maxConnectionCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "curConnectionCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "failedConnectionAttempts": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "successfulConnectionAttempts": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "maxConnectionAge": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DistinguishedName": {
+      "type": "object",
+      "properties": {
+        "distinguished_name": {
+          "type": "string",
+          "xml": {
+            "name": "value"
+          }
+        }
+      },
+      "xml": {
+        "name": "distinguished_name"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string"
+        }
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "FormDataContentDisposition": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modificationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "readDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Group": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "Groups": {
+      "type": "object",
+      "properties": {
+        "Groups": {
+          "type": "array",
+          "xml": {
+            "name": "Group"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/Group"
+          }
+        }
+      }
+    },
+    "HealthExtension": {
+      "type": "object",
+      "xml": {
+        "name": "HealthExtension"
+      }
+    },
+    "HealthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "DEGRADED",
+            "FAILED",
+            "UNKNOWN"
+          ]
+        },
+        "associatedMessageInfo": {
+          "xml": {
+            "name": "associatedMessage"
+          },
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveActionInfo": {
+          "xml": {
+            "name": "correctiveAction"
+          },
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "healthExtension": {
+          "xml": {
+            "name": "HealthExtension"
+          },
+          "$ref": "#/definitions/HealthExtension"
+        }
+      }
+    },
+    "HealthStates": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "xml": {
+            "name": "ComponentHealthState"
+          },
+          "items": {
+            "$ref": "#/definitions/ComponentHealthState"
+          }
+        }
+      },
+      "xml": {
+        "name": "ComponentHealthStates"
+      }
+    },
+    "Initialized": {
+      "type": "object",
+      "properties": {
+        "initialized": {
+          "type": "boolean",
+          "xml": {
+            "name": "val"
+          },
+          "default": false
+        }
+      }
+    },
+    "InputStream": {
+      "type": "object"
+    },
+    "KeyPair": {
+      "type": "object",
+      "properties": {
+        "publicKey": {
+          "$ref": "#/definitions/CertificateDto"
+        },
+        "privateKey": {
+          "$ref": "#/definitions/CertificateDto"
+        },
+        "privateKeyPass": {
+          "type": "string"
+        }
+      }
+    },
+    "ManagedGroup": {
+      "type": "object",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "managedUsers": {
+          "$ref": "#/definitions/ManagedUsers"
+        }
+      },
+      "xml": {
+        "name": "managedGroup"
+      }
+    },
+    "ManagedGroups": {
+      "type": "object",
+      "properties": {
+        "managedGroupSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedGroup"
+          }
+        },
+        "managedGroups": {
+          "type": "array",
+          "xml": {
+            "name": "managedGroup"
+          },
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedGroup"
+          }
+        }
+      }
+    },
+    "ManagedUser": {
+      "type": "object",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "managed": {
+          "type": "boolean",
+          "default": false
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "officePhone": {
+          "type": "string"
+        },
+        "mobilePhone": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean",
+          "default": false
+        },
+        "pastPasswords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lastPasswordDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256fingerprint": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "managedUser"
+      }
+    },
+    "ManagedUsers": {
+      "type": "object",
+      "properties": {
+        "managedUserSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedUser"
+          }
+        },
+        "managedUsers": {
+          "type": "array",
+          "xml": {
+            "name": "managedUser"
+          },
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedUser"
+          }
+        }
+      },
+      "xml": {
+        "name": "ManagedUsers"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "MessageInfoImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "Node": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "Nodes": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "xml": {
+            "name": "node"
+          },
+          "items": {
+            "$ref": "#/definitions/Node"
+          }
+        },
+        "activeNode": {
+          "$ref": "#/definitions/Node"
+        }
+      },
+      "xml": {
+        "name": "ClusterNodes"
+      }
+    },
+    "OAuth2SessionToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSessionToken"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "transferToken": {
+              "$ref": "#/definitions/OAuth2TransferToken"
+            }
+          },
+          "xml": {
+            "name": "oAuth2SessionToken"
+          }
+        }
+      ]
+    },
+    "OAuth2TransferToken": {
+      "type": "object",
+      "properties": {
+        "expires_in": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "sessionID": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "Permission": {
+      "type": "object"
+    },
+    "PermissionSpec": {
+      "type": "object",
+      "properties": {
+        "assignablePermission": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "wildcardPermission": {
+          "$ref": "#/definitions/WildcardPermission"
+        }
+      },
+      "xml": {
+        "name": "permission"
+      }
+    },
+    "PermissionSpecs": {
+      "type": "object",
+      "properties": {
+        "Permissions": {
+          "type": "array",
+          "xml": {
+            "name": "Permission"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/PermissionSpec"
+          }
+        }
+      }
+    },
+    "PmVif": {
+      "type": "object",
+      "properties": {
+        "ipaddress": {
+          "type": "string"
+        },
+        "ifdevice": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "vif"
+      }
+    },
+    "PmVifs": {
+      "type": "object",
+      "properties": {
+        "vifs": {
+          "type": "array",
+          "xml": {
+            "name": "vif"
+          },
+          "items": {
+            "$ref": "#/definitions/PmVif"
+          }
+        }
+      },
+      "xml": {
+        "name": "vifs"
+      }
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "hiddenRole": {
+          "type": "boolean",
+          "default": false
+        },
+        "permissions": {
+          "$ref": "#/definitions/PermissionSpecs"
+        },
+        "groups": {
+          "$ref": "#/definitions/Groups"
+        },
+        "users": {
+          "$ref": "#/definitions/Users"
+        },
+        "shiroPermissionSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      }
+    },
+    "Roles": {
+      "type": "object",
+      "properties": {
+        "Roles": {
+          "type": "array",
+          "xml": {
+            "name": "Role"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/Role"
+          }
+        }
+      }
+    },
+    "SSLCertificate": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "alternativeName": {
+          "type": "string"
+        },
+        "base64Data": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "challengePassword": {
+          "type": "string"
+        },
+        "commonName": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "distinguishedName": {
+          "type": "string"
+        },
+        "dnQualifier": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        },
+        "expiresInDays": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "locality": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "organizationalUnit": {
+          "type": "string"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "md5Fingerprint": {
+          "type": "string"
+        },
+        "sha1Fingerprint": {
+          "type": "string"
+        },
+        "sha256Fingerprint": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subjectAlternativeNameType": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unstructuredName": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "Sessions": {
+      "type": "object",
+      "properties": {
+        "sessions": {
+          "type": "array",
+          "xml": {
+            "name": "session"
+          },
+          "items": {
+            "$ref": "#/definitions/BaseSessionToken"
+          }
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "Current state of the task",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time the task was started"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time the task completed, if applicable"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "dataObject": {
+          "type": "object"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string",
+          "description": "URI of the associated resource"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the task"
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Reason this task was created"
+        },
+        "purposeMessage": {
+          "description": "Localised reason this task was created",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "i18nResponse": {
+          "description": "Localised task response information",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "response": {
+          "type": "string"
+        },
+        "contextResolver": {
+          "$ref": "#/definitions/ContextResolverJAXBContext"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/extendedError"
+        }
+      }
+    },
+    "TaskInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoImpl"
+        },
+        "messageInfo": {
+          "xml": {
+            "name": "message"
+          },
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "taskid": {
+          "type": "string"
+        }
+      }
+    },
+    "TaskResourceUsageReport": {
+      "type": "object",
+      "properties": {
+        "estimatedSizesByPurpose": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "estimatedSizesByCatalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "numberOfTasksPerCatalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "numberOfTasksPerValue": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "estimatedUsagePerCatalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "estimatedUsagePerValue": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "totalTasks": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalUsage": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Tasks": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "xml": {
+            "name": "task"
+          },
+          "items": {
+            "$ref": "#/definitions/Task"
+          }
+        }
+      },
+      "xml": {
+        "name": "tasks"
+      }
+    },
+    "UpgradeState": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "the name of the current node only supplied if PML has been configured"
+        },
+        "mode": {
+          "type": "string",
+          "description": "ACTIVE, PASSIVE, or NOPMFAILOVER"
+        },
+        "modifier": {
+          "type": "string",
+          "description": "UPGRADING or CONFIG_SUPPRESSED or nothing"
+        },
+        "restReady": {
+          "type": "boolean",
+          "description": "true if mode is ACTIVE and name is not empty, implication is that PML is setup and ACTIVE",
+          "default": false
+        }
+      }
+    },
+    "UpgradeStates": {
+      "type": "object",
+      "properties": {
+        "upgradeStates": {
+          "type": "array",
+          "xml": {
+            "name": "upgradeState"
+          },
+          "items": {
+            "$ref": "#/definitions/UpgradeState"
+          }
+        }
+      },
+      "xml": {
+        "name": "UpgradeStates"
+      }
+    },
+    "User": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "managed": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "Users": {
+      "type": "object",
+      "properties": {
+        "Users": {
+          "type": "array",
+          "xml": {
+            "name": "User"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      }
+    },
+    "WildcardPermission": {
+      "type": "object"
+    },
+    "extendedError": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "description": "Severity of the error",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          },
+          "description": "The error message localised for the requested locale"
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          },
+          "description": "The resolution details localised for the requested locale"
+        },
+        "message": {
+          "description": "Details of the error",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "resolution": {
+          "description": "Details of how to resolve the error, if applicable",
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

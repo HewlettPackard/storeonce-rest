@@ -1,0 +1,925 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "2.2-SNAPSHOT",
+    "title": "Alerts"
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "basePath": "/rest",
+  "tags": [
+    {
+      "name": "Alerts"
+    },
+    {
+      "name": "Events"
+    },
+    {
+      "name": "Tasks"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/alerts": {
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get list of Alerts",
+        "description": "Retrieves alerts based on the specified filters.",
+        "operationId": "getAlerts",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start position. If not specified, entries from position at index 0 will be returned.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of entries to return. A maximum of 100 entries will be returned in a single request. Subsequent entries can be retrieved using the nextPageUri.",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "A general filter to narrow the list of AlertsEntry resources that are returned.<br><br><b>Format</b><br><br><code>filter=\"[not] {attribute} {operator} '{value}'</code>\"<br><br>{operator}: one of [ =, <>, !=, >, <, >=, <= ]",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "A general filter to narrow the list of AlertsEntry resources that are returned.<br><br><b>Format</b><br><br><code>query=\"{attribute} {operator} '{value}'</code>\"<br><br>{operator}: one of [ OR, AND, NOT, EQ, NE, GT, LT, GE, LE, LIKE, IN, CONTAINS, IS NULL ]",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting in the form: 'sort=prop:[desc|asc]' - where prop is the name of the AlertsEntry property to use for sorting. Example: created:desc.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AlertsEntries"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:read",
+          "mgmt_alerts:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Used to delete Alerts using filtering",
+        "description": "Deletes all alerts based on the filtering parameters passed in. If no filtering parameters are defined, then all alerts will be deleted.",
+        "operationId": "deleteByFilter",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "A general filter to narrow the list to delete.<br><br><b>Format</b><br><br><code>filter=\"[not] {attribute} {operator} '{value}'</code>\"<br><br>{operator}: one of [ =, &lt&gt, &gt, &gt=, &lt, &lt=, matches, regex, ==, smatches, sregex, sne ]",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request was accepted but not completed. The result payload will contain a URL that can be queried to determine the status of the request."
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:write"
+        ]
+      }
+    },
+    "/alerts/autoPruneMonths": {
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get the current value of the autoPruneMonths configuration parameter  for Alert s",
+        "description": "Once a day the system will automatically prune alerts from the database that were created more than autoPruneMonths ago",
+        "operationId": "getAutoPruneMonths",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AutoPruneMonthsPayload"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:read",
+          "mgmt_alerts:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Set the autoPruneMonths configuration parameter for alerts",
+        "description": "Once a day the system will automatically prune alerts from the database that were created more than autoPruneMonths ago",
+        "operationId": "setAutoPruneMonths",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "serialized <code>AutoPruneMonthsPayload</code> object with the new autoPruneMonths configuration parameter value.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AutoPruneMonthsPayload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success."
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:write"
+        ]
+      }
+    },
+    "/alerts/count": {
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Get the current number of alerts in the database",
+        "description": "Get the current number of alerts in the database",
+        "operationId": "getCount",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/CountPayload"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:read",
+          "mgmt_alerts:write"
+        ]
+      }
+    },
+    "/alerts/{id}": {
+      "get": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Retrieves a particular alert entry using its uuid",
+        "description": "Retrieves a particular alert entry using its uuid",
+        "operationId": "getAlertById",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier (uuid) of an existing AlertsEntry resource.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AlertsEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:read",
+          "mgmt_alerts:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "Delete a specific Alert using its uuid",
+        "description": "Delete a specific Alert using its uuid",
+        "operationId": "deleteAlert",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier (uuid) of an existing AlertsEntry resource.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request was accepted but not completed. The result payload will contain a URL that can be queried to determine the status of the request."
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AlertsEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AlertsEntry"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "alertsEntries"
+      }
+    },
+    "AlertsEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "uuid": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT",
+            "ALERT_INFO"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Disabled",
+            "OK",
+            "Unknown",
+            "Warning"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "Deferrable",
+            "High",
+            "Immediate",
+            "Medium",
+            "None",
+            "Unknown"
+          ]
+        },
+        "descriptionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveAction": {
+          "type": "string"
+        },
+        "correctiveActionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "eventCode": {
+          "type": "string"
+        },
+        "serviceEventSource": {
+          "type": "boolean",
+          "default": false
+        },
+        "serviceEventDetails": {
+          "$ref": "#/definitions/ServiceEventDetails"
+        },
+        "clearMatchingAlerts": {
+          "type": "boolean",
+          "default": false
+        },
+        "listToClear": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogKeyPair"
+          }
+        },
+        "alertState": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Cleared",
+            "Locked",
+            "None"
+          ]
+        },
+        "alertTypeID": {
+          "type": "string",
+          "example": "server",
+          "description": "The ...",
+          "readOnly": true
+        },
+        "associatedEventUris": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignedToUser": {
+          "type": "string"
+        },
+        "changeLog": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChangeLog"
+          }
+        },
+        "childAlerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clearedByUser": {
+          "type": "string"
+        },
+        "clearedTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lifeCycle": {
+          "type": "boolean",
+          "default": false
+        },
+        "resourceID": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "description": "eAtlas alert",
+      "xml": {
+        "name": "alertsEntry"
+      }
+    },
+    "AssociatedResource": {
+      "type": "object",
+      "properties": {
+        "associationType": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "resourceLocation": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        }
+      }
+    },
+    "Association": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentUri": {
+          "type": "string"
+        },
+        "parentCategory": {
+          "type": "string"
+        }
+      }
+    },
+    "AutoPruneMonthsPayload": {
+      "type": "object",
+      "properties": {
+        "autoPruneMonths": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "autoPruneMonthsPayload"
+      }
+    },
+    "CatalogKeyPair": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "ChangeLog": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "userEntered": {
+          "type": "boolean",
+          "default": false
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "CountPayload": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "countPayload"
+      }
+    },
+    "DeleteStatus": {
+      "type": "object"
+    },
+    "EventDetails": {
+      "type": "object",
+      "properties": {
+        "eventItemDescription": {
+          "type": "string"
+        },
+        "eventItemName": {
+          "type": "string"
+        },
+        "eventItemSnmpOid": {
+          "type": "string"
+        },
+        "eventItemValue": {
+          "type": "string"
+        },
+        "isThisVarbindData": {
+          "type": "boolean",
+          "default": false
+        },
+        "varBindOrderIndex": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "EventsEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventsEntry"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "eventsEntries"
+      }
+    },
+    "EventsEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "uuid": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT",
+            "ALERT_INFO"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Disabled",
+            "OK",
+            "Unknown",
+            "Warning"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "Deferrable",
+            "High",
+            "Immediate",
+            "Medium",
+            "None",
+            "Unknown"
+          ]
+        },
+        "descriptionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveAction": {
+          "type": "string"
+        },
+        "correctiveActionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "eventCode": {
+          "type": "string"
+        },
+        "serviceEventSource": {
+          "type": "boolean",
+          "default": false
+        },
+        "serviceEventDetails": {
+          "$ref": "#/definitions/ServiceEventDetails"
+        },
+        "clearMatchingAlerts": {
+          "type": "boolean",
+          "default": false
+        },
+        "listToClear": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogKeyPair"
+          }
+        },
+        "eventDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventDetails"
+          }
+        },
+        "eventTypeID": {
+          "type": "string"
+        },
+        "processed": {
+          "type": "boolean",
+          "default": false
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "rxTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "eventsEntry"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoArgWrapper": {
+      "type": "object",
+      "properties": {
+        "messageInfoArg": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        },
+        "stringArg": {
+          "type": "string"
+        },
+        "intArg": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "longArg": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "booleanArg": {
+          "type": "boolean",
+          "default": false
+        },
+        "dateArg": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MessageInfoWrapper": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageInfoArgWrapper"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      }
+    },
+    "ProgressUpdate": {
+      "type": "object",
+      "properties": {
+        "statusUpdate": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "statusUpdateInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        }
+      }
+    },
+    "ServiceEventDetails": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string"
+        },
+        "remoteSupportState": {
+          "type": "string",
+          "enum": [
+            "Closed",
+            "Error",
+            "None",
+            "Open",
+            "Pending",
+            "Received",
+            "Submitted"
+          ]
+        },
+        "primaryContact": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

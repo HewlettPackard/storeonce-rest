@@ -1,0 +1,388 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "1.22-SNAPSHOT",
+    "title": "Host Control"
+  },
+  "basePath": "/hostcontrol",
+  "tags": [
+    {
+      "name": "Host Control - control host power and volume accessibility"
+    },
+    {
+      "name": "Isolation control by name"
+    },
+    {
+      "name": "Power control by name"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/isolation": {
+      "get": {
+        "tags": [
+          "Host Control - control host power and volume accessibility"
+        ],
+        "summary": "List all the isolation control hosts",
+        "description": "Before your first GET, do a POST (see POST) to refresh the isolate state cache for each host.",
+        "operationId": "getHosts",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/IsolationControlHosts"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_host_control:write",
+          "hpsp_host_control:read"
+        ]
+      }
+    },
+    "/isolation/name/{name}": {
+      "get": {
+        "tags": [
+          "Host Control - control host power and volume accessibility"
+        ],
+        "summary": "Display a specific isolation control host",
+        "description": "Before your first GET, do a POST (see POST) to refresh the isolation state cache for the named host.",
+        "operationId": "getHostByName",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "host name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/IsolationControlHost"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_host_control:write",
+          "hpsp_host_control:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Host Control - control host power and volume accessibility"
+        ],
+        "summary": "Sets the isolation state for the specified uuid and node",
+        "description": "If no uuid is provided then the isolation state is set for all volumes, with no parameters the cached isolation state values are refreshed",
+        "operationId": "handlePost",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Node name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "uuid",
+            "in": "query",
+            "description": "UUID of volume to control",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "isolationstate",
+            "in": "query",
+            "description": "Isolation state ('ACCESSIBLE', or 'ISOLATED')",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_host_control:write"
+        ]
+      }
+    },
+    "/power": {
+      "get": {
+        "tags": [
+          "Host Control - control host power and volume accessibility"
+        ],
+        "summary": "Lists all the power control hosts",
+        "description": "Use the optional parameter powerstate to filter output to only hosts in the given state.  Before your first GET, you must do a POST (see POST) to refresh the power state cache for each host.",
+        "operationId": "getHosts",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "powerstate",
+            "in": "query",
+            "description": "Power state",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "OFF",
+              "ON",
+              "CRASHING",
+              "UNKNOWN"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PowerControlHosts"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_host_control:write",
+          "hpsp_host_control:read"
+        ]
+      }
+    },
+    "/power/name/{name}": {
+      "get": {
+        "tags": [
+          "Host Control - control host power and volume accessibility"
+        ],
+        "summary": "Display a specific power control host.  ",
+        "description": "Before your first GET, you must do a POST (see POST) to refresh the power state cache for the named host.",
+        "operationId": "getHostByName",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Host name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/PowerControlHost"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_host_control:write",
+          "hpsp_host_control:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Host Control - control host power and volume accessibility"
+        ],
+        "summary": "Set the power state for the specified node",
+        "description": "With no parameters the cached power state values are refreshed. The boolean 'force' query parameter may be set 'true' when setting power to 'OFF' or 'RESTART' to force the setting to take effect immediately. Leaving 'force' unspecified or set to 'false' indicates 'graceful shutdown' when setting power to 'OFF'.",
+        "operationId": "handlePost",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Host name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "powersetting",
+            "in": "query",
+            "description": "Power setting ('OFF', 'ON', 'RESTART', 'CRASH', 'LIVEDUMP')",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "force",
+            "in": "query",
+            "description": "Force flag to force power OFF setting.",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_host_control:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "IsolationControlHost": {
+      "type": "object",
+      "required": [
+        "name",
+        "states"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Host name"
+        },
+        "states": {
+          "type": "object",
+          "xml": {
+            "name": "isolationstates"
+          },
+          "description": "IsolationStates class object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "ISOLATED",
+              "ACCESSIBLE"
+            ]
+          }
+        },
+        "CacheUpdate": {
+          "type": "string",
+          "format": "date-time",
+          "xml": {
+            "name": "cacheupdate"
+          },
+          "description": "Date/time of last cache update"
+        }
+      },
+      "description": "Isolation control host data model",
+      "xml": {
+        "name": "isolationhost"
+      }
+    },
+    "IsolationControlHosts": {
+      "type": "object",
+      "required": [
+        "hosts"
+      ],
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "xml": {
+            "name": "isolationhost"
+          },
+          "description": "Isolation control states for all nodes",
+          "items": {
+            "$ref": "#/definitions/IsolationControlHost"
+          }
+        }
+      },
+      "description": "Isolation control hosts",
+      "xml": {
+        "name": "hosts"
+      }
+    },
+    "PowerControlHost": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "host name"
+        },
+        "state": {
+          "type": "string",
+          "xml": {
+            "name": "powerstate"
+          },
+          "description": "power state",
+          "enum": [
+            "UNKNOWN",
+            "OFF",
+            "ON",
+            "CRASHING"
+          ]
+        },
+        "CacheUpdate": {
+          "type": "string",
+          "format": "date-time",
+          "xml": {
+            "name": "cacheupdate"
+          },
+          "description": "Date/time of last cache update"
+        }
+      },
+      "description": "power control host data model",
+      "xml": {
+        "name": "powerhost"
+      }
+    },
+    "PowerControlHosts": {
+      "type": "object",
+      "required": [
+        "hosts"
+      ],
+      "properties": {
+        "hosts": {
+          "type": "array",
+          "xml": {
+            "name": "powerhost"
+          },
+          "description": "Power control states for all nodes",
+          "items": {
+            "$ref": "#/definitions/PowerControlHost"
+          }
+        }
+      },
+      "description": "power control hosts",
+      "xml": {
+        "name": "hosts"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
