@@ -88,10 +88,6 @@
         "path": "versions/4.3.0/mgmt-serverstatus-swagger.json"
     },
     {
-        "name": "pml-core-module-swagger.json",
-        "path": "versions/4.3.0/pml-core-module-swagger.json"
-    },
-    {
         "name": "eatlas-adapters-swagger.json",
         "path": "versions/4.3.0/eatlas-adapters-swagger.json"
     }
