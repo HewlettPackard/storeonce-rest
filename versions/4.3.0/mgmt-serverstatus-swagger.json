@@ -1,0 +1,109 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "2.3-SNAPSHOT",
+    "title": "Server Status"
+  },
+  "basePath": "/rest",
+  "tags": [
+    {
+      "name": "Server Status"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/status": {
+      "get": {
+        "tags": [
+          "Server Status"
+        ],
+        "summary": "Retrieve the server status object: status (firstTimeSetup, initializing, needsPassword, ready, restarting, shuttingdown, or upgrading), percent, completedComponents, and totalComponents)",
+        "description": "",
+        "operationId": "getStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_server_status:read",
+          "pml:read:guestinfo:read",
+          "mgmt_server_status:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Server Status"
+        ],
+        "summary": "Update the server status",
+        "description": "This endpoint allows updating the status, completedComponents, and totalComponents fields.  The field 'percent' is calculated automatically and cannot be set.",
+        "operationId": "setStatus",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "state",
+            "in": "query",
+            "description": "new state: firstTimeSetup, restarting, or shuttingdown",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "completedComponents",
+            "in": "query",
+            "description": "number of completed components",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "totalComponents",
+            "in": "query",
+            "description": "number of total components",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_server_status:write"
+        ]
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

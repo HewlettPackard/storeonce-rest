@@ -1,0 +1,560 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "6.0.1-SNAPSHOT",
+    "title": "Remote Logging"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Remote logging Root Resource"
+    },
+    {
+      "name": "Remote logging audit server Resource"
+    },
+    {
+      "name": "Remote logging syslog server Resource"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/remote-logging/audit-logging-servers": {
+      "get": {
+        "tags": [
+          "Remote logging audit server Resource"
+        ],
+        "summary": "Returns a list of all audit servers",
+        "description": "",
+        "operationId": "performGetAll",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LoggingServerCollectionWrapper"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Remote logging audit server Resource"
+        ],
+        "summary": "Create a new Audit server",
+        "description": "",
+        "operationId": "postMember",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The new audit log server",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoggingServer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:create"
+        ]
+      }
+    },
+    "/remote-logging/audit-logging-servers/server/{uuid}": {
+      "get": {
+        "tags": [
+          "Remote logging audit server Resource"
+        ],
+        "summary": "Returns an audit servers",
+        "description": "",
+        "operationId": "performGetByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the server",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LoggingServer"
+            }
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Remote logging audit server Resource"
+        ],
+        "summary": "Create a new Audit server",
+        "description": "",
+        "operationId": "putMember",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The audit log server to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoggingServer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Updated"
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Remote logging audit server Resource"
+        ],
+        "summary": "Delete the given Audit server",
+        "description": "",
+        "operationId": "deleteMember",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "Unique ID of the reservation",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:delete"
+        ]
+      }
+    },
+    "/remote-logging/syslog-servers": {
+      "get": {
+        "tags": [
+          "Remote logging syslog server Resource"
+        ],
+        "summary": "Returns a list of all syslog servers",
+        "description": "",
+        "operationId": "performRootGet",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LoggingServerCollectionWrapper"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Remote logging syslog server Resource"
+        ],
+        "summary": "Create a new syslog server",
+        "description": "",
+        "operationId": "postMember",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The new syslog log server",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoggingServer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:create"
+        ]
+      }
+    },
+    "/remote-logging/syslog-servers/server/{uuid}": {
+      "get": {
+        "tags": [
+          "Remote logging syslog server Resource"
+        ],
+        "summary": "Returns an audit servers",
+        "description": "",
+        "operationId": "performGetByUuid",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the server",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LoggingServer"
+            }
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Remote logging syslog server Resource"
+        ],
+        "summary": "Create a new Syslog server",
+        "description": "",
+        "operationId": "putMember",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the server",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The Syslog log server to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoggingServer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Updated"
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Remote logging syslog server Resource"
+        ],
+        "summary": "Delete the given Syslog server",
+        "description": "",
+        "operationId": "deleteMember",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "Unique ID of the reservation",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Missing Info"
+          },
+          "404": {
+            "description": "UUID not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "remote-logging:delete"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "LoggingServer": {
+      "type": "object",
+      "required": [
+        "address",
+        "port",
+        "transportProtocol",
+        "transportProtocolString"
+      ],
+      "properties": {
+        "serverUUID": {
+          "type": "string",
+          "description": "Server UUID"
+        },
+        "address": {
+          "type": "string",
+          "description": "Server address"
+        },
+        "transportProtocol": {
+          "type": "integer",
+          "description": "Server transport protocol",
+          "enum": [
+            "TCP",
+            "UDP"
+          ]
+        },
+        "transportProtocolString": {
+          "type": "string",
+          "description": "Server transport protocol"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Server port"
+        }
+      },
+      "xml": {
+        "name": "LoggingServer"
+      }
+    },
+    "LoggingServerCollectionWrapper": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/LoggingServer"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "format": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
