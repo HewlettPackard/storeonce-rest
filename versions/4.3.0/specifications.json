@@ -74,22 +74,6 @@
     {
         "name": "email-subscriptions-swagger.json",
         "path": "versions/4.3.0/email-subscriptions-swagger.json"
-    },
-    {
-        "name": "hpsp-hacoordinator-swagger.json",
-        "path": "versions/4.3.0/hpsp-hacoordinator-swagger.json"
-    },
-    {
-        "name": "hpsp-hostcontrol-swagger.json",
-        "path": "versions/4.3.0/hpsp-hostcontrol-swagger.json"
-    },
-    {
-        "name": "mgmt-serverstatus-swagger.json",
-        "path": "versions/4.3.0/mgmt-serverstatus-swagger.json"
-    },
-    {
-        "name": "eatlas-adapters-swagger.json",
-        "path": "versions/4.3.0/eatlas-adapters-swagger.json"
     }
 ]
 
