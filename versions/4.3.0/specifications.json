@@ -84,14 +84,6 @@
         "path": "versions/4.3.0/hpsp-hostcontrol-swagger.json"
     },
     {
-        "name": "hpsp-hw-monitor-swagger.json",
-        "path": "versions/4.3.0/hpsp-hw-monitor-swagger.json"
-    },
-    {
-        "name": "hpsp-logcollection-swagger.json",
-        "path": "versions/4.3.0/hpsp-logcollection-swagger.json"
-    },
-    {
         "name": "mgmt-serverstatus-swagger.json",
         "path": "versions/4.3.0/mgmt-serverstatus-swagger.json"
     },
