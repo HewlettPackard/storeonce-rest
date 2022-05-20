@@ -74,6 +74,26 @@
     {
         "name": "email-subscriptions-swagger.json",
         "path": "versions/4.3.0/email-subscriptions-swagger.json"
+    },
+    {
+        "name": "appliance.json",
+        "path": "versions/4.3.0/appliance.json"
+    },
+    {
+        "name": "cat.json",
+        "path": "versions/4.3.0/cat.json"
+    },
+    {
+        "name": "management_services.json",
+        "path": "versions/4.3.0/management_services.json"
+    },
+    {
+        "name": "nas.json",
+        "path": "versions/4.3.0/nas.json"
+    },
+    {
+        "name": "vtl.json",
+        "path": "versions/4.3.0/vtl.json"
     }
 ]
 
