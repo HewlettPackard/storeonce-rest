@@ -1,0 +1,3037 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "6.0.32-SNAPSHOT",
+    "title": "NAS"
+  },
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "CIFS Local Admin"
+    },
+    {
+      "name": "CIFS Server"
+    },
+    {
+      "name": "CIFS Server domain login"
+    },
+    {
+      "name": "CIFS User"
+    },
+    {
+      "name": "NAS"
+    },
+    {
+      "name": "NFS Hosts"
+    },
+    {
+      "name": "Service"
+    },
+    {
+      "name": "Share"
+    },
+    {
+      "name": "Share Permissions"
+    },
+    {
+      "name": "Storage Parametrics Report"
+    },
+    {
+      "name": "Streams Parametrics Report"
+    },
+    {
+      "name": "Throughput Parametrics Report"
+    },
+    {
+      "name": "NFS Server"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/data-services/nas/cifs-local-admins": {
+      "get": {
+        "tags": [
+          "CIFS Local Admin"
+        ],
+        "summary": "Gets all Local Admins with properties",
+        "description": "All the properties that describe each CIFS local admin can be retrieved",
+        "operationId": "getAllCifsLocalAdmins",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CifsLocalAdminModelCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "CIFS Local Admin"
+        ],
+        "summary": "Creates new Local administrators",
+        "description": "Operation Used to create A CIFS local admin",
+        "operationId": "createLocalAdmin",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasCifsLocalAdminModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CifsLocalAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Local Admin created Successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "409": {
+            "description": "Local Admin name already exists"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:create"
+        ]
+      }
+    },
+    "/data-services/nas/cifs-local-admins/local-admin/{name}": {
+      "get": {
+        "tags": [
+          "CIFS Local Admin"
+        ],
+        "summary": "Get Local Admin by name",
+        "description": "All the properties that describe CIFS local admin can be retrieved by given name",
+        "operationId": "getCifsLocalAdmin",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Username of the administrator",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CifsLocalAdmin"
+            }
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "CIFS Local Admin"
+        ],
+        "summary": "Delete Local administrator from the list of local administrators by given name",
+        "description": "A CIFS Local administrator can be deleted by the given name",
+        "operationId": "deleteLocalAdmin",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Username of the administrator to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Local admin deleted successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:delete"
+        ]
+      }
+    },
+    "/data-services/nas/cifs-server": {
+      "get": {
+        "tags": [
+          "CIFS Server"
+        ],
+        "summary": "Reads CIFS Servers properties",
+        "description": "All the properties that describe the CIFS server can be retrieved",
+        "operationId": "getCifsServerDetails",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CifsServer"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "CIFS Server"
+        ],
+        "summary": "Modify CIFS Server Available",
+        "description": "The CIFS server configuration can be modified using this method",
+        "operationId": "updateCifsServerDetails",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NAS CIFS Server model",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CifsServer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:update"
+        ]
+      }
+    },
+    "/data-services/nas/cifs-server-domain-login": {
+      "get": {
+        "tags": [
+          "CIFS Server domain login"
+        ],
+        "summary": "Get  properties of AD domain login attempt ",
+        "description": "All the properties that describe the AD domain login attempt",
+        "operationId": "getNasCifsDomainStatus",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CifsDomainStatus"
+            }
+          },
+          "409": {
+            "description": "CIFS server authentication mode is not AD"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "CIFS Server domain login"
+        ],
+        "summary": "Creates AD domain login attempt",
+        "description": "Operation Used to create An AD domain login attempt",
+        "operationId": "createAdDomainLoginAttempt",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasCifsDomainLoginModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateNasCifsDomainLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "409": {
+            "description": "CIFS server authentication mode is not AD"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "CIFS Server domain login"
+        ],
+        "summary": "Logout AD Domain",
+        "description": "Operation Used to logout An AD domain",
+        "operationId": "logoutNasCifsAdDomain",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "409": {
+            "description": "CIFS server authentication mode is not AD"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:update"
+        ]
+      }
+    },
+    "/data-services/nas/cifs-users": {
+      "get": {
+        "tags": [
+          "CIFS User"
+        ],
+        "summary": "Gets Collection of NAS CIFS users",
+        "description": "All the properties that describe each CIFS User can be retrieved",
+        "operationId": "getAllCifsUsers",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CifsUserGetModelCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "CIFS User"
+        ],
+        "summary": "Creates new CIFS user in CIFS server",
+        "description": "Operation used to add CIFS user in CIFS server",
+        "operationId": "createNasCifsUsers",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasCifsUserModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateNasCifsUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "New CIFS User Created successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "409": {
+            "description": "User name already exists"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:create"
+        ]
+      }
+    },
+    "/data-services/nas/cifs-users/user/{id}": {
+      "get": {
+        "tags": [
+          "CIFS User"
+        ],
+        "summary": "Get CIFS User by ID",
+        "description": "All the properties that describe the CIFS user can be retrieved by ID",
+        "operationId": "getNasCifsUser",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/CifsUser"
+            }
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "CIFS User"
+        ],
+        "summary": "Modify CIFS User password by ID",
+        "description": "Operation used to change password for User by ID",
+        "operationId": "modifyNasCifsUsers",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of User for Changing password",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasCifsUserModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateNasCifsUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Modified password successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "CIFS User"
+        ],
+        "summary": "Delete NAS CIFS User by ID",
+        "description": "Operation used to delete User  by ID in CIFS Server",
+        "operationId": "deleteCifsUser",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID for deleting CIFS User",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted NAS CIFS user successfully"
+          },
+          "404": {
+            "description": "User does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:delete"
+        ]
+      }
+    },
+    "/data-services/nas/nfs-hosts": {
+      "get": {
+        "tags": [
+          "NFS Hosts"
+        ],
+        "summary": "GET all NAS NFS Host details",
+        "description": "This operation will GET the details of all NAS NFS hosts",
+        "operationId": "getAllNasNfsHosts",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Host list fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/NfsHostCollection"
+            }
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "NFS Hosts"
+        ],
+        "summary": "Create NFS Host",
+        "description": "This operation will create a NFS host",
+        "operationId": "createNfsHost",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Details for the new host",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NfsHosts"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Host create, Operation Successful"
+          },
+          "400": {
+            "description": "Bad request, invalid properties "
+          },
+          "409": {
+            "description": "Host hostname already exists "
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:create"
+        ]
+      }
+    },
+    "/data-services/nas/nfs-hosts/host/{id}": {
+      "get": {
+        "tags": [
+          "NFS Hosts"
+        ],
+        "summary": "GET NAS NFS Host details",
+        "description": "This operation will GET the details of the NAS NFS host according to the host ID",
+        "operationId": "getNasNfsHostById",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the required host",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Host fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/NfsHosts"
+            }
+          },
+          "400": {
+            "description": "Request contains invalid properties"
+          },
+          "404": {
+            "description": "Host does not exist "
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "NFS Hosts"
+        ],
+        "summary": "Update NFS Host",
+        "description": "This operation will update the NFS host",
+        "operationId": "updateNfsHost",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of the host to be updated.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Description of the new host",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NfsHosts"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Host description updated, Operation Successful"
+          },
+          "400": {
+            "description": "Request contains invalid properties"
+          },
+          "404": {
+            "description": "Host does not exist "
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "NFS Hosts"
+        ],
+        "summary": "Remove NFS Host",
+        "description": "This operation will remove the NFS host",
+        "operationId": "removeNfsHost",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Hostname to be deleted.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Host successfuly deleted, Operation Successful"
+          },
+          "400": {
+            "description": "Request contains invalid properties"
+          },
+          "404": {
+            "description": "Host not found"
+          },
+          "500": {
+            "description": "Unknown internal server error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:delete"
+        ]
+      }
+    },
+    "/data-services/nas/nfs-server": {
+      "get": {
+        "tags": [
+          "NFS Server"
+        ],
+        "summary": "Reads NAS Server details",
+        "description": "All the properties that describe the NFS server can be retrieved",
+        "operationId": "getNfsServerDetails",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/NfsServer"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "NFS Server"
+        ],
+        "summary": "Modify NFS Server Available",
+        "description": "This Operation allows to Modify NFS Server",
+        "operationId": "updateNfsServerDetails",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasNfsServerModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NfsServer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:update"
+        ]
+      }
+    },
+    "/data-services/nas/parametrics-storage": {
+      "get": {
+        "tags": [
+          "Storage Parametrics Report"
+        ],
+        "summary": "List that provides storage metrics for the NAS at appliance level",
+        "description": "",
+        "operationId": "getNasStorage",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "$ref": "#/definitions/ShareParametricsStorageCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/parametrics-storage/share/{shareid}": {
+      "get": {
+        "tags": [
+          "Storage Parametrics Report"
+        ],
+        "summary": "List that provides storage metrics for the NAS share",
+        "description": "",
+        "operationId": "getNasStorageById",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeHistorical",
+            "in": "query",
+            "description": "includeHistorical",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "$ref": "#/definitions/ShareParametricsStorageCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/parametrics-streams": {
+      "get": {
+        "tags": [
+          "Streams Parametrics Report"
+        ],
+        "summary": "List that provides streams metrics for the NAS at appliance level",
+        "description": "",
+        "operationId": "getNasStreams",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "$ref": "#/definitions/ShareParametricsStreamCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/parametrics-streams/share/{shareid}": {
+      "get": {
+        "tags": [
+          "Streams Parametrics Report"
+        ],
+        "summary": "List that provides streams metrics for the NAS share",
+        "description": "",
+        "operationId": "getNasStreamById",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeHistorical",
+            "in": "query",
+            "description": "includeHistorical",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "$ref": "#/definitions/ShareParametricsStreamCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/parametrics-throughput": {
+      "get": {
+        "tags": [
+          "Throughput Parametrics Report"
+        ],
+        "summary": "List that provides throughput metrics for the NAS at appliance level",
+        "description": "",
+        "operationId": "getNasThroughput",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "$ref": "#/definitions/ShareParametricsThroughputCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/parametrics-throughput/share/{shareid}": {
+      "get": {
+        "tags": [
+          "Throughput Parametrics Report"
+        ],
+        "summary": "List that provides throughput metrics for the NAS share",
+        "description": "",
+        "operationId": "getNasThroughputById",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includeHistorical",
+            "in": "query",
+            "description": "includeHistorical",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "$ref": "#/definitions/ShareParametricsThroughputCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/services": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Get Service",
+        "description": "Returns the NAS service information",
+        "operationId": "getNasService",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Service"
+            }
+          },
+          "500": {
+            "description": "NAS service is not available"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasservice:read"
+        ]
+      }
+    },
+    "/data-services/nas/share-permissions/share/{shareid}": {
+      "get": {
+        "tags": [
+          "Share Permissions"
+        ],
+        "summary": "Get Share Permissions",
+        "description": "Returns the list of NAS share permissions for the given share id",
+        "operationId": "getNasSharePermissions",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/SharePermissionModelCollection"
+            }
+          },
+          "500": {
+            "description": "NAS service is not available"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:read"
+        ]
+      }
+    },
+    "/data-services/nas/share-permissions/share/{shareid}/permission/{id}": {
+      "get": {
+        "tags": [
+          "Share Permissions"
+        ],
+        "summary": "Get Share Permission",
+        "description": "Get properties of share permission according to the id of permission for the given share",
+        "operationId": "getNasSharePermission",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "permissionId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/SharePermission"
+            }
+          },
+          "404": {
+            "description": "Share Id provided is invalid"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Share Permissions"
+        ],
+        "summary": "Updates NAS Share permission",
+        "description": "Updates NAS Share permission with provided properties for the given share",
+        "operationId": "updateNasSharePermission",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "permissionId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasSharePermissionModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SharePermission"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Share permission updated successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "Share does not exist"
+          },
+          "409": {
+            "description": "Setting an NFS property when the share?s authentication mode is not Host"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:update"
+        ]
+      }
+    },
+    "/data-services/nas/shares": {
+      "get": {
+        "tags": [
+          "Share"
+        ],
+        "summary": "Get All Shares",
+        "description": "Returns the list of NAS shares",
+        "operationId": "getNasShares",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/ShareModelCollection"
+            }
+          },
+          "500": {
+            "description": "NAS service is not available"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Share"
+        ],
+        "summary": "Creates NAS Share",
+        "description": "Creates NAS Share with provided properties",
+        "operationId": "createNasShare",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasShareModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Share"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Share created successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "409": {
+            "description": "Share Name already exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:create"
+        ]
+      }
+    },
+    "/data-services/nas/shares/share/{shareid}": {
+      "get": {
+        "tags": [
+          "Share"
+        ],
+        "summary": "Get Share",
+        "description": "Get properties of share according to the id",
+        "operationId": "getNasShare",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Share"
+            }
+          },
+          "404": {
+            "description": "Share Id provided is invalid"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Share"
+        ],
+        "summary": "Updates NAS Share",
+        "description": "Updates NAS Share with provided properties",
+        "operationId": "updateNasShare",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "NasShareModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Share"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Share updated successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "Share does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Share"
+        ],
+        "summary": "Deletes NAS Share",
+        "description": "Deletes NAS Share according to the given share id",
+        "operationId": "deleteNasShare",
+        "consumes": [
+          "application/json",
+          "text/xml"
+        ],
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "shareid",
+            "in": "path",
+            "description": "shareId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Share deleted successfully"
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "404": {
+            "description": "Share does not exist"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "nasshares:delete"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "CreateNasCifsDomainLogin": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Domain username"
+        },
+        "password": {
+          "type": "string",
+          "description": "Domain password"
+        }
+      },
+      "description": "Model Used to Attempt AD Login",
+      "xml": {
+        "name": "CreateNasCifsDomainLogin"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "L10nStringStruct": {
+      "type": "object"
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageKey": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "format": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Replication": {
+      "type": "object",
+      "properties": {
+        "repRole": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of replication role of the share",
+          "readOnly": true
+        },
+        "repRoleString": {
+          "description": "Localized representation of the replication role of the share",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repHealthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of replication health level of the share",
+          "readOnly": true
+        },
+        "repHealthLevelString": {
+          "description": "Localized representation of the replication health level of the share",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of replication status of the share",
+          "readOnly": true
+        },
+        "repStatusString": {
+          "description": "Localized string detailing the replication status of the share",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repMappings": {
+          "type": "array",
+          "description": "List of replication mapping for share",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/ReplicationMappingModel"
+          }
+        }
+      }
+    },
+    "ReplicationMappingModel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique ID of replication mapping"
+        },
+        "synchronisationStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Synchronisation status of the NAS Share"
+        },
+        "synchronisationStatusString": {
+          "description": "Localized representation of Synchronization Status",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL for further details of replication mapping"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "UpdateNasCifsUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the user"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password of the user"
+        }
+      },
+      "description": "Model used to create or update CIFS User",
+      "xml": {
+        "name": "UpdateNasCifsUser"
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "ShareParametricsStorageCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/ShareParametricsStorageSample"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "ShareParametricsStreamCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/ShareParametricsStreamSample"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "ShareParametricsThroughputCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/ShareParametricsThroughputSample"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "CifsDomainStatus": {
+      "type": "object",
+      "properties": {
+        "domainLoginStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Status of the current Login"
+        },
+        "domainLoginStatusString": {
+          "description": "Localized representation of the domain login status",
+          "$ref": "#/definitions/L10nStringStruct"
+        }
+      },
+      "description": "Model representing the domain status information",
+      "xml": {
+        "name": "NasCifsDomainStatus"
+      }
+    },
+    "CifsLocalAdmin": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique ID of the local-admin mapping",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Username of the administrator"
+        }
+      },
+      "description": "Model used to get or create NAS CIFS Local Admin",
+      "xml": {
+        "name": "NasCifsLocalAdmin"
+      }
+    },
+    "CifsLocalAdminModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/CifsLocalAdmin"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "CifsServer": {
+      "type": "object",
+      "properties": {
+        "authenticationMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of Authentication mode of the CIFS server"
+        },
+        "authenticationModeString": {
+          "description": "Localized representation of the authentication model",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "smbSigningRequired": {
+          "type": "boolean",
+          "description": "True if the server must require SMB signing from clients else optional field.",
+          "default": false
+        },
+        "cifsFriendlyName": {
+          "type": "string",
+          "description": "If the authentication mode is None or User. CIFS friendly name of the server"
+        },
+        "cifsWorkgroup": {
+          "type": "string",
+          "description": "If the authentication mode is None or User. Workgroup the server belongs to"
+        },
+        "adDomain": {
+          "type": "string",
+          "description": "If the authenticationMode is AD. The active directory domain"
+        },
+        "adDomainStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of Status of the AD domain connection",
+          "readOnly": true
+        },
+        "adDomainStatusString": {
+          "description": "Localized representation of the AD domain connection status",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "adDomainController": {
+          "type": "string",
+          "description": "If the authentication mode is AD and the domain status is connected. The Domain controller",
+          "readOnly": true
+        },
+        "adDomainControllerAddress": {
+          "type": "string",
+          "description": "If the authentication mode is AD .The network address of the AD domain controller",
+          "readOnly": true
+        }
+      },
+      "description": "Model Used to get or update details of CIFS server",
+      "xml": {
+        "name": "NasCifsServer"
+      }
+    },
+    "CifsUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique ID of the user"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the user"
+        }
+      },
+      "description": "Model get details of NAS CIFS User",
+      "xml": {
+        "name": "NasCifsUser"
+      }
+    },
+    "CifsUserGetModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/CifsUser"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "NfsHostCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/NfsHosts"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "NfsHosts": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Id of the host."
+        },
+        "hostname": {
+          "type": "string",
+          "description": "Name of the host."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the host."
+        }
+      },
+      "description": "NAS NFS host details",
+      "xml": {
+        "name": "NasNfsHosts"
+      }
+    },
+    "NfsServer": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Server name reported by the NFS server",
+          "readOnly": true
+        },
+        "browsable": {
+          "type": "boolean",
+          "description": "True if NFS server browsability is enabled",
+          "default": false
+        }
+      },
+      "description": "Model used to get or update details of NAS NFS server",
+      "xml": {
+        "name": "NasNfsServer"
+      }
+    },
+    "Service": {
+      "type": "object",
+      "properties": {
+        "healthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The health level of the service"
+        },
+        "healthLevelString": {
+          "description": "Localized representation of the service health",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "nasStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the status of the service"
+        },
+        "nasStatusString": {
+          "description": "Localized string detailing the status of the service",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repHealthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Represents the rolled up replication health level of the service"
+        },
+        "repHealthLevelString": {
+          "description": "Localized representation of the replication health level of the service",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "repStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the rolled up replication status of the service"
+        },
+        "repStatusString": {
+          "description": "Localized string detailing the replication status of the service",
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "maxShares": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum number of shares that can be created in this service"
+        },
+        "numRemainingShares": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of new shares that could be created before hitting the max shares limit"
+        }
+      },
+      "xml": {
+        "name": "NasService"
+      }
+    },
+    "Share": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique Id of NAS Share",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of NAS Share"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of NAS Share"
+        },
+        "healthLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the health level of a share",
+          "readOnly": true
+        },
+        "healthLevelString": {
+          "description": "Localized representation of the share health",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "shareStatus": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of the status of a NAS Share",
+          "readOnly": true
+        },
+        "shareStatusString": {
+          "description": "Localized string detailing the status of the share",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "filesystemInitialisationPercent": {
+          "type": "number",
+          "format": "double",
+          "description": "Progress of filesystem metadata Initialisation as a percentage value",
+          "readOnly": true
+        },
+        "accessProtocol": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of Access Data Protocol of the share"
+        },
+        "accessProtocolString": {
+          "description": "Localized representation of the access protocol",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "authenticationModeString": {
+          "description": "Localized representation of the authentication mode",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "writeProtectionEnabled": {
+          "type": "boolean",
+          "description": "True if the share is read-only",
+          "default": false
+        },
+        "encryptionEnabled": {
+          "type": "boolean",
+          "description": "True if the shares data should be written to disk encrypted",
+          "default": false
+        },
+        "deduplicationEnabled": {
+          "type": "boolean",
+          "description": "True if the share data should be deduped",
+          "default": false
+        },
+        "shareVersion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Version of the NAS Share"
+        },
+        "userBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The total size of the user data that has been stored in the share before dedupe",
+          "readOnly": true
+        },
+        "diskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The actual size of the data stored in the share after dedupe",
+          "readOnly": true
+        },
+        "dedupeRatio": {
+          "type": "number",
+          "format": "double",
+          "description": "The dedupe ratio of the data stored in the share",
+          "readOnly": true
+        },
+        "numFiles": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The number of files in the share",
+          "readOnly": true
+        },
+        "numDirectories": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The number of directories in the share",
+          "readOnly": true
+        },
+        "secureEraseMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of secure erase mode of the share"
+        },
+        "secureEraseModeString": {
+          "description": "Localized representation of the secure erase mode",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "sizeOnDiskQuotaEnabled": {
+          "type": "boolean",
+          "description": "Check if Quota policy for size on disk is enabled",
+          "default": false
+        },
+        "sizeOnDiskQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Size on disk Quota limit policy"
+        },
+        "userDataStoredQuotaEnabled": {
+          "type": "boolean",
+          "description": "Check if Quota policy for user data is enabled",
+          "default": false
+        },
+        "userDataStoredQuotaBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "User data quota limit policy"
+        },
+        "backupApplication": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of backup Application used for this share"
+        },
+        "backupApplicationString": {
+          "description": "Localized representation of the backup Application",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "backupApplicationOther": {
+          "type": "string",
+          "description": "User provided value of the backup application if set to Other"
+        },
+        "backupDataType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of type of backup data stored in this share"
+        },
+        "backupDataTypeString": {
+          "description": "Localized representation of the backup data type",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "backupDataTypeOther": {
+          "type": "string",
+          "description": "User provided value of the backup data type if set to Other"
+        },
+        "replication": {
+          "description": "Replication information for share",
+          "readOnly": true,
+          "$ref": "#/definitions/Replication"
+        },
+        "networkPath": {
+          "type": "string",
+          "description": "Network for share",
+          "readOnly": true
+        },
+        "dedupeStoreId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique identifier for dedupe store."
+        },
+        "authenticationMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of authentication mode used for the share",
+          "readOnly": true
+        },
+        "createdDate": {
+          "type": "string",
+          "description": "NAS Share creation date",
+          "readOnly": true,
+          "format": "date-time"
+        },
+        "modifiedDate": {
+          "type": "string",
+          "description": "NAS Share last modified date",
+          "readOnly": true,
+          "format": "date-time"
+        }
+      },
+      "xml": {
+        "name": "NasShare"
+      }
+    },
+    "ShareModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Share"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "ShareParametricsStorageSample": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Period this sample represents, in seconds"
+        },
+        "userBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Amount of user data stored in Bytes"
+        },
+        "diskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Amount of disk capacity used in Bytes"
+        },
+        "numInodes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of files and directories (inodes)."
+        },
+        "dedupeRatio": {
+          "type": "number",
+          "format": "double",
+          "description": "The dedupe ratio of share."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp for the metric sample",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "NasShareParametricsStorageSample"
+      }
+    },
+    "ShareParametricsStreamSample": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Period this sample represents, in seconds"
+        },
+        "numDedupeSessions": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of dedupe sessions currently running."
+        },
+        "numBmSessions": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of buffer manager sessions currently running"
+        },
+        "numOpenFileDescriptors": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum number of concurrent open FDs in the given interval"
+        },
+        "numOpenFileDescriptorsPeak": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of peak open file descriptors"
+        },
+        "numDedupeSessionsPeak": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of peak open dedupe sessions"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp for the metric sample",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "NasShareParametricsStreamSample"
+      }
+    },
+    "ShareParametricsThroughputSample": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Period this sample represents, in seconds"
+        },
+        "transmittedThroughput": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Average share read throughput in Bytes per second"
+        },
+        "receivedThroughput": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Average share write throughput in Bytes per second"
+        },
+        "numOpenFileDescriptors": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of open file descriptors, sampled every 5 seconds and averaged across the timestamp"
+        },
+        "numDedupeSessions": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of dedupe sessions currently running"
+        },
+        "numOpenFileDescriptorsPeak": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of peak open file descriptors"
+        },
+        "numDedupeSessionsPeak": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The number of peak open dedupe sessions"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp for the metric sample",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "NasShareParametricsThroughputSample"
+      }
+    },
+    "SharePermission": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Unique ID of the permission",
+          "readOnly": true
+        },
+        "shareId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of the share these permissions are for",
+          "readOnly": true
+        },
+        "name": {
+          "type": "string",
+          "description": "CIFS username or NFS hostname that the permission belongs to",
+          "readOnly": true
+        },
+        "userId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "If authentication mode is User, the CIFS user ID"
+        },
+        "hostId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "If authentication mode is Host, the NFS host ID"
+        },
+        "authenticationModeString": {
+          "description": "Localized representation of the authentication mode",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "readOnlyPermission": {
+          "type": "boolean",
+          "description": "If the authentication mode is Host. True if the user has read permission on the share",
+          "default": false
+        },
+        "readWritePermission": {
+          "type": "boolean",
+          "description": "True if the user has read/write permission on the share.",
+          "default": false
+        },
+        "rootSquashEnabled": {
+          "type": "boolean",
+          "description": "If the authentication mode is Host. True if the NFS root_squash property is enabled for the specified user",
+          "default": false
+        },
+        "nfsSecureEnabled": {
+          "type": "boolean",
+          "description": "If the authentication mode is Host. False if the NFS insecure property is set for the specified user",
+          "default": false
+        },
+        "wdelayEnabled": {
+          "type": "boolean",
+          "description": "If the authentication mode is Host. False if the NFS no_wdelay property is set for the specified user",
+          "default": false
+        },
+        "readdirplusEnabled": {
+          "type": "boolean",
+          "description": "If the authentication mode is Host. False if the NFS nordirplus property is set for the specified user",
+          "default": false
+        },
+        "authenticationMode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Enumeration of authentication mode used for the share",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "NasSharePermission"
+      }
+    },
+    "SharePermissionModelCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/SharePermission"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

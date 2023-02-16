@@ -1,0 +1,98 @@
+[
+    {
+        "name": "users_and_groups.json",
+        "path": "versions/4.3.5/users_and_groups.json"
+    },
+    {
+        "name": "alerts_and_events.json",
+        "path": "versions/4.3.5/alerts_and_events.json"
+    },
+    {
+        "name": "email-subscriptions-swagger.json",
+        "path": "versions/4.3.5/email-subscriptions-swagger.json"
+    },
+    {
+        "name": "hpsp-hw-monitor-swagger.json",
+        "path": "versions/4.3.5/hpsp-hw-monitor-swagger.json"
+    },
+    {
+        "name": "hpsp-logcollection-swagger.json",
+        "path": "versions/4.3.5/hpsp-logcollection-swagger.json"
+    },
+    {
+        "name": "asynchronous_tasks.json",
+        "path": "versions/4.3.5/asynchronous_tasks.json"
+    },
+    {
+        "name": "certificates.json",
+        "path": "versions/4.3.5/certificates.json"
+    },
+    {
+        "name": "sessions.json",
+        "path": "versions/4.3.5/sessions.json"
+    },
+    {
+        "name": "appliance.json",
+        "path": "versions/4.3.5/appliance.json"
+    },
+    {
+        "name": "cat.json",
+        "path": "versions/4.3.5/cat.json"
+    },
+    {
+        "name": "d2d_service.json",
+        "path": "versions/4.3.5/d2d_service.json"
+    },
+    {
+        "name": "dashboard.json",
+        "path": "versions/4.3.5/dashboard.json"
+    },
+    {
+        "name": "fc.json",
+        "path": "versions/4.3.5/fc.json"
+    },
+    {
+        "name": "iscsi.json",
+        "path": "versions/4.3.5/iscsi.json"
+    },
+    {
+        "name": "licensing.json",
+        "path": "versions/4.3.5/licensing.json"
+    },
+    {
+        "name": "management-services.json",
+        "path": "versions/4.3.5/management-services.json"
+    },
+    {
+        "name": "nas.json",
+        "path": "versions/4.3.5/nas.json"
+    },
+    {
+        "name": "remote-logging.json",
+        "path": "versions/4.3.5/remote-logging.json"
+    },
+    {
+        "name": "rep.json",
+        "path": "versions/4.3.5/rep.json"
+    },
+    {
+        "name": "reporting.json",
+        "path": "versions/4.3.5/reporting.json"
+    },
+    {
+        "name": "smm.json",
+        "path": "versions/4.3.5/smm.json"
+    },
+    {
+        "name": "snmp.json",
+        "path": "versions/4.3.5/snmp.json"
+    },
+    {
+        "name": "storeonce.json",
+        "path": "versions/4.3.5/storeonce.json"
+    },
+    {
+        "name": "vtl.json",
+        "path": "versions/4.3.5/vtl.json"
+    }
+]

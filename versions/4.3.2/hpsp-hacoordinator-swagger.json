@@ -1,0 +1,608 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "5.8-SNAPSHOT",
+    "title": "unused"
+  },
+  "basePath": "/hacoordinator",
+  "tags": [
+    {
+      "name": "HA Coordinator"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/clusterwideconfiguration": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get cluster wide HA configuration",
+        "description": "",
+        "operationId": "getClusterwideConfiguration",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ClusterwideConfiguration"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Modify cluster wide HA configuration",
+        "description": "",
+        "operationId": "update",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodes": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get HA configuration for all nodes in the cluster",
+        "description": "",
+        "operationId": "getAllServerNodes",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ServerNodeList"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodes/clusterwidegracefulshutdown": {
+      "post": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Powerdown/reboot all nodes in the cluster gracefully",
+        "description": "The request payload should be a Form with the parameters described below. Content-Type header should have application/x-www-form-urlencoded media type",
+        "operationId": "clusterwideGracefulShutdown",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "powerOperation",
+            "in": "formData",
+            "description": "Power operation (powerDown or powerReboot)",
+            "required": false,
+            "type": "string",
+            "default": "powerOperation=powerDown",
+            "enum": [
+              "powerOperation=powerDown",
+              "powerOperation=powerReboot"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodes/{name}": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get HA configuration for cluster node specified by node name",
+        "description": "",
+        "operationId": "getServerNodeByName",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ServerNodeModel"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Initiates failover or failback for a cluster node specified by node name",
+        "description": "The request payload should be a Form with the parameters described below. Content-Type header should have application/x-www-form-urlencoded media type",
+        "operationId": "initiateFailOperation",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "initiateFailover",
+            "in": "formData",
+            "description": "Failover operation",
+            "required": false,
+            "type": "string",
+            "default": "initiateFailover=false",
+            "enum": [
+              "initiateFailover=true",
+              "initiateFailover=false"
+            ]
+          },
+          {
+            "name": "initiateFailback",
+            "in": "formData",
+            "description": "Failback operation",
+            "required": false,
+            "type": "string",
+            "default": "initiateFailback=true",
+            "enum": [
+              "initiateFailback=true",
+              "initiateFailback=false"
+            ]
+          },
+          {
+            "name": "isPowerDownFailOperation",
+            "in": "formData",
+            "description": "Type of Failover operation: powerdown(offline) failover operation or an online failover",
+            "required": false,
+            "type": "string",
+            "default": "isPowerDownFailOperation=false",
+            "enum": [
+              "isPowerDownFailOperation=true",
+              "isPowerDownFailOperation=false"
+            ]
+          },
+          {
+            "name": "powerDownAfterFailover",
+            "in": "formData",
+            "description": "Power state of the failed node after a powerdown Failover operation",
+            "required": false,
+            "type": "string",
+            "default": "powerDownAfterFailover=false",
+            "enum": [
+              "powerDownAfterFailover=true",
+              "powerDownAfterFailover=false"
+            ]
+          },
+          {
+            "name": "rebootAfterFailover",
+            "in": "formData",
+            "description": "Reboot the failed node after an online Failover operation",
+            "required": false,
+            "type": "string",
+            "default": "rebootAfterFailover=false",
+            "enum": [
+              "rebootAfterFailover=true",
+              "rebootAfterFailover=false"
+            ]
+          },
+          {
+            "name": "powerOperation",
+            "in": "formData",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "skipActiveNodeCheck",
+            "in": "formData",
+            "description": "Allow powerdown Failover operation for active PML node",
+            "required": false,
+            "type": "string",
+            "default": "skipActiveNodeCheck=false",
+            "enum": [
+              "skipActiveNodeCheck=true",
+              "skipActiveNodeCheck=false"
+            ]
+          },
+          {
+            "name": "skipHealthChecks",
+            "in": "formData",
+            "description": "Skip health checks (e.g. failoverStatus, powerStatus, segment visibility and etc) during failover/failback operation",
+            "required": false,
+            "type": "string",
+            "default": "skipHealthChecks=false",
+            "enum": [
+              "skipHealthChecks=true",
+              "skipHealthChecks=false"
+            ]
+          },
+          {
+            "name": "forceResourceMigration",
+            "in": "formData",
+            "description": "Ignore errors during resource migration and force resource migration during online failover/failback operation",
+            "required": false,
+            "type": "string",
+            "default": "forceResourceMigration=false",
+            "enum": [
+              "forceResourceMigration=true",
+              "forceResourceMigration=false"
+            ]
+          },
+          {
+            "name": "unblockAutomaticFailoverOperation",
+            "in": "formData",
+            "description": "Reset automatic failover operation counter to unblock automatic failover operation",
+            "required": false,
+            "type": "string",
+            "default": "unblockAutomaticFailoverOperation=false",
+            "enum": [
+              "unblockAutomaticFailoverOperation=true",
+              "unblockAutomaticFailoverOperation=false"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Modify HA configuration on a cluster node specified by node name",
+        "description": "",
+        "operationId": "update",
+        "consumes": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodestatus": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get HA status for all cluster nodes",
+        "description": "",
+        "operationId": "getAllServerNodeStatus",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ServerNodeStatusList"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodestatus/{name}": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get HA status for cluster node specified by node name",
+        "description": "",
+        "operationId": "getServerNodeStatusByName",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ServerNodeStatus"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Report node failure condition for cluster node specified by node name",
+        "description": "The request payload should be a Form with the parameters described below. Content-Type header should have application/x-www-form-urlencoded media type",
+        "operationId": "reportFailure",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "nodeFailureType",
+            "in": "formData",
+            "description": "Type of node failure",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "nodeFailureType=PANIC",
+              "nodeFailureType=CLUSTER_NETWORK_UNREACHABLE",
+              "nodeFailureType= CLUSTER_NETWORK_LINK_DOWN",
+              "nodeFailureType=NODE_UNHEALTHY",
+              "nodeFailureType=STORAGE_CONTROLLER_FAILURE",
+              "nodeFailureType=STORAGE_FAILURE",
+              "nodeFailureType=USER_NETWORK_FAILURE",
+              "nodeFailureType=CRITICAL_SERVICE_FAILURE"
+            ]
+          },
+          {
+            "name": "names",
+            "in": "formData",
+            "description": "Shall contain one or more values of Storage UUIDs, Controller IDs, Interface names or service name based on the failure",
+            "required": false,
+            "type": "string",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "info",
+            "in": "formData",
+            "description": "Any more or extra information specific to the failure.",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "bypass",
+            "in": "formData",
+            "description": "Set by the passive node the first time the failure was propagated to active node",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ClusterwideConfiguration": {
+      "type": "object",
+      "properties": {
+        "enableCrashDumpFailover": {
+          "type": "boolean",
+          "default": false
+        },
+        "allowHaToFailedOverBackupNode": {
+          "type": "boolean",
+          "default": false
+        },
+        "gracefulPowerDownTimeout": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "serverNodeList"
+      }
+    },
+    "MigratableEntity": {
+      "type": "object",
+      "properties": {
+        "modelClassName": {
+          "type": "string"
+        },
+        "resourceTypeDisplayName": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "ownerClassName": {
+          "type": "string"
+        },
+        "primaryOwner": {
+          "type": "string"
+        },
+        "nodeAt": {
+          "type": "string"
+        }
+      }
+    },
+    "ServerNodeList": {
+      "type": "object",
+      "properties": {
+        "serverNodes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ServerNodeModel"
+          }
+        }
+      },
+      "xml": {
+        "name": "serverNodeList"
+      }
+    },
+    "ServerNodeModel": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "backUpNode": {
+          "type": "string"
+        },
+        "automaticFailoverEnabled": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "serverNode"
+      }
+    },
+    "ServerNodeStatus": {
+      "type": "object",
+      "properties": {
+        "serverNodeName": {
+          "type": "string"
+        },
+        "powerStatus": {
+          "type": "string",
+          "enum": [
+            "POWERING_UP",
+            "UP",
+            "POWERING_DOWN",
+            "PML_DOWN",
+            "DOWN",
+            "DOWN_FAILED_TO_POWER_UP",
+            "TRIGGERING_CRASH_DUMP",
+            "CRASH_DUMP",
+            "UNKNOWN",
+            "UP_FAILED"
+          ]
+        },
+        "failoverStatus": {
+          "type": "string",
+          "enum": [
+            "NO_RESOURCE",
+            "ON_OWNER",
+            "IN_FAILOVER",
+            "IN_FAILBACK",
+            "PARTIALLY_FAILED_OVER",
+            "FAILED_OVER"
+          ]
+        },
+        "migratableEntities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MigratableEntity"
+          }
+        }
+      }
+    },
+    "ServerNodeStatusList": {
+      "type": "object",
+      "properties": {
+        "statusForAllNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ServerNodeStatus"
+          }
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

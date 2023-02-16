@@ -1,0 +1,80 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "5.0.30-SNAPSHOT",
+    "title": "iSCSI"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "initiator"
+    },
+    {
+      "name": "iscsi"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/iscsi/initiator": {
+      "get": {
+        "tags": [
+          "initiator"
+        ],
+        "summary": "Get iSCSI initiator details",
+        "description": "Returns the IQN for the initiator.",
+        "operationId": "getFederationProperties",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Initiator"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Initiator": {
+      "type": "object",
+      "properties": {
+        "iqn": {
+          "type": "string",
+          "description": "iqn"
+        }
+      },
+      "xml": {
+        "name": "intitiator"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

@@ -1,0 +1,1827 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "2.5-SNAPSHOT",
+    "title": "Users and Groups"
+  },
+  "basePath": "/rest",
+  "tags": [
+    {
+      "name": "Authorization info about the currently authenticated user"
+    },
+    {
+      "name": "Directory Groups"
+    },
+    {
+      "name": "Realms"
+    },
+    {
+      "name": "Users"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/groups": {
+      "get": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Get a list of directory groups",
+        "description": "",
+        "operationId": "getGroups",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroups"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Create a new directory group",
+        "description": "-directory_name must be a previously configured directory\n-groupName must exist within that previously configured directory\n-roles is a list of any role IDs that this directory group should be in. (Admin ID = 1, Observer ID = 2, custom roles are UUIDs)",
+        "operationId": "createNewGroup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "directoryGroup",
+            "description": "the directory group to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:write"
+        ]
+      }
+    },
+    "/groups/{groupId}": {
+      "get": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Get directory group by group ID",
+        "description": "group ID = groupName:directory_name",
+        "operationId": "getGroupById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "groupName:directory_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Update existing directory group by group ID",
+        "description": "group ID = groupName:directory_name",
+        "operationId": "updateExistingGroup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "groupName:directory_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "directoryGroup",
+            "description": "The DirectoryGroup payload to modify the directory group with",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "owninfo:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Delete directory group by group ID",
+        "description": "group ID = groupName:directory_name",
+        "operationId": "deleteGroupbyId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "groupName:directory_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:write"
+        ]
+      }
+    },
+    "/realms": {
+      "get": {
+        "tags": [
+          "Realms"
+        ],
+        "summary": "Get realm configs",
+        "description": "",
+        "operationId": "get",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RealmConfigs"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_realms:read",
+          "mgmt_realms:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Realms"
+        ],
+        "summary": "Add a directory realm config",
+        "description": "",
+        "operationId": "addRealmConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the realm config to add",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RealmConfig"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_realms:write"
+        ]
+      }
+    },
+    "/realms/certs": {
+      "post": {
+        "tags": [
+          "Realms"
+        ],
+        "summary": "Retrieve certificates for a remote directory server",
+        "description": "This method is intended to be used to accept the address and port of a remote LDAP/AD server and retrieve certificates prior to adding the directory realm.",
+        "operationId": "getCertForLDAPServer",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the address and port of a remote directory server",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/AddressAndPort"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UnboundidDSServer"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_realms:read"
+        ]
+      }
+    },
+    "/realms/{id}": {
+      "get": {
+        "tags": [
+          "Realms"
+        ],
+        "summary": "Get a realm config by its id",
+        "description": "",
+        "operationId": "getRealmConfig",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of the realm config",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RealmConfig"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_realms:read",
+          "mgmt_realms:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Realms"
+        ],
+        "summary": "Modify a directory realm",
+        "description": "For modifying directory configurations only. Useful if you need to update the credentials of an existing configuration.",
+        "operationId": "modifyRealmConfig",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the realm config to modify",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "UnboundidDSRealmConfig",
+            "description": "the realm config with modified settings. If using JSON you must also include the field jsonTypeInfo:UnboundidDSRealmConfig.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UnboundidDSRealmConfig"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UnboundidDSRealmConfig"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_realms:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Realms"
+        ],
+        "summary": "Delete a directory realm config by its id",
+        "description": "",
+        "operationId": "deleteRealmConfig",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "the id of the realm config to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DeleteStatus"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_realms:write"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of Local and Directory users",
+        "description": "",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserEntries"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:read",
+          "mgmt_users:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new Local or Directory user",
+        "description": "",
+        "operationId": "createNewUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "userEntry",
+            "description": "the user to be created: \n\n-roles: a list of any role IDs that this user should be in. (Admin ID = 1, Observer ID = 2, custom roles are UUIDs)\n-directory_name: the name of an existing directory (directory users only).\n-userName: the user name (login name) of the user account. The user will be created if the user is local. Needs to pre-exist if the user is an existing directory account.\n-fullName: the full name of the user (local users only).\n-mobilePhone: the mobile phone number of the user (local users only).\n-officePhone: the office phone number of the user (local users only).\n-emailAddress: the email address of the user (local users only).\n-password: the password of the user. Only configurable if the user is local. Required if the user is local.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:write"
+        ]
+      }
+    },
+    "/users/{username}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by username",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username of the target user to retrieve",
+            "required": true,
+            "type": "string",
+            "pattern": ".*"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:read",
+          "mgmt_users:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update existing user by username",
+        "description": "",
+        "operationId": "updateExistingUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username of the target user to modify",
+            "required": true,
+            "type": "string",
+            "pattern": ".*"
+          },
+          {
+            "in": "body",
+            "name": "userEntry",
+            "description": "The UserEntry payload to modify the user with: \n\n-roles: a list of any role IDs that this user should be in. (Admin ID = 1, Observer ID = 2, custom roles are UUIDs)\n-directory_name: the name of an existing directory (directory users only).\n-userName: the user name (login name) of the user account. The user will be created if the user is local. Needs to pre-exist if the user is an existing directory account.\n-fullName: the full name of the user (local users only).\n-mobilePhone: the mobile phone number of the user (local users only).\n-officePhone: the office phone number of the user (local users only).\n-emailAddress: the email address of the user (local users only).\n-password: the password of the user. Only configurable if the user is local. Required if the user is local.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "owninfo:write",
+          "othersinfo:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete user by username",
+        "description": "",
+        "operationId": "deleteUserByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username of the target user to delete",
+            "required": true,
+            "type": "string",
+            "pattern": ".*"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AddressAndPort": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "AlertsEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AlertsEntry"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "alertsEntries"
+      }
+    },
+    "AlertsEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "uuid": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT",
+            "ALERT_INFO"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Disabled",
+            "OK",
+            "Unknown",
+            "Warning"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "Deferrable",
+            "High",
+            "Immediate",
+            "Medium",
+            "None",
+            "Unknown"
+          ]
+        },
+        "descriptionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveAction": {
+          "type": "string"
+        },
+        "correctiveActionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "eventCode": {
+          "type": "string"
+        },
+        "serviceEventSource": {
+          "type": "boolean",
+          "default": false
+        },
+        "serviceEventDetails": {
+          "$ref": "#/definitions/ServiceEventDetails"
+        },
+        "clearMatchingAlerts": {
+          "type": "boolean",
+          "default": false
+        },
+        "listToClear": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogKeyPair"
+          }
+        },
+        "alertState": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Cleared",
+            "Locked",
+            "None"
+          ]
+        },
+        "alertTypeID": {
+          "type": "string",
+          "example": "server",
+          "description": "The ...",
+          "readOnly": true
+        },
+        "associatedEventUris": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignedToUser": {
+          "type": "string"
+        },
+        "changeLog": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChangeLog"
+          }
+        },
+        "childAlerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clearedByUser": {
+          "type": "string"
+        },
+        "clearedTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lifeCycle": {
+          "type": "boolean",
+          "default": false
+        },
+        "resourceID": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "description": "eAtlas alert",
+      "xml": {
+        "name": "alertsEntry"
+      }
+    },
+    "AssociatedResource": {
+      "type": "object",
+      "properties": {
+        "associationType": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "resourceLocation": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        }
+      }
+    },
+    "Association": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentUri": {
+          "type": "string"
+        },
+        "parentCategory": {
+          "type": "string"
+        }
+      }
+    },
+    "AutoPruneMonthsPayload": {
+      "type": "object",
+      "properties": {
+        "autoPruneMonths": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "autoPruneMonthsPayload"
+      }
+    },
+    "CatalogKeyPair": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "ChangeLog": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "userEntered": {
+          "type": "boolean",
+          "default": false
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "CountPayload": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "countPayload"
+      }
+    },
+    "DeleteStatus": {
+      "type": "object"
+    },
+    "DirectoryGroup": {
+      "type": "object",
+      "properties": {
+        "groupName": {
+          "type": "string"
+        },
+        "directory_name": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DirectoryGroups": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DirectoryGroup"
+          }
+        }
+      }
+    },
+    "EventDetails": {
+      "type": "object",
+      "properties": {
+        "eventItemDescription": {
+          "type": "string"
+        },
+        "eventItemName": {
+          "type": "string"
+        },
+        "eventItemSnmpOid": {
+          "type": "string"
+        },
+        "eventItemValue": {
+          "type": "string"
+        },
+        "isThisVarbindData": {
+          "type": "boolean",
+          "default": false
+        },
+        "varBindOrderIndex": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "EventsEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventsEntry"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "eventsEntries"
+      }
+    },
+    "EventsEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "uuid": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT",
+            "ALERT_INFO"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Disabled",
+            "OK",
+            "Unknown",
+            "Warning"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "Deferrable",
+            "High",
+            "Immediate",
+            "Medium",
+            "None",
+            "Unknown"
+          ]
+        },
+        "descriptionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveAction": {
+          "type": "string"
+        },
+        "correctiveActionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "eventCode": {
+          "type": "string"
+        },
+        "serviceEventSource": {
+          "type": "boolean",
+          "default": false
+        },
+        "serviceEventDetails": {
+          "$ref": "#/definitions/ServiceEventDetails"
+        },
+        "clearMatchingAlerts": {
+          "type": "boolean",
+          "default": false
+        },
+        "listToClear": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogKeyPair"
+          }
+        },
+        "eventDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EventDetails"
+          }
+        },
+        "eventTypeID": {
+          "type": "string"
+        },
+        "processed": {
+          "type": "boolean",
+          "default": false
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "rxTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "eventsEntry"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoArgWrapper": {
+      "type": "object",
+      "properties": {
+        "messageInfoArg": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        },
+        "stringArg": {
+          "type": "string"
+        },
+        "intArg": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "longArg": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "booleanArg": {
+          "type": "boolean",
+          "default": false
+        },
+        "dateArg": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "MessageInfoWrapper": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageInfoArgWrapper"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      }
+    },
+    "ProgressUpdate": {
+      "type": "object",
+      "properties": {
+        "statusUpdate": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "statusUpdateInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        }
+      }
+    },
+    "RealmConfig": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "realmName": {
+          "type": "string"
+        },
+        "realmClassName": {
+          "type": "string",
+          "xml": {
+            "name": "realmClass"
+          }
+        }
+      }
+    },
+    "RealmConfigs": {
+      "type": "object",
+      "properties": {
+        "realmConfigs": {
+          "type": "array",
+          "xml": {
+            "name": "realmConfig"
+          },
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/RealmConfig"
+          }
+        }
+      }
+    },
+    "SSLCertificate": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "alternativeName": {
+          "type": "string"
+        },
+        "base64Data": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "challengePassword": {
+          "type": "string"
+        },
+        "commonName": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "distinguishedName": {
+          "type": "string"
+        },
+        "dnQualifier": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        },
+        "expiresInDays": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "locality": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "organizationalUnit": {
+          "type": "string"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "md5Fingerprint": {
+          "type": "string"
+        },
+        "sha1Fingerprint": {
+          "type": "string"
+        },
+        "sha256Fingerprint": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subjectAlternativeNameType": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unstructuredName": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "ServiceEventDetails": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string"
+        },
+        "remoteSupportState": {
+          "type": "string",
+          "enum": [
+            "Closed",
+            "Error",
+            "None",
+            "Open",
+            "Pending",
+            "Received",
+            "Submitted"
+          ]
+        },
+        "primaryContact": {
+          "type": "string"
+        }
+      }
+    },
+    "TaskError": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "recommendedActions": {
+          "type": "string"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        },
+        "resolutionInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        }
+      },
+      "xml": {
+        "name": "taskError"
+      }
+    },
+    "TasksEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TasksEntry"
+          }
+        }
+      },
+      "xml": {
+        "name": "taskEntries"
+      }
+    },
+    "TasksEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "associatedTaskUri": {
+          "type": "string"
+        },
+        "computedPercentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "parentTaskUri": {
+          "type": "string"
+        },
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "progressUpdates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProgressUpdate"
+          }
+        },
+        "taskErrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskError"
+          }
+        },
+        "taskStatus": {
+          "type": "string"
+        },
+        "taskState": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Starting",
+            "Running",
+            "Suspended",
+            "Completed",
+            "Killed",
+            "Error",
+            "Stopping",
+            "Stopped",
+            "Unknown"
+          ]
+        },
+        "taskOutput": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "taskType": {
+          "type": "string"
+        },
+        "userInitiated": {
+          "type": "boolean",
+          "default": false
+        },
+        "taskId": {
+          "type": "string"
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "stateReason": {
+          "type": "string"
+        },
+        "purposeInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "taskOutputInfos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageInfoWrapper"
+          }
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "taskEntry"
+      }
+    },
+    "UnboundidDSRealmConfig": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/RealmConfig"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userNamingAttribute": {
+              "type": "string"
+            },
+            "baseDN": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "offline": {
+              "type": "boolean",
+              "default": false
+            },
+            "checkCertificates": {
+              "type": "boolean",
+              "default": false
+            },
+            "autoConfigureSecurity": {
+              "type": "boolean",
+              "default": false
+            },
+            "timeout": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "servers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UnboundidDSServer"
+              }
+            },
+            "bindUser": {
+              "type": "string"
+            },
+            "bindPassword": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "UnboundidDSRealmConfig"
+          }
+        }
+      ]
+    },
+    "UnboundidDSServer": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "certs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SSLCertificate"
+          }
+        },
+        "isSecure": {
+          "type": "boolean",
+          "default": false
+        },
+        "useStartTLS": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "UserEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserEntry"
+          }
+        }
+      }
+    },
+    "UserEntry": {
+      "type": "object",
+      "required": [
+        "roles",
+        "userName"
+      ],
+      "properties": {
+        "roles": {
+          "type": "array",
+          "description": "a list of roles",
+          "items": {
+            "type": "string"
+          }
+        },
+        "directory_name": {
+          "type": "string",
+          "example": "mydomain.com",
+          "description": "the name of an existing directory (directory users only)."
+        },
+        "userName": {
+          "type": "string",
+          "description": "the user name (login name) of the user account. The user will be created if the user is local. Needs to pre-exist if the user is an existing directory account."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "the full name of the user (local users only)."
+        },
+        "mobilePhone": {
+          "type": "string",
+          "example": "555-123-1234",
+          "description": "the mobile phone number of the user (local users only)."
+        },
+        "officePhone": {
+          "type": "string",
+          "example": "555-123-1234",
+          "description": "the office phone number of the user (local users only)"
+        },
+        "emailAddress": {
+          "type": "string",
+          "example": "john.doe@company.com",
+          "description": "the email address of the user (local users only)."
+        },
+        "password": {
+          "type": "string",
+          "example": "test123",
+          "description": "the password of the user. Only configurable if the user is local. Required if the user is local."
+        },
+        "uri": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean",
+          "default": false
+        },
+        "roleIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [
+
+      ],
+      "oauth": [
+
+      ]
+    }
+  ]
+}
