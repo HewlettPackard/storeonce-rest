@@ -3,7 +3,7 @@
   "info": {
     "description": "unused",
     "version": "3.19-SNAPSHOT",
-    "title": "unused"
+    "title": "Hardware Monitoring"
   },
   "basePath": "/hwmonitor",
   "tags": [
