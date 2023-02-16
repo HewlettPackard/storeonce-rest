@@ -60,7 +60,7 @@
         "path": "versions/4.3.2/licensing.json"
     },
     {
-        "name": "management-services.json",
+        "name": "management_services.json",
         "path": "versions/4.3.2/management-services.json"
     },
     {
@@ -68,7 +68,7 @@
         "path": "versions/4.3.2/nas.json"
     },
     {
-        "name": "remote-logging.json",
+        "name": "remote_logging.json",
         "path": "versions/4.3.2/remote-logging.json"
     },
     {
@@ -88,8 +88,8 @@
         "path": "versions/4.3.2/snmp.json"
     },
     {
-        "name": "storeonce.json",
-        "path": "versions/4.3.2/storeonce.json"
+        "name": "storage.json",
+        "path": "versions/4.3.2/storage.json"
     },
     {
         "name": "vtl.json",

@@ -3,7 +3,7 @@
   "info": {
     "description": "unused",
     "version": "2.3-SNAPSHOT",
-    "title": "unused"
+    "title": "Email subscriptions"
   },
   "host": "APPLIANCE-ADDRESS",
   "basePath": "/rest",
