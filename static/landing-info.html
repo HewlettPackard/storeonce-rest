@@ -1,6 +1,7 @@
 <h1>Contents</h1>
 <p><a href="#Introduction">Introduction</a></p>
 <p><a href="#Authentication">Authentication</a></p>
+<p><a href="#MFA">Two-Factor Authentication</a></p>
 <p><a href="#Authorization">Authorization</a></p>
 <p><a href="#Addresses">Addresses and Base URL</a></p>
 <p><a href="#Asynchronous">Asynchronous Task Management for Long Running Requests</a></p>
@@ -23,6 +24,91 @@
 <h1 id="Authentication">Authentication</h1>
 <p>Every REST call requires authentication. All unauthenticated requests, or invalid
 	credentials, will return <strong>401 Unauthorized.</strong></p><br />
+
+
+
+<h1 id="MFA">Two-Factor Authentication</h1>
+<p>Two-factor authentication (2FA) provides additional security for users logging into the StoreOnce system, granting clients access to the system only when they present at least two factors of authentication. A Time Based One Time Password (TOTP) is generated using an external mobile application, such as Google Authenticator or Microsoft Authenticator. The one time password is generated based on the current system time for uniqueness.</p>
+<p>Once the users 2FA activation process is completed via the GUI, The user authentication can be achieved using the REST API.</p>
+
+<h3>Example: StoreOnce Login process when Two-Factor Authentication is active.</h3>
+<ol>
+	<li>Login to the StoreOnce system using username and password credentials.</li>
+</ol>
+<pre>
+	curl --location 'https://192.168.0.1/pml/login/authenticatewithobject' \
+	     --header 'Content-Type: application/json' \
+	     --data '{"username": "StorageAdmin","password": "tiYp6BkxCiidGtc","grant_type": "password"}'
+</pre>
+<ol start="2">
+	<li>As a response, above command will provide the one time state token for the next step and return <strong>401 Unauthorized.</strong></li>
+</ol>
+<pre>
+	{
+		"code":"MFA_TOTP_REQUIRED",
+		"stateToken":"6xxxxxxx-xxxxx-xxxx-xxxx-xxxxxx1",
+		"userName":"StorageAdmin"},
+		"message":"The account is secured using two-factor authentication (2FA) and requires the second factor","resolution":"Please provide the second factor of authentication"
+	}
+</pre>
+<ol start="3">
+	<li>Enter the state token received in previous step along with the TOTP.</li>
+	<p><strong>Note :</strong> Generate Time Based One Time Password(TOTP) using the external Authenticator Application and use the same TOTP in the request. </p>
+</ol>
+<pre>
+	curl --location 'https://192.168.0.1/pml/login/mfa' \
+	     --header 'Content-Type: application/json' \
+	     --data '{"username": "StorageAdmin","stateToken": "6xxxxxx-xxxx-xxxx-xxxx-xxxxxxxx1","totp": "2xxxx6"}'
+</pre>
+<ol start="4">
+	<li>Above command responds back <strong>200 OK</strong> with the body :</li>
+</ol>
+<pre>
+	{
+		"expires_in":"2700",
+		"refresh_token":"axxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx3",
+		"access_token":"6xxxxxxx-xxxx-xxxx-xxx-xxxxxxxx1",
+		"sessionID":"bxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxx8",
+		"userName":"StorageAdmin"
+	}
+</pre>
+<ol start="5">
+	<li>For example, request to get system information from the StoreOnce system :</li>
+</ol>
+<pre>
+	curl --request GET \
+		 --url https://192.168.0.1/api/v1/management-services/system/information \
+		 --header 'Accept: application/json' \
+		 --header 'Authorization: Bearer 6xxxxxxx-xxxxx-xxxx-xxxx-xxxxxxxx1' \
+</pre>
+<ol start="6">
+	<li>Response body for the above request from the StoreOnce will be as below :</li>
+</ol>
+<pre>
+	{
+		"softwareVersion": "4.3.7-2332.20",
+		"hostname": "SxxxxxxxxxJ",
+		"productSku": "xxxxxx-xxxx",
+		"productName": "HPE StoreOnce VSA",
+		"serialNumber": "xxxxxxxxxxx",
+		"warrantySerialNumber": "",
+		"systemUuid": "9xxxxxxx--xxxx-xxxx-xxxxxxxxc",
+		"managementAddress": "192.168.0.1",
+		"systemLocation": "XxxxxxX",
+		"contactName": "Owner Name",
+		"contactNumber": "",
+		"contactEmail": "",
+		"opeToken": "",
+		"platformCustomerId": "",
+		"applicationCustomerId": "",
+		"operationalMode": "PRODUCTION"
+	}
+</pre>
+
+
+
+
+
 
 
 <h1 id="Authorization">Authorization</h1>
