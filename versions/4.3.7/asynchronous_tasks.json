@@ -1,0 +1,1785 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "4.25.0-SNAPSHOT",
+    "title": "Asynchronous Task Management"
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "basePath": "/pml",
+  "tags": [
+    {
+      "name": "Asynchronous Task Management"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/asynchronous_operation_task": {
+      "get": {
+        "tags": [
+          "PML Task framework"
+        ],
+        "summary": "Get Task objects",
+        "description": "",
+        "operationId": "getTasks",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tasks-only",
+            "in": "query",
+            "description": "If this query parameter is specified, only the PML Tasks will bereturned. Otherwise both, PML Tasks and all pending or just completed async REST requests will be returned",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Tasks"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_task:read",
+          "pml_task:write"
+        ]
+      }
+    },
+    "/asynchronous_operation_task/usageReport": {
+      "get": {
+        "tags": [
+          "PML Task framework"
+        ],
+        "summary": "Get resource usage report",
+        "description": "",
+        "operationId": "getTaskResourceUsageReport",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/TaskResourceUsageReport"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_task:read",
+          "pml_task:write"
+        ]
+      }
+    },
+    "/asynchronous_operation_task/{id}": {
+      "get": {
+        "tags": [
+          "PML Task framework"
+        ],
+        "summary": "Get Task object by id",
+        "description": "",
+        "operationId": "getTask",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Task id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "updatestate",
+            "in": "query",
+            "description": "If this query parameter is specified and its value is true, the TaskFramework will execute task update state on the Task's target node to get the most recenet task state. If this query parameter is not specified or its value is not true, the TaskFramework will returna cached Task state known from the last task update that happens every minute.",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_task:read",
+          "pml_task:write"
+        ]
+      }
+    },
+    "/asynchronous_operation_task/{id}/taskinfo": {
+      "get": {
+        "tags": [
+          "PML Task framework"
+        ],
+        "summary": "Get Task extended info object by id",
+        "description": "",
+        "operationId": "getTaskInfo",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Task id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/TaskInfo"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "pml_task:read",
+          "pml_task:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "AuthCheckResponse": {
+      "type": "object",
+      "properties": {
+        "authenticated": {
+          "type": "boolean",
+          "xml": {
+            "name": "val"
+          },
+          "description": "value of the check",
+          "default": false
+        }
+      }
+    },
+    "AuthenticationTransfer": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "grant_type": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "AuthTransfer"
+      }
+    },
+    "BaseSessionToken": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "clientHost": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "uniqueKey": {
+          "type": "string"
+        },
+        "loginDomain": {
+          "type": "string"
+        },
+        "sessionId": {
+          "type": "string"
+        },
+        "lastAccessed": {
+          "type": "string"
+        },
+        "lastHeartBeat": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "valid": {
+          "type": "boolean",
+          "default": false
+        },
+        "sharedToken": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "Session"
+      }
+    },
+    "Catalog": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "CatalogKeys": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "array",
+          "xml": {
+            "name": "key"
+          },
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "keys"
+      }
+    },
+    "CatalogMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "message"
+      }
+    },
+    "Catalogs": {
+      "type": "object",
+      "properties": {
+        "catalogs": {
+          "type": "array",
+          "xml": {
+            "name": "catalog"
+          },
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "catalogs"
+      }
+    },
+    "CertificateDto": {
+      "type": "object",
+      "properties": {
+        "base64Data": {
+          "type": "string"
+        }
+      }
+    },
+    "CertificateList": {
+      "type": "object",
+      "properties": {
+        "certificates": {
+          "type": "array",
+          "xml": {
+            "name": "certificate"
+          },
+          "items": {
+            "$ref": "#/definitions/SSLCertificate"
+          }
+        }
+      },
+      "xml": {
+        "name": "certificates"
+      }
+    },
+    "ClusterFormationInfo": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ComponentHealthState": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "xml": {
+            "name": "ComponentName"
+          }
+        },
+        "state": {
+          "xml": {
+            "name": "ComponentHealth"
+          },
+          "$ref": "#/definitions/HealthState"
+        }
+      },
+      "xml": {
+        "name": "HealthState"
+      }
+    },
+    "ContextResolverJAXBContext": {
+      "type": "object"
+    },
+    "CookieSessionToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSessionToken"
+        },
+        {
+          "type": "object",
+          "xml": {
+            "name": "CookieSessionToken"
+          }
+        }
+      ]
+    },
+    "DNameFields": {
+      "type": "object",
+      "properties": {
+        "cn": {
+          "type": "string"
+        },
+        "ou": {
+          "type": "string"
+        },
+        "o": {
+          "type": "string"
+        },
+        "l": {
+          "type": "string"
+        },
+        "st": {
+          "type": "string"
+        },
+        "c": {
+          "type": "string"
+        }
+      }
+    },
+    "DirectoryRealmStatus": {
+      "type": "object",
+      "properties": {
+        "connected": {
+          "type": "boolean",
+          "default": false
+        },
+        "realmName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "baseDNs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "userNamingAttribute": {
+          "type": "string"
+        },
+        "supportedControls": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supportedLDAPVersion": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "maxConnectionCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "curConnectionCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "failedConnectionAttempts": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "successfulConnectionAttempts": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "maxConnectionAge": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DistinguishedName": {
+      "type": "object",
+      "properties": {
+        "distinguished_name": {
+          "type": "string",
+          "xml": {
+            "name": "value"
+          }
+        }
+      },
+      "xml": {
+        "name": "distinguished_name"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string"
+        }
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "FormDataContentDisposition": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "fileName": {
+          "type": "string"
+        },
+        "creationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modificationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "readDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "size": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Group": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "Groups": {
+      "type": "object",
+      "properties": {
+        "Groups": {
+          "type": "array",
+          "xml": {
+            "name": "Group"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/Group"
+          }
+        }
+      }
+    },
+    "HealthExtension": {
+      "type": "object",
+      "xml": {
+        "name": "HealthExtension"
+      }
+    },
+    "HealthState": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "DEGRADED",
+            "FAILED",
+            "UNKNOWN"
+          ]
+        },
+        "associatedMessageInfo": {
+          "xml": {
+            "name": "associatedMessage"
+          },
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveActionInfo": {
+          "xml": {
+            "name": "correctiveAction"
+          },
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "healthExtension": {
+          "xml": {
+            "name": "HealthExtension"
+          },
+          "$ref": "#/definitions/HealthExtension"
+        }
+      }
+    },
+    "HealthStates": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "xml": {
+            "name": "ComponentHealthState"
+          },
+          "items": {
+            "$ref": "#/definitions/ComponentHealthState"
+          }
+        }
+      },
+      "xml": {
+        "name": "ComponentHealthStates"
+      }
+    },
+    "Initialized": {
+      "type": "object",
+      "properties": {
+        "initialized": {
+          "type": "boolean",
+          "xml": {
+            "name": "val"
+          },
+          "default": false
+        }
+      }
+    },
+    "InputStream": {
+      "type": "object"
+    },
+    "KeyPair": {
+      "type": "object",
+      "properties": {
+        "publicKey": {
+          "$ref": "#/definitions/CertificateDto"
+        },
+        "privateKey": {
+          "$ref": "#/definitions/CertificateDto"
+        },
+        "privateKeyPass": {
+          "type": "string"
+        }
+      }
+    },
+    "ManagedGroup": {
+      "type": "object",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "managedUsers": {
+          "$ref": "#/definitions/ManagedUsers"
+        }
+      },
+      "xml": {
+        "name": "managedGroup"
+      }
+    },
+    "ManagedGroups": {
+      "type": "object",
+      "properties": {
+        "managedGroupSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedGroup"
+          }
+        },
+        "managedGroups": {
+          "type": "array",
+          "xml": {
+            "name": "managedGroup"
+          },
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedGroup"
+          }
+        }
+      }
+    },
+    "ManagedUser": {
+      "type": "object",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "managed": {
+          "type": "boolean",
+          "default": false
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "officePhone": {
+          "type": "string"
+        },
+        "mobilePhone": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean",
+          "default": false
+        },
+        "pastPasswords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lastPasswordDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256fingerprint": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "managedUser"
+      }
+    },
+    "ManagedUsers": {
+      "type": "object",
+      "properties": {
+        "managedUserSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedUser"
+          }
+        },
+        "managedUsers": {
+          "type": "array",
+          "xml": {
+            "name": "managedUser"
+          },
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ManagedUser"
+          }
+        }
+      },
+      "xml": {
+        "name": "ManagedUsers"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "MessageInfoImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "Node": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "Nodes": {
+      "type": "object",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "xml": {
+            "name": "node"
+          },
+          "items": {
+            "$ref": "#/definitions/Node"
+          }
+        },
+        "activeNode": {
+          "$ref": "#/definitions/Node"
+        }
+      },
+      "xml": {
+        "name": "ClusterNodes"
+      }
+    },
+    "OAuth2SessionToken": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/BaseSessionToken"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "transferToken": {
+              "$ref": "#/definitions/OAuth2TransferToken"
+            }
+          },
+          "xml": {
+            "name": "oAuth2SessionToken"
+          }
+        }
+      ]
+    },
+    "OAuth2TransferToken": {
+      "type": "object",
+      "properties": {
+        "expires_in": {
+          "type": "string"
+        },
+        "refresh_token": {
+          "type": "string"
+        },
+        "access_token": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "sessionID": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "Permission": {
+      "type": "object"
+    },
+    "PermissionSpec": {
+      "type": "object",
+      "properties": {
+        "assignablePermission": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "wildcardPermission": {
+          "$ref": "#/definitions/WildcardPermission"
+        }
+      },
+      "xml": {
+        "name": "permission"
+      }
+    },
+    "PermissionSpecs": {
+      "type": "object",
+      "properties": {
+        "Permissions": {
+          "type": "array",
+          "xml": {
+            "name": "Permission"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/PermissionSpec"
+          }
+        }
+      }
+    },
+    "PmVif": {
+      "type": "object",
+      "properties": {
+        "ipaddress": {
+          "type": "string"
+        },
+        "ifdevice": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "vif"
+      }
+    },
+    "PmVifs": {
+      "type": "object",
+      "properties": {
+        "vifs": {
+          "type": "array",
+          "xml": {
+            "name": "vif"
+          },
+          "items": {
+            "$ref": "#/definitions/PmVif"
+          }
+        }
+      },
+      "xml": {
+        "name": "vifs"
+      }
+    },
+    "RealmConfig": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "realmName": {
+          "type": "string"
+        },
+        "realmClassName": {
+          "type": "string",
+          "xml": {
+            "name": "realmClass"
+          }
+        }
+      }
+    },
+    "RealmConfigs": {
+      "type": "object",
+      "properties": {
+        "realmConfigs": {
+          "type": "array",
+          "xml": {
+            "name": "realmConfig"
+          },
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/RealmConfig"
+          }
+        }
+      }
+    },
+    "RemoteTrustInfo": {
+      "type": "object",
+      "properties": {
+        "trustRequests": {
+          "$ref": "#/definitions/TrustRequests"
+        },
+        "trusterConnections": {
+          "$ref": "#/definitions/TrusterConnections"
+        },
+        "trusterConnectionSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/TrusterConnection"
+          }
+        },
+        "trustRequestSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/TrustRequest"
+          }
+        }
+      }
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "hiddenRole": {
+          "type": "boolean",
+          "default": false
+        },
+        "permissions": {
+          "$ref": "#/definitions/PermissionSpecs"
+        },
+        "groups": {
+          "$ref": "#/definitions/Groups"
+        },
+        "users": {
+          "$ref": "#/definitions/Users"
+        },
+        "shiroPermissionSet": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/Permission"
+          }
+        }
+      }
+    },
+    "Roles": {
+      "type": "object",
+      "properties": {
+        "Roles": {
+          "type": "array",
+          "xml": {
+            "name": "Role"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/Role"
+          }
+        }
+      }
+    },
+    "SSLCertificate": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "alternativeName": {
+          "type": "string"
+        },
+        "base64Data": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "challengePassword": {
+          "type": "string"
+        },
+        "commonName": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "distinguishedName": {
+          "type": "string"
+        },
+        "dnQualifier": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        },
+        "expiresInDays": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "locality": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "organizationalUnit": {
+          "type": "string"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "md5Fingerprint": {
+          "type": "string"
+        },
+        "sha1Fingerprint": {
+          "type": "string"
+        },
+        "sha256Fingerprint": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subjectAlternativeNameType": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unstructuredName": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "Sessions": {
+      "type": "object",
+      "properties": {
+        "sessions": {
+          "type": "array",
+          "xml": {
+            "name": "session"
+          },
+          "items": {
+            "$ref": "#/definitions/BaseSessionToken"
+          }
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "Current state of the task",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time the task was started"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Time the task completed, if applicable"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "dataObject": {
+          "type": "object"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string",
+          "description": "URI of the associated resource"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the task"
+        },
+        "purpose": {
+          "type": "string",
+          "description": "Reason this task was created"
+        },
+        "purposeMessage": {
+          "description": "Localised reason this task was created",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "i18nResponse": {
+          "description": "Localised task response information",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "response": {
+          "type": "string"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/extendedError"
+        },
+        "contextResolver": {
+          "$ref": "#/definitions/ContextResolverJAXBContext"
+        }
+      }
+    },
+    "TaskInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoImpl"
+        },
+        "messageInfo": {
+          "xml": {
+            "name": "message"
+          },
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "taskid": {
+          "type": "string"
+        }
+      }
+    },
+    "TaskResourceUsageReport": {
+      "type": "object",
+      "properties": {
+        "estimatedSizesByPurpose": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "estimatedSizesByCatalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "numberOfTasksPerCatalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "numberOfTasksPerValue": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "estimatedUsagePerCatalog": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "estimatedUsagePerValue": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "totalUsage": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalTasks": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Tasks": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "xml": {
+            "name": "task"
+          },
+          "items": {
+            "$ref": "#/definitions/Task"
+          }
+        }
+      },
+      "xml": {
+        "name": "tasks"
+      }
+    },
+    "TrustRequest": {
+      "type": "object",
+      "required": [
+        "clientCACertificate",
+        "clientCertificateFingerprint",
+        "clientsAlias",
+        "serversNameForClient"
+      ],
+      "properties": {
+        "clientsAlias": {
+          "type": "string",
+          "description": "The client keystore alias for the certificate for which trust is being requested"
+        },
+        "clientCertificateFingerprint": {
+          "type": "string",
+          "description": "The fingerprint for the certificate for which trust is being requested"
+        },
+        "clientCACertificate": {
+          "description": "The signing authority certificate of the signing authority that signed the certificate",
+          "$ref": "#/definitions/CertificateDto"
+        },
+        "serversNameForClient": {
+          "type": "string",
+          "description": "The importing server's name for this client certificate, the external id for this trust request"
+        },
+        "id": {
+          "type": "string",
+          "description": "The internal id of this trust request"
+        }
+      }
+    },
+    "TrustRequests": {
+      "type": "object",
+      "properties": {
+        "trustRequests": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/TrustRequest"
+          }
+        }
+      }
+    },
+    "TrusterConnection": {
+      "type": "object",
+      "required": [
+        "clientNameForConnection",
+        "clientsAlias",
+        "connectionAddress",
+        "serverCACertificate"
+      ],
+      "properties": {
+        "connectionAddress": {
+          "type": "string",
+          "description": "This is the address the trusting server provides which the client can use to connect"
+        },
+        "clientsAlias": {
+          "type": "string",
+          "description": "This is the alias of the client certificate that this connection will honor"
+        },
+        "serverCACertificate": {
+          "description": "The signing authority certificate of the signing authority that signed the server's certificate",
+          "$ref": "#/definitions/CertificateDto"
+        },
+        "clientNameForConnection": {
+          "type": "string",
+          "description": "This is the external id for this request"
+        },
+        "clusterUuid": {
+          "type": "string",
+          "description": "The clusterUuid of the truster automatically added"
+        },
+        "id": {
+          "type": "string",
+          "description": "The internal id of this trust request"
+        }
+      }
+    },
+    "TrusterConnections": {
+      "type": "object",
+      "properties": {
+        "trusterConnections": {
+          "type": "array",
+          "xml": {
+            "name": "remoteConnection"
+          },
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/TrusterConnection"
+          }
+        }
+      }
+    },
+    "UnboundidDSRealmConfig": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/RealmConfig"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userNamingAttribute": {
+              "type": "string"
+            },
+            "baseDN": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "offline": {
+              "type": "boolean",
+              "default": false
+            },
+            "checkCertificates": {
+              "type": "boolean",
+              "default": false
+            },
+            "autoConfigureSecurity": {
+              "type": "boolean",
+              "default": false
+            },
+            "timeout": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "servers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UnboundidDSServer"
+              }
+            },
+            "bindUser": {
+              "type": "string"
+            },
+            "bindPassword": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "UnboundidDSRealmConfig"
+          }
+        }
+      ]
+    },
+    "UnboundidDSServer": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "certs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SSLCertificate"
+          }
+        },
+        "isSecure": {
+          "type": "boolean",
+          "default": false
+        },
+        "useStartTLS": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "UpgradeState": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "the name of the current node only supplied if PML has been configured"
+        },
+        "mode": {
+          "type": "string",
+          "description": "ACTIVE, PASSIVE, or NOPMFAILOVER"
+        },
+        "modifier": {
+          "type": "string",
+          "description": "UPGRADING or CONFIG_SUPPRESSED or nothing"
+        },
+        "restReady": {
+          "type": "boolean",
+          "description": "true if mode is ACTIVE and name is not empty, implication is that PML is setup and ACTIVE",
+          "default": false
+        }
+      }
+    },
+    "UpgradeStates": {
+      "type": "object",
+      "properties": {
+        "upgradeStates": {
+          "type": "array",
+          "xml": {
+            "name": "upgradeState"
+          },
+          "items": {
+            "$ref": "#/definitions/UpgradeState"
+          }
+        }
+      },
+      "xml": {
+        "name": "UpgradeStates"
+      }
+    },
+    "User": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "realmName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "managed": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "Users": {
+      "type": "object",
+      "properties": {
+        "Users": {
+          "type": "array",
+          "xml": {
+            "name": "User"
+          },
+          "readOnly": true,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      }
+    },
+    "WildcardPermission": {
+      "type": "object"
+    },
+    "extendedError": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "description": "Severity of the error",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          },
+          "description": "The error message localised for the requested locale"
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          },
+          "description": "The resolution details localised for the requested locale"
+        },
+        "message": {
+          "description": "Details of the error",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "resolution": {
+          "description": "Details of how to resolve the error, if applicable",
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

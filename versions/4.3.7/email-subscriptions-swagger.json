@@ -1,0 +1,1343 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "2.3-SNAPSHOT",
+    "title": "Email subscriptions service"
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "basePath": "/rest",
+  "tags": [
+    {
+      "name": "Email subscriptions service"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/email": {
+      "get": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Get PML cluster SMTP configurations",
+        "description": "returns SMTP configuration as a Subscription object with most fields omitted",
+        "operationId": "getEmailConfiguration",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "profile",
+            "in": "query",
+            "description": "Does NOT need to be set. Possible value: PROD\\QA\\DEV.PROD is the default and the only one used.",
+            "required": false,
+            "type": "string",
+            "default": "PROD\\QA\\DEV.PROD"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionExample1"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:read",
+          "mgmt_email_notifications:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Create or update PML cluster SMTP configuration",
+        "description": "Need to set emailConfiguration in Subscription object body parameter.\nMinimum fields: \"senderEmailAddress\", \"smtpServer\", \"smtpPort\"",
+        "operationId": "updateEmailConfiguration",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "subscription",
+            "description": "Subscription object containing one email configuration",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscriptionExample2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionExample1"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Clear SMTP configuration and all email subscriptions",
+        "description": "Reset to factory default with no SMTP configuration or subscriptions",
+        "operationId": "clearSMTPSettings",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      }
+    },
+    "/email/notifications": {
+      "get": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Get a complete list of email subscriptions",
+        "description": "",
+        "operationId": "getSubscriptions",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start position. If not specified, entries from position at index 0 will be returned",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "count",
+            "in": "query",
+            "description": "Number of entries to return. If not specified, maximum of 1000 entries will be returned",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "A general query string to narrow the list of resources returned. The query should use the URI Filter Language syntax. Example: severity:'Critical' AND alertState:'active'",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Sorting in the form: 'sort=prop:[desc|asc]' - where prop is the name of AlertsEntry property to use for sorting. Example: created:desc",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionsExample1"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:read",
+          "mgmt_email_notifications:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Create subscription resource(s)",
+        "description": "This is a batch operation which allows the creation of multiple subscriptions at once",
+        "operationId": "createSubscriptionsInBatch",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "subscriptions",
+            "description": "Subscriptions object containing list of Subscription objects",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscriptionsExample2"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      }
+    },
+    "/email/notifications/{id}": {
+      "get": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Get a subscription resource specified by subscription id",
+        "description": "",
+        "operationId": "getSubscription",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SubscriptionExample3"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:read",
+          "mgmt_email_notifications:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Create or update an email subscription by specified subscription id",
+        "description": "",
+        "operationId": "createSubscription",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "subscription",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscriptionExample4"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Delete a subscription resource by subscription id",
+        "description": "",
+        "operationId": "removeSubscription",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Update an existing subscription by specified subscription id",
+        "description": "",
+        "operationId": "modifySubscription",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "subscription",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubscriptionExample4"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      }
+    },
+    "/email/smtp": {
+      "delete": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Clear SMTP configuration",
+        "description": "",
+        "operationId": "removeSmtpConfiguration",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      }
+    },
+    "/email/{id}": {
+      "post": {
+        "tags": [
+          "Email subscriptions service"
+        ],
+        "summary": "Send test email using PML cluster SMTP configuration specified by SMTP configuration id, and receiver email(s)",
+        "description": "Receiver email(s) required. E.g. {\"destination\":\"test1@hpe.com\"}",
+        "operationId": "sendTestSMTPEmail",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Default value: 1",
+            "required": true,
+            "type": "string",
+            "default": "1"
+          },
+          {
+            "name": "profile",
+            "in": "query",
+            "description": "Does NOT need to be set. Possible value: PROD\\QA\\DEV.PROD is the default and the only one used.",
+            "required": false,
+            "type": "string",
+            "default": "PROD\\QA\\DEV.PROD"
+          },
+          {
+            "in": "body",
+            "name": "receiverEmail",
+            "description": "Receiver email(s) (comma-separated)",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReceiverEmailExample"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_email_notifications:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AlertsEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "uuid": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "INFO",
+            "WARN",
+            "ALERT",
+            "ALERT_INFO"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Disabled",
+            "OK",
+            "Unknown",
+            "Warning"
+          ]
+        },
+        "urgency": {
+          "type": "string",
+          "enum": [
+            "Deferrable",
+            "High",
+            "Immediate",
+            "Medium",
+            "None",
+            "Unknown"
+          ]
+        },
+        "descriptionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "correctiveAction": {
+          "type": "string"
+        },
+        "correctiveActionInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "eventCode": {
+          "type": "string"
+        },
+        "serviceEventSource": {
+          "type": "boolean",
+          "default": false
+        },
+        "serviceEventDetails": {
+          "$ref": "#/definitions/ServiceEventDetails"
+        },
+        "clearMatchingAlerts": {
+          "type": "boolean",
+          "default": false
+        },
+        "listToClear": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CatalogKeyPair"
+          }
+        },
+        "alertState": {
+          "type": "string",
+          "enum": [
+            "Active",
+            "Cleared",
+            "Locked",
+            "None"
+          ]
+        },
+        "alertTypeID": {
+          "type": "string",
+          "example": "server",
+          "description": "The ...",
+          "readOnly": true
+        },
+        "associatedEventUris": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignedToUser": {
+          "type": "string"
+        },
+        "changeLog": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChangeLog"
+          }
+        },
+        "childAlerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "clearedByUser": {
+          "type": "string"
+        },
+        "clearedTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lifeCycle": {
+          "type": "boolean",
+          "default": false
+        },
+        "resourceID": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "description": "eAtlas alert",
+      "xml": {
+        "name": "alertsEntry"
+      }
+    },
+    "AlertsEntryExample": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Disabled",
+            "OK",
+            "Unknown",
+            "Warning"
+          ]
+        }
+      }
+    },
+    "AssociatedResource": {
+      "type": "object",
+      "properties": {
+        "associationType": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "resourceLocation": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        }
+      }
+    },
+    "Association": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentUri": {
+          "type": "string"
+        },
+        "parentCategory": {
+          "type": "string"
+        }
+      }
+    },
+    "CatalogKeyPair": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "ChangeLog": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "userEntered": {
+          "type": "boolean",
+          "default": false
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "EmailConfiguration": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "id",
+        "password",
+        "profile",
+        "senderEmailAddress",
+        "smtpPort",
+        "smtpServer"
+      ],
+      "properties": {
+        "password": {
+          "type": "string"
+        },
+        "senderEmailAddress": {
+          "type": "string"
+        },
+        "smtpPort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "smtpServer": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "PROD",
+            "QA",
+            "DEV"
+          ]
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "EmailConfigurationsExample1": {
+      "type": "object",
+      "properties": {
+        "smtpPort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "senderEmailAddress": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "smtpServer": {
+          "type": "string"
+        }
+      }
+    },
+    "EmailConfigurationsExample2": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "senderEmailAddress": {
+          "type": "string"
+        },
+        "smtpServer": {
+          "type": "string"
+        },
+        "smtpPort": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "PROD"
+          ]
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "EmailDestinations": {
+      "type": "object",
+      "required": [
+        "destination",
+        "emailFormat",
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "emailFormat": {
+          "type": "string",
+          "enum": [
+            "HTML",
+            "PLAIN_TEXT",
+            "RICH_TEXT"
+          ]
+        }
+      }
+    },
+    "EmailDestinationsExample": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string"
+        },
+        "emailFormat": {
+          "type": "string",
+          "enum": [
+            "HTML",
+            "PLAIN_TEXT",
+            "RICH_TEXT"
+          ]
+        }
+      }
+    },
+    "Members": {
+      "type": "object",
+      "required": [
+        "category",
+        "created",
+        "createdBy",
+        "displayQuery",
+        "emailDestinations",
+        "filter",
+        "filterText",
+        "id",
+        "indexQuery",
+        "indexUserQuery",
+        "modified",
+        "type",
+        "uri"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "displayQuery": {
+          "type": "string"
+        },
+        "filter": {
+          "$ref": "#/definitions/AlertsEntry"
+        },
+        "emailDestinations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailDestinations"
+          }
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "filterText": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "indexQuery": {
+          "type": "string"
+        },
+        "indexUserQuery": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "etag": {
+          "type": "string"
+        }
+      }
+    },
+    "MembersExample1": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdBy": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        },
+        "emailDestinations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailDestinationsExample"
+          }
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "filter": {
+          "$ref": "#/definitions/AlertsEntryExample"
+        },
+        "id": {
+          "type": "string"
+        },
+        "indexQuery": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "type": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        }
+      }
+    },
+    "MembersExample2": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "$ref": "#/definitions/AlertsEntryExample"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "emailDestinations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailDestinationsExample"
+          }
+        }
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "ReceiverEmailExample": {
+      "type": "object",
+      "properties": {
+        "destination": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "receiverEmail"
+      }
+    },
+    "ServiceEventDetails": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string"
+        },
+        "remoteSupportState": {
+          "type": "string",
+          "enum": [
+            "Closed",
+            "Error",
+            "None",
+            "Open",
+            "Pending",
+            "Received",
+            "Submitted"
+          ]
+        },
+        "primaryContact": {
+          "type": "string"
+        }
+      }
+    },
+    "Subscription": {
+      "type": "object",
+      "required": [
+        "category",
+        "created",
+        "createdby",
+        "id",
+        "members",
+        "modified",
+        "nextPageUri",
+        "prevPageUri",
+        "type",
+        "uri"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "createdby": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Members"
+          }
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "nextPageUri": {
+          "type": "object"
+        },
+        "prevPageUri": {
+          "type": "object"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "emailConfiguration": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EmailConfiguration"
+          }
+        },
+        "etag": {
+          "type": "string"
+        }
+      }
+    },
+    "SubscriptionExample1": {
+      "type": "object",
+      "properties": {
+        "emailConfigurations": {
+          "$ref": "#/definitions/EmailConfigurationsExample2"
+        }
+      },
+      "xml": {
+        "name": "subscription"
+      }
+    },
+    "SubscriptionExample2": {
+      "type": "object",
+      "properties": {
+        "emailConfigurations": {
+          "$ref": "#/definitions/EmailConfigurationsExample1"
+        }
+      },
+      "xml": {
+        "name": "subscription"
+      }
+    },
+    "SubscriptionExample3": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "createdby": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MembersExample1"
+          }
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "subscription"
+      }
+    },
+    "SubscriptionExample4": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MembersExample2"
+          }
+        }
+      },
+      "xml": {
+        "name": "subscription"
+      }
+    },
+    "SubscriptionExample5": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "createdby": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MembersExample1"
+          }
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Subscriptions": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "subscription"
+          },
+          "items": {
+            "$ref": "#/definitions/Subscription"
+          }
+        }
+      }
+    },
+    "SubscriptionsExample1": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unfilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "subscription": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubscriptionExample5"
+          }
+        }
+      },
+      "xml": {
+        "name": "subscriptions"
+      }
+    },
+    "SubscriptionsExample2": {
+      "type": "object",
+      "properties": {
+        "subscription": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubscriptionExample4"
+          }
+        }
+      },
+      "xml": {
+        "name": "subscriptions"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

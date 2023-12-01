@@ -38,5 +38,10 @@
     {
         "name": "4.3.6",
         "path": "versions/4.3.6"
+    },
+    {
+        "name": "4.3.7",
+        "path": "versions/4.3.7"
     }
 ]
+
