@@ -1,0 +1,642 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "14.5.2-SNAPSHOT",
+    "title": "Appliance"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Federation"
+    },
+    {
+      "name": "Member appliances"
+    },
+    {
+      "name": "Subscriber appliances"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/federation/members": {
+      "get": {
+        "tags": [
+          "Member appliances"
+        ],
+        "summary": "Reads the set of member appliances",
+        "description": "This list cannot be empty, it will always contain at least one element: the local appliance.",
+        "operationId": "getMembers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/MemberList"
+            }
+          },
+          "400": {
+            "description": "Invalid connection state value"
+          },
+          "500": {
+            "description": "Appliance store cannot be found"
+          }
+        },
+        "x-pmlPermissions": [
+          "federationmgmt:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Member appliances"
+        ],
+        "summary": "Adds a member appliance given its network address, user and password",
+        "description": "Asynchronous operation, poll the URL provided in the Content-Location header of the response to get the result.",
+        "operationId": "addMember",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Address, user & password of the new member",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddMemberPayload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "202": {
+            "description": "Request accepted"
+          },
+          "409": {
+            "description": "Member already in federation"
+          },
+          "500": {
+            "description": "Failed to get list of current members"
+          }
+        },
+        "x-pmlPermissions": [
+          "federationmgmt:create"
+        ]
+      }
+    },
+    "/federation/members/member/{uuid}": {
+      "get": {
+        "tags": [
+          "Member appliances"
+        ],
+        "summary": "Reads a member appliance given its UUID",
+        "description": "Instead of a regular UUID, the keyword \"localhost\" can be used to retrieve the local appliance.",
+        "operationId": "getMemberByUUID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the member",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Appliance"
+            }
+          },
+          "404": {
+            "description": "No member found for the provided UUID"
+          },
+          "500": {
+            "description": "Appliance store cannot be found"
+          }
+        },
+        "x-pmlPermissions": [
+          "federationmgmt:read"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Member appliances"
+        ],
+        "summary": "Deletes a member appliance given its UUID",
+        "description": "If the member is deleted, this resource will try to remove this localhost from that appliance subscriber list.Header user and password must be supplied",
+        "operationId": "deleteMember",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID of the member",
+            "required": true,
+            "type": "string",
+            "pattern": ".+"
+          },
+          {
+            "name": "localOnly",
+            "in": "query",
+            "description": "local option for local only delete",
+            "required": false,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "user",
+            "in": "header",
+            "description": "user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "header",
+            "description": "password",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "204": {
+            "description": "Successful operation"
+          },
+          "403": {
+            "description": "Attempt to modify localhost"
+          },
+          "404": {
+            "description": "No member found for the provided UUID"
+          },
+          "500": {
+            "description": "Appliance store cannot be found"
+          }
+        },
+        "x-pmlPermissions": [
+          "federationmgmt:delete"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "AddMemberPayload": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "AddMemberPayload"
+      }
+    },
+    "Appliance": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the appliance"
+        },
+        "address": {
+          "type": "string",
+          "description": "Network address of the appliance"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "Hostname of the appliance"
+        },
+        "productName": {
+          "type": "string",
+          "description": "Product name of the appliance"
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "Serial number of the appliance"
+        },
+        "localhost": {
+          "type": "boolean",
+          "description": "Value of the localhost flag of the appliance",
+          "default": false
+        },
+        "applianceState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Connection state of the appliance"
+        },
+        "applianceStateString": {
+          "type": "string",
+          "description": "connection state of the appliance as a string"
+        },
+        "stateUpdatedDate": {
+          "type": "string",
+          "description": "Last time the connection state of the appliance was updated",
+          "format": "date-time"
+        },
+        "federationApiVersion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Federation API version of the appliance"
+        },
+        "sinceStateUpdatedSeconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of seconds since the last time the connection state of the appliance was updated"
+        }
+      },
+      "xml": {
+        "name": "Appliance"
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "HeartbeatPayload": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "hostname": {
+          "type": "string"
+        },
+        "federationApiVersion": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "HeartbeatPayload"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "example": {
+          "type": "object"
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "format": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "UUID": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the appliance"
+        },
+        "runChecksOnly": {
+          "type": "boolean",
+          "description": "boolean indicating only test",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "UUID"
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "MemberList": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/Appliance"
+          }
+        }
+      },
+      "description": "Container for List of member Appliances",
+      "xml": {
+        "name": "MemberList"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

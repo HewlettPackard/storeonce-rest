@@ -1,0 +1,1141 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "5.5.2-SNAPSHOT",
+    "title": "SMM"
+  },
+  "basePath": "/api/v1/data-services",
+  "tags": [
+    {
+      "name": "Dedupe Store Secure Settings"
+    },
+    {
+      "name": "Events Parametrics Report"
+    },
+    {
+      "name": "Housekeeping Parametrics Report"
+    },
+    {
+      "name": "Max Streams Information"
+    },
+    {
+      "name": "Smm"
+    },
+    {
+      "name": "Smm Metadata"
+    },
+    {
+      "name": "Storage Parametrics Report"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/smm/parametrics-events": {
+      "get": {
+        "tags": [
+          "Events Parametrics Report"
+        ],
+        "summary": "List that provides events metrics at appliance level",
+        "description": "",
+        "operationId": "getAllSmmEventsParametrics",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/EventsMetricsGet"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "housekeeping:read"
+        ]
+      }
+    },
+    "/smm/parametrics-events/store/{storeid}": {
+      "get": {
+        "tags": [
+          "Events Parametrics Report"
+        ],
+        "summary": "List that provides events metrics for the store",
+        "description": "",
+        "operationId": "getOneSmmEventsParametrics",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "storeid",
+            "in": "path",
+            "description": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/EventsMetricsGetModelRestCollection"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid properties"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "housekeeping:read"
+        ]
+      }
+    },
+    "/smm/parametrics-housekeeping": {
+      "get": {
+        "tags": [
+          "Housekeeping Parametrics Report"
+        ],
+        "summary": "List that provides housekeeping metrics at appliance level",
+        "description": "",
+        "operationId": "getAllSmmHkParametrics",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/HkMetricsGet"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "housekeeping:read"
+        ]
+      }
+    },
+    "/smm/parametrics-housekeeping/store/{storeid}": {
+      "get": {
+        "tags": [
+          "Housekeeping Parametrics Report"
+        ],
+        "summary": "List that provides housekeeping metrics for the store",
+        "description": "",
+        "operationId": "getOneSmmHkParametrics",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "storeid",
+            "in": "path",
+            "description": "storeId",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "startDate",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "endDate",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "samples",
+            "in": "query",
+            "description": "samples",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request Successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/HkMetricsGet"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Properties"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "housekeeping:read"
+        ]
+      }
+    },
+    "/smm/session-streams": {
+      "get": {
+        "tags": [
+          "Max Streams Information"
+        ],
+        "summary": "Get storeonce max streams",
+        "description": "Returns the max supported streams",
+        "operationId": "getMaxStreams",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/SessionMaxStreams"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "smmsession:read"
+        ]
+      }
+    },
+    "/smm/stores": {
+      "get": {
+        "tags": [
+          "Dedupe Store Secure Settings"
+        ],
+        "summary": "Get store secure settings at appliance level",
+        "description": "Returns the list of store secure settings",
+        "operationId": "getAllStoreSecureSettings",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/StoreSecureSettingsGetModelRestCollection"
+            }
+          },
+          "500": {
+            "description": "SMM service is not available"
+          }
+        },
+        "x-pmlPermissions": [
+          "smmsession:read"
+        ]
+      }
+    },
+    "/smm/stores/store/{storeid}": {
+      "get": {
+        "tags": [
+          "Dedupe Store Secure Settings"
+        ],
+        "summary": "Get store secure settings for the store",
+        "description": "This operation will GET the details of the store secure settings according to the store ID",
+        "operationId": "getOneStoreSecureSettings",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "storeid",
+            "in": "path",
+            "description": "storeId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Settings fetched successfully",
+            "schema": {
+              "$ref": "#/definitions/StoreSecureSettingsGet"
+            }
+          },
+          "400": {
+            "description": "Request contains invalid properties"
+          },
+          "404": {
+            "description": "Store does not exist "
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "x-pmlPermissions": [
+          "smmsession:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "DateTimeOffsetRest": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
+    "EventsMetricsGet": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp for the metric sample",
+          "$ref": "#/definitions/DateTimeOffsetRest"
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Store ID",
+          "readOnly": true
+        },
+        "affectedContainerBlobsCount": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The affected container blobs count.",
+          "readOnly": true
+        },
+        "containerDataChecksumRecoveryCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The container data checksum recovery count.",
+          "readOnly": true
+        },
+        "corruptContainerDataCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The corrupt container data count.",
+          "readOnly": true
+        },
+        "corruptContainerIndexCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The corrupt container index count.",
+          "readOnly": true
+        },
+        "corruptItemMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The corrupt item meta count.",
+          "readOnly": true
+        },
+        "corruptItemVersionMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The corrupt item version meta count.",
+          "readOnly": true
+        },
+        "corruptPortionMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The corrupt portion meta count.",
+          "readOnly": true
+        },
+        "corruptStoreMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The corrupt store meta count.",
+          "readOnly": true
+        },
+        "emptyContainerDataDirCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The empty container data dir count.",
+          "readOnly": true
+        },
+        "emptyContainerIndexDirCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The empty container index dir count.",
+          "readOnly": true
+        },
+        "emptyItemDirCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The empty item dir count.",
+          "readOnly": true
+        },
+        "emptyPortionDirCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The empty portion dir count.",
+          "readOnly": true
+        },
+        "fileSystemCheckRequired": {
+          "type": "boolean",
+          "description": "The file system check required.",
+          "readOnly": true,
+          "default": false
+        },
+        "fileSystemRetryCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The file system retry count.",
+          "readOnly": true
+        },
+        "hashNegativeChunkRefCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The hash negative chunk ref count.",
+          "readOnly": true
+        },
+        "hashNegativeChunkRefJobSizeOnDiskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The hash negative chunk ref job size on disk.",
+          "readOnly": true
+        },
+        "hashZeroChunkRefCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The hash zero chunk ref count.",
+          "readOnly": true
+        },
+        "hashZeroChunkRefJobSizeOnDiskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The hash zero chunk ref job size on disk.",
+          "readOnly": true
+        },
+        "integrityErrorCode": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The integrity error code.",
+          "readOnly": true
+        },
+        "integrityEventErrorLevelCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The integrity event error count.",
+          "readOnly": true
+        },
+        "integrityEventMessage": {
+          "type": "string",
+          "description": "The integrity event message.",
+          "readOnly": true
+        },
+        "integrityEventType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The integrity event type.",
+          "readOnly": true
+        },
+        "integrityEventWarningLevelCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The integrity event warning count.",
+          "readOnly": true
+        },
+        "integrityFailFile": {
+          "type": "string",
+          "description": "The integrity fail file.",
+          "readOnly": true
+        },
+        "integrityFailureCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The integrity failure count.",
+          "readOnly": true
+        },
+        "integritySourceFile": {
+          "type": "string",
+          "description": "The integrity source file.",
+          "readOnly": true
+        },
+        "integritySourceLineNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The integrity source line number.",
+          "readOnly": true
+        },
+        "itemMetaRecoveryCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The item meta recovery count.",
+          "readOnly": true
+        },
+        "messageRecoveryIntegrityFailureCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The message recovery integrity failure count.",
+          "readOnly": true
+        },
+        "missingContainerDataCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The missing container data count.",
+          "readOnly": true
+        },
+        "missingContainerIndexCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The missing container index count.",
+          "readOnly": true
+        },
+        "missingItemMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The missing item meta count.",
+          "readOnly": true
+        },
+        "missingItemVersionMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The missing item version meta count.",
+          "readOnly": true
+        },
+        "missingPortionMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The missing portion meta count.",
+          "readOnly": true
+        },
+        "missingStoreMetaCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The missing store meta count.",
+          "readOnly": true
+        },
+        "multipleActiveHKJobsCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The multiple active housekeeping jobs count.",
+          "readOnly": true
+        },
+        "multipleActiveHKJobsSizeOnDiskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The multiple active housekeeping jobs size on disk.",
+          "readOnly": true
+        },
+        "oldestContainerMetaVersion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The oldest container meta version.",
+          "readOnly": true
+        },
+        "oldestPortionMetaVersion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The oldest portion meta version.",
+          "readOnly": true
+        },
+        "processJobIntegrityFailureCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The process job integrity failure count.",
+          "readOnly": true
+        },
+        "quarantinedContainerCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The quarantined container count.",
+          "readOnly": true
+        },
+        "quarantinedJobCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The quarantined job count.",
+          "readOnly": true
+        },
+        "quarantinedSizeOnDiskBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The quarantined size on disk.",
+          "readOnly": true
+        },
+        "queueRecoveryIntegrityFailureCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The queue recovery integrity failure count.",
+          "readOnly": true
+        },
+        "storeMetaRecoveryCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The store meta recovery count.",
+          "readOnly": true
+        },
+        "storeRecoveryCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The store recovery count.",
+          "readOnly": true
+        },
+        "storeRevisionHistory": {
+          "type": "string",
+          "description": "The store revision history.",
+          "readOnly": true
+        },
+        "zeroRefChunkMatchCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The zero ref chunk match count.",
+          "readOnly": true
+        },
+        "hkThreadsMin": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The housekeeping threads minimum.",
+          "readOnly": true
+        },
+        "hkThreadsMax": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The house keeping threads maximum.",
+          "readOnly": true
+        },
+        "hkThreadsAvg": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The housekeeping threads average.",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "EventsMetricsGet"
+      }
+    },
+    "EventsMetricsGetModelRestCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/EventsMetricsGet"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "HkMetricsGet": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp for the metric sample",
+          "$ref": "#/definitions/DateTimeOffsetRest"
+        },
+        "compactedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The number of bytes compacted.",
+          "readOnly": true
+        },
+        "compactedDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Time spent compating bytes",
+          "readOnly": true
+        },
+        "dereferencedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes dereferenced",
+          "readOnly": true
+        },
+        "dereferencedDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Time spent dereferencing bytes",
+          "readOnly": true
+        },
+        "freedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Amount of space freed in bytes",
+          "readOnly": true
+        },
+        "pendingBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The number of bytes pending to delete",
+          "readOnly": true
+        },
+        "processedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Bytes processed",
+          "readOnly": true
+        },
+        "processedBytesPerSecond": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Bytes processed per second",
+          "readOnly": true
+        },
+        "removedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Bytes removed",
+          "readOnly": true
+        },
+        "removedDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Time spend removing bytes",
+          "readOnly": true
+        },
+        "jobsProcessed": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of jobs processed",
+          "readOnly": true
+        },
+        "jobsReceived": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of jobs received",
+          "readOnly": true
+        },
+        "queueSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Queue size",
+          "readOnly": true
+        },
+        "secureCompactedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure bytes compacted",
+          "readOnly": true
+        },
+        "secureCompactedDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The compaction duration in microseconds",
+          "readOnly": true
+        },
+        "secureDereferencedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure bytes dereferenced",
+          "readOnly": true
+        },
+        "secureDereferencedDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Time spent dereferencing secure bytes",
+          "readOnly": true
+        },
+        "secureFreedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure bytes freed",
+          "readOnly": true
+        },
+        "securePendingBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure bytes pending",
+          "readOnly": true
+        },
+        "secureProcessedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure bytes processed",
+          "readOnly": true
+        },
+        "secureProcessedBytesPerSecond": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Secure bytes processed per second",
+          "readOnly": true
+        },
+        "secureRemovedBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure bytes removed",
+          "readOnly": true
+        },
+        "secureRemovedDurationMicroseconds": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Time spent removing secure bytes",
+          "readOnly": true
+        },
+        "secureJobsProcessed": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure jobs processed",
+          "readOnly": true
+        },
+        "secureJobsReceived": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of secure jobs received",
+          "readOnly": true
+        },
+        "secureQueueSize": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Secure queue size",
+          "readOnly": true
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Store ID",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "HkMetricsGet"
+      }
+    },
+    "L10nStringStruct": {
+      "type": "object"
+    },
+    "SessionMaxStreams": {
+      "type": "object",
+      "properties": {
+        "currentStreams": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Current stream count."
+        },
+        "maxStreamsLimit": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Max stream limit."
+        },
+        "streamsLockFailCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "stream lock failure count"
+        }
+      },
+      "xml": {
+        "name": "SessionMaxStreams"
+      }
+    },
+    "StorageMetricsGet": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "description": "Timestamp for the metric sample",
+          "$ref": "#/definitions/DateTimeOffsetRest"
+        },
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Store ID",
+          "readOnly": true
+        },
+        "containerIndexBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes in the container index.",
+          "readOnly": true
+        },
+        "portionBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes in the portion.",
+          "readOnly": true
+        },
+        "sparseIndexBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes in the sparse index.",
+          "readOnly": true
+        },
+        "transactionLogBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes in the transaction log.",
+          "readOnly": true
+        },
+        "userDataBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Number of bytes of user data.",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "StorageMetricsGet"
+      }
+    },
+    "StorageMetricsGetModelRestCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/StorageMetricsGet"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "StoreSecureSettingsGet": {
+      "type": "object",
+      "properties": {
+        "storeId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "store id"
+        },
+        "storeState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The state of the store"
+        },
+        "encryptionEnabled": {
+          "type": "boolean",
+          "description": "Indicates if the store has encrypted data",
+          "readOnly": true,
+          "default": false
+        },
+        "overwriteCount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The secure erase overwrite count of the store",
+          "readOnly": true
+        },
+        "overwriteModeString": {
+          "description": "The secure erase overwrite mode of the store",
+          "readOnly": true,
+          "$ref": "#/definitions/L10nStringStruct"
+        },
+        "keyName": {
+          "type": "string",
+          "description": "The encryption keyname",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "StoreSecureSettingsGet"
+      }
+    },
+    "StoreSecureSettingsGetModelRestCollection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/StoreSecureSettingsGet"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

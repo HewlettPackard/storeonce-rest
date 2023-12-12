@@ -1,0 +1,755 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "5.5.2-SNAPSHOT",
+    "title": "Reporting"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "Name of the resource"
+    },
+    {
+      "name": "Retention Periods"
+    },
+    {
+      "name": "Scheduled Report subresource"
+    },
+    {
+      "name": "Scheduled report results"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/reporting/results": {
+      "get": {
+        "tags": [
+          "Scheduled report results"
+        ],
+        "summary": "Get results",
+        "description": "Get results",
+        "operationId": "getResults",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Results"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/results/download": {
+      "get": {
+        "tags": [
+          "Scheduled report results"
+        ],
+        "summary": "Download a report results file",
+        "description": "",
+        "operationId": "getFile",
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "name": "configUuid",
+            "in": "query",
+            "description": "The UUID of the config that created the results. ",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "description": "The timestamp of the results to be downloaded. ",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/retention-periods": {
+      "get": {
+        "tags": [
+          "Retention Periods"
+        ],
+        "summary": "Get Retention period",
+        "description": "Get Retention period configured",
+        "operationId": "getRetentionPeriods",
+        "produces": [
+          "application/json",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/RetentionPeriod"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      }
+    },
+    "/reporting/scheduled-reports/configs": {
+      "get": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Get all Scheduled Reports",
+        "description": "Gets all Scheduled Reports",
+        "operationId": "getAllScheduledReports",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/collection"
+            }
+          },
+          "500": {
+            "description": "Error obtaining the stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Create a new Schedule Report",
+        "description": "",
+        "operationId": "createScheduleReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "New Schedule Report to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Invalid report type.<br/>Empty list of email addresses.<br/>Invalid report type.<br/>Read-only field uuid specified"
+          },
+          "409": {
+            "description": "Email server not configured on this appliance.<br/>Maximum number of scheduled reports already configured"
+          },
+          "500": {
+            "description": "Error updating stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:create"
+        ]
+      }
+    },
+    "/reporting/scheduled-reports/configs/config/{config-id}": {
+      "get": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Retrieve a Scheduled Report with the given uuid",
+        "description": "",
+        "operationId": "getScheduledReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "config-id",
+            "in": "path",
+            "description": "UUID of the Scheduled Report to be retrieved",
+            "required": true,
+            "type": "string",
+            "x-example": "84fbe8d0-5106-47c2-b237-e887bd7dbcfb"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          },
+          "404": {
+            "description": "No scheduled report found for the uuid provided"
+          },
+          "500": {
+            "description": "Error obtaining the stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Modify the specififed Scheduled Report",
+        "description": "",
+        "operationId": "updateScheduledReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated Scheduled Report",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ScheduleReport"
+            }
+          },
+          {
+            "name": "config-id",
+            "in": "path",
+            "description": "UUID of the Scheduled Report to be updated",
+            "required": true,
+            "type": "string",
+            "x-example": "84fbe8d0-5106-47c2-b237-e887bd7dbcfb"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Empty/Invalid schedule report name provided.<br/>Empty list for reportTypes provided.<br/>Read-only field uuid specified"
+          },
+          "404": {
+            "description": "No scheduled report found for the uuid provided"
+          },
+          "500": {
+            "description": "Error updating stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Scheduled Report subresource"
+        ],
+        "summary": "Delete a Scheduled Report with the given uuid",
+        "description": "",
+        "operationId": "deleteScheduledReport",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "config-id",
+            "in": "path",
+            "description": "UUID of the Scheduled Report to be deleted",
+            "required": true,
+            "type": "string",
+            "x-example": "84fbe8d0-5106-47c2-b237-e887bd7dbcfb"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "404": {
+            "description": "No scheduled report found for the uuid provided"
+          },
+          "500": {
+            "description": "Error updating stored configuration",
+            "schema": {
+              "$ref": "#/definitions/ExtendedError"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "reporting:delete"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ApplianceDetails": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the Appliance Group"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Appliance"
+        }
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "Item": {
+      "type": "object",
+      "properties": {
+        "string": {
+          "type": "string"
+        },
+        "integer": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "Item"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "example": {
+          "type": "object"
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "format": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "SizeBytes"
+        }
+      }
+    },
+    "ResultSet": {
+      "type": "object",
+      "properties": {
+        "scheduleUuid": {
+          "type": "string",
+          "description": "ScheduleUuid"
+        },
+        "resultList": {
+          "type": "array",
+          "description": "ResultList",
+          "items": {
+            "$ref": "#/definitions/Result"
+          }
+        }
+      }
+    },
+    "Results": {
+      "type": "object",
+      "properties": {
+        "resultFiles": {
+          "type": "array",
+          "xml": {
+            "name": "resultFile",
+            "wrapped": true
+          },
+          "description": "Results",
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/ResultSet"
+          }
+        }
+      },
+      "xml": {
+        "name": "Results"
+      }
+    },
+    "RetentionPeriod": {
+      "type": "object",
+      "properties": {
+        "highFrequencyRetentionSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "High Frequency Retention Seconds"
+        },
+        "mediumFrequencyRetentionSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Medium Frequency Retention Seconds"
+        },
+        "lowFrequencyRetentionSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Low Frequency Retention Seconds"
+        }
+      },
+      "xml": {
+        "name": "RetentionPeriod"
+      }
+    },
+    "ScheduleReport": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the Schedule Report"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the Scheduled Report"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the Scheduled Report"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "This is a localise text for report type",
+          "default": false
+        },
+        "applianceReportType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Report to be sent as part of this schedule. Only valid if target type is Appliances."
+        },
+        "applianceReportTypeString": {
+          "type": "string",
+          "description": "This is a localise text for report type. Only valid if target type is Appliances"
+        },
+        "deviceReportType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Report to be sent as part of this schedule. Only valid if target type is Devices."
+        },
+        "deviceReportTypeString": {
+          "type": "string",
+          "description": "This is a localise text for report type. Only valid if target type is Devices."
+        },
+        "timePeriod": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Time Period for which the report would be generated"
+        },
+        "timePeriodString": {
+          "type": "string",
+          "description": "Time Period for which the report would be generated.",
+          "readOnly": true
+        },
+        "emailAddresses": {
+          "type": "array",
+          "description": "List of email addresses.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scheduleFrequency": {
+          "type": "integer",
+          "format": "int32",
+          "description": "It is the frequency of the schedule."
+        },
+        "scheduleFrequencyString": {
+          "type": "string",
+          "description": "This is a localise text for schedule frequency",
+          "readOnly": true
+        },
+        "frequency": {
+          "type": "string",
+          "description": "Quartz cron expression used to create this schedule."
+        },
+        "targetType": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Target of this report either Appliances or Devices"
+        },
+        "targetTypeString": {
+          "type": "string",
+          "description": "This is a localise text for report target"
+        },
+        "targetAppliances": {
+          "type": "array",
+          "description": "Appliances for which the report is to be generated. Only applicable if targetType is APPLIANCES_TARGET",
+          "items": {
+            "$ref": "#/definitions/ApplianceDetails"
+          }
+        },
+        "targetDevices": {
+          "type": "array",
+          "description": "Device for which the report is to be generated. Only applicable if targetType is DEVICES_TARGET",
+          "items": {
+            "$ref": "#/definitions/targetDevices"
+          }
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Start date of schedule",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "description": "End date of schedule",
+          "format": "date-time"
+        }
+      },
+      "xml": {
+        "name": "ScheduleReport"
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/ScheduleReport"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "xml": {
+        "name": "collection"
+      }
+    },
+    "targetDevices": {
+      "type": "object",
+      "properties": {
+        "applianceUuid": {
+          "type": "string",
+          "description": "UUID of the Appliance"
+        },
+        "vtlLibraryIds": {
+          "type": "array",
+          "description": "List of VTL Library IDs",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "nasShareIds": {
+          "type": "array",
+          "description": "List of NAS Share IDs",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "catStoreIds": {
+          "type": "array",
+          "description": "List of CAT Store IDs",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
