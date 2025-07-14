@@ -1,0 +1,98 @@
+[
+  {
+    "name": "users_and_groups.json",
+    "path": "versions/4.3.12/users_and_groups.json"
+  },
+  {
+    "name": "alerts_and_events.json",
+    "path": "versions/4.3.12/alerts_and_events.json"
+  },
+  {
+    "name": "email-subscriptions-swagger.json",
+    "path": "versions/4.3.12/email-subscriptions-swagger.json"
+  },
+  {
+    "name": "hpsp-hw-monitor-swagger.json",
+    "path": "versions/4.3.12/hpsp-hw-monitor-swagger.json"
+  },
+  {
+    "name": "hpsp-logcollection-swagger.json",
+    "path": "versions/4.3.12/hpsp-logcollection-swagger.json"
+  },
+  {
+    "name": "asynchronous_tasks.json",
+    "path": "versions/4.3.12/asynchronous_tasks.json"
+  },
+  {
+    "name": "certificates.json",
+    "path": "versions/4.3.12/certificates.json"
+  },
+  {
+    "name": "sessions.json",
+    "path": "versions/4.3.12/sessions.json"
+  },
+  {
+    "name": "appliance.json",
+    "path": "versions/4.3.12/appliance.json"
+  },
+  {
+    "name": "cat.json",
+    "path": "versions/4.3.12/cat.json"
+  },
+  {
+    "name": "d2d_service.json",
+    "path": "versions/4.3.12/d2d_service.json"
+  },
+  {
+    "name": "dashboard.json",
+    "path": "versions/4.3.12/dashboard.json"
+  },
+  {
+    "name": "fc.json",
+    "path": "versions/4.3.12/fc.json"
+  },
+  {
+    "name": "iscsi.json",
+    "path": "versions/4.3.12/iscsi.json"
+  },
+  {
+    "name": "licensing.json",
+    "path": "versions/4.3.12/licensing.json"
+  },
+  {
+    "name": "management_services.json",
+    "path": "versions/4.3.12/management_services.json"
+  },
+  {
+    "name": "nas.json",
+    "path": "versions/4.3.12/nas.json"
+  },
+  {
+    "name": "remote_logging.json",
+    "path": "versions/4.3.12/remote_logging.json"
+  },
+  {
+    "name": "rep.json",
+    "path": "versions/4.3.12/rep.json"
+  },
+  {
+    "name": "reporting.json",
+    "path": "versions/4.3.12/reporting.json"
+  },
+  {
+    "name": "smm.json",
+    "path": "versions/4.3.12/smm.json"
+  },
+  {
+    "name": "snmp.json",
+    "path": "versions/4.3.12/snmp.json"
+  },
+  {
+    "name": "storage.json",
+    "path": "versions/4.3.12/storage.json"
+  },
+  {
+    "name": "vtl.json",
+    "path": "versions/4.3.12/vtl.json"
+  }
+]
