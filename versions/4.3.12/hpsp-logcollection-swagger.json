@@ -1,0 +1,475 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "View and manage log collections for support tickets",
+    "version": "1.21-SNAPSHOT",
+    "title": "LogCollection (Support Ticket)"
+  },
+  "basePath": "/logcollection",
+  "tags": [
+    {
+      "name": "LogCollection (Support Ticket)"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/collections": {
+      "get": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Retrieve metadata associated with all log collections currently available on the system",
+        "description": "Returns a list of metadata associated with all existing log collections",
+        "operationId": "getLogCollectionList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LogCollectionList"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:read",
+          "hpsp_log_collection:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Create a new log collection",
+        "description": "Creates a new log collection based on supported collection type (COMPREHENSIVE, SLIM, USAGE, PERFORMANCE or VMCORE), and other properties passed in via the LogCollectionModel class object.  The following properties must be specified in the LogCollectionModel data: name (String), collectionType (COMPREHENSIVE, SLIM, USAGE, PERFORMANCE, VMCORE).  The description (String) is an optional property. The rest of the properties in the LogCollectionModel are ignored even when the values are specified. \n\nTo create a collection on a remote cluster or group , specify the remoteGroupId query parameter.  This will initiate a remote collection.  When finished, the remote collection will be copied to the initiating system , and deleted on the remote cluster or group.  The new remote collection can be viewed and retrieved from the initiating system the way a local collection would be.",
+        "operationId": "createLogCollection",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Used to specify collection properties.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LogCollectionModel"
+            }
+          },
+          {
+            "name": "remoteGroupId",
+            "in": "query",
+            "description": "Management Group ID or cluster name to get remote collection from",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:write"
+        ]
+      }
+    },
+    "/collections/{name}": {
+      "get": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Retrieve the metadata associated with a specific log collection",
+        "description": "Returns the metadata associated with the log collection with the specified name.  The metadata is returned as a LogCollectionModel class object.",
+        "operationId": "getLogCollection",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of logcollection",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LogCollectionModel"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:read",
+          "hpsp_log_collection:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Delete a log collection with a specified name",
+        "description": "",
+        "operationId": "deleteLogCollection",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "Name of logcollection",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:write"
+        ]
+      }
+    },
+    "/config": {
+      "get": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Retrieve the logcollection configuration information",
+        "description": "Retrieve settable logcollection configuration information, returned as a LogCollectionConfiguration class object.",
+        "operationId": "getConfiguration",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LogCollectionConfiguration"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:read",
+          "hpsp_log_collection:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Update logcollection configuration information",
+        "description": "Update log collection configuration parameters, one at a time, by specifying 'name' 'value' pairs, where 'name' and 'value' are query parameters.  These parameters, or properties, are defined as elements of the LogCollectionConfiguration class object.",
+        "operationId": "modifyConfigurationParameter",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "The name of the parameter to modify.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "in": "query",
+            "description": "The value of the named parameter to modify.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LogCollectionConfiguration"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection_config:write"
+        ]
+      }
+    },
+    "/emergencymanifest": {
+      "get": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Retrieve the emergency manifest file path",
+        "description": "Returns a string with the emergency manifest file path if it exists.",
+        "operationId": "getEmergencyManifest",
+        "produces": [
+          "text/plain"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:read",
+          "hpsp_log_collection:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "LogCollection (Support Ticket)"
+        ],
+        "summary": "Create the emergency manifest file.",
+        "description": "The emergency manifest file is used to specify files to collect and commands to run to generate an emergency log collection on a single node.",
+        "operationId": "createEmergencyManifest",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_log_collection:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "LogCollectionConfiguration": {
+      "type": "object",
+      "required": [
+        "logCollectionTimeout",
+        "retentionPeriodInDays"
+      ],
+      "properties": {
+        "retentionPeriodInDays": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Retention period in days"
+        },
+        "sizeLimitInBytes": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Size limit in bytes of a log collection",
+          "readOnly": true
+        },
+        "enableScrubbing": {
+          "type": "boolean",
+          "description": "Scrub collection files when this property is true",
+          "default": false
+        },
+        "supportPartitionMaxPercent": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Maximum percentage of the /support partition occupied by log collections",
+          "minimum": 25.0,
+          "maximum": 90.0
+        },
+        "enableVmcoreDigest": {
+          "type": "boolean",
+          "description": "Enable creation of vmcore digest when this property is true",
+          "default": false
+        },
+        "enableSeparateVmcoreCollection": {
+          "type": "boolean",
+          "description": "Enable creation of separate collection containing just the vmcore when this property is true",
+          "default": false
+        },
+        "trimSlimTicket": {
+          "type": "boolean",
+          "description": "enable trimming of slim ticket",
+          "default": false
+        },
+        "logCollectionTimeout": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Log Collection timeout"
+        }
+      },
+      "xml": {
+        "name": "config"
+      }
+    },
+    "LogCollectionList": {
+      "type": "object",
+      "required": [
+        "logCollectionList"
+      ],
+      "properties": {
+        "logCollectionList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LogCollectionModel"
+          }
+        }
+      },
+      "xml": {
+        "name": "logcollectionlist"
+      }
+    },
+    "LogCollectionModel": {
+      "type": "object",
+      "required": [
+        "collectionType",
+        "forceTransfer",
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Log collection name"
+        },
+        "forceTransfer": {
+          "type": "boolean",
+          "default": false
+        },
+        "deltaCollection": {
+          "type": "boolean",
+          "default": false
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Log collection start time"
+        },
+        "collectionPath": {
+          "type": "string",
+          "description": "Log collection path"
+        },
+        "downloadUri": {
+          "type": "string",
+          "description": "Log collection download URI"
+        },
+        "sizeBytesLong": {
+          "type": "integer",
+          "format": "int64",
+          "description": "Log collection size in bytes"
+        },
+        "description": {
+          "type": "string",
+          "description": "Log collection user-set description"
+        },
+        "clusterName": {
+          "type": "string",
+          "description": "Cluster name"
+        },
+        "completedNodes": {
+          "type": "array",
+          "description": "List of cluster nodes that have have sucessfully completed their collections",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "identifier": {
+          "type": "string",
+          "description": "Identifier for automatically-generated collection"
+        },
+        "collectionTypeInfo": {
+          "description": "Localized text for collection type",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "collectionModeInfo": {
+          "description": "Localized text for collection mode",
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "collectionMode": {
+          "type": "string",
+          "enum": [
+            "Automatic",
+            "Manual"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "COMPLETE",
+            "FAILED",
+            "INPROGRESS",
+            "PARTIALLY_COMPLETE",
+            "REQUESTED"
+          ]
+        },
+        "durationSeconds": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Duration in seconds"
+        },
+        "sizeBytes": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Deprecated, use sizeBytesLong"
+        },
+        "collectionType": {
+          "type": "string",
+          "enum": [
+            "COMPREHENSIVE",
+            "SLIM",
+            "USAGE",
+            "PERFORMANCE",
+            "VMCORE"
+          ]
+        }
+      },
+      "xml": {
+        "name": "logcollection"
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

@@ -1,0 +1,1455 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "6.9.0-SNAPSHOT",
+    "title": "Management Services"
+  },
+  "basePath": "/api/v1/management-services",
+  "tags": [
+    {
+      "name": "LoginBanner resource"
+    },
+    {
+      "name": "Maintenance Mode resource"
+    },
+    {
+      "name": "RawWarranty resource"
+    },
+    {
+      "name": "Software Version resource"
+    },
+    {
+      "name": "System resource"
+    },
+    {
+      "name": "console access resource"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/console/password": {
+      "get": {
+        "tags": [
+          "console access resource"
+        ],
+        "summary": "Determine if the console password is set",
+        "description": "",
+        "operationId": "getConsolePasswordStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/The status of the console password"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "console_password_status:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "console access resource"
+        ],
+        "summary": "Update the console access password",
+        "description": "",
+        "operationId": "updateConsolePassword",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The password to set",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ConsoleResponse"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Password Updated"
+          },
+          "400": {
+            "description": "Password Rejected"
+          }
+        },
+        "x-pmlPermissions": [
+          "password:update"
+        ]
+      }
+    },
+    "/login-banner/banner": {
+      "get": {
+        "tags": [
+          "LoginBanner resource"
+        ],
+        "summary": "Retrieve the login banner text",
+        "description": "",
+        "operationId": "getLoginBannerInformation",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/LoginBannerResponse"
+            }
+          },
+          "500": {
+            "description": "Unknown error accessing information"
+          }
+        },
+        "x-pmlPermissions": [
+          "pml:read:guestinfo:read",
+          "config:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "LoginBanner resource"
+        ],
+        "summary": "Modify the login banner information",
+        "description": "",
+        "operationId": "setLoginBannerInformation",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the system information decorator object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/loginBanner"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "500": {
+            "description": "Unknown error updating login banner"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:update"
+        ]
+      }
+    },
+    "/maintenance": {
+      "get": {
+        "tags": [
+          "Maintenance Mode resource"
+        ],
+        "summary": "Retrieve the maintenance mode enabled state",
+        "description": "",
+        "operationId": "getMaintenanceModeStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/MaintenanceModeResponse"
+            }
+          },
+          "500": {
+            "description": "Unknown error accessing information"
+          }
+        },
+        "x-pmlPermissions": [
+          "maintenance:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Maintenance Mode resource"
+        ],
+        "summary": "Modify the maintenance mode setting",
+        "description": "",
+        "operationId": "setMaintenanceModeStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the maintenance mode setting required ",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/MaintenanceModeResponse"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "500": {
+            "description": "Unknown error updating the maintenance mode"
+          }
+        },
+        "x-pmlPermissions": [
+          "maintenance:update"
+        ]
+      }
+    },
+    "/recommendedSoftwareVersion": {
+      "get": {
+        "tags": [
+          "Software Version resource"
+        ],
+        "summary": "Retrieve any software update recommendation",
+        "description": "",
+        "operationId": "getSoftwareVersionRecommendation",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/recommendedSoftwareVersion"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "recommendedsoftwareupdate:read"
+        ]
+      }
+    },
+    "/system/ilo-config": {
+      "get": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Retrieve the ilo network properties",
+        "description": "",
+        "operationId": "getIloNetworkConfig",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/iloNetworkInformation"
+            }
+          },
+          "404": {
+            "description": "Unsupported Platform"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "iloconfig:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Modify the system information",
+        "description": "",
+        "operationId": "setIloNetworkConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The ilo network configuration object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/iloNetworkInformation"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "404": {
+            "description": "Unsupported platform"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "iloconfig:update"
+        ]
+      }
+    },
+    "/system/ilo-security": {
+      "get": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Retrieve the iLO security state",
+        "description": "",
+        "operationId": "getILOSecurityState",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/ILOSecurityState"
+            }
+          },
+          "404": {
+            "description": "Unsupported platform"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-pmlPermissions": [
+          "ilosecurity:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Modify the system information",
+        "description": "",
+        "operationId": "setILOSecurityState",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The ilo security state object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ILOSecurityState"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "304": {
+            "description": "Security State not modified"
+          },
+          "400": {
+            "description": "Invalid data or missing data"
+          },
+          "404": {
+            "description": "Unsupported platform"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "x-pmlPermissions": [
+          "ilosecurity:update"
+        ]
+      }
+    },
+    "/system/information": {
+      "get": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Retrieve the system information properties",
+        "description": "",
+        "operationId": "getSystemInformation",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/systemInformation"
+            }
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Modify the system information",
+        "description": "",
+        "operationId": "setSystemInformation",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "the system information object",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/systemInformation"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "400": {
+            "description": "Field is badly formatted"
+          },
+          "500": {
+            "description": "Unknown error accessing configuration"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:update"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "System resource"
+        ],
+        "summary": "Unregister from Atlas DP Services",
+        "description": "",
+        "operationId": "unregisterFromDP",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          },
+          "400": {
+            "description": "Cannot unregister the system since it is not registered"
+          },
+          "404": {
+            "description": "Unsupported platform"
+          },
+          "500": {
+            "description": "Unknown error"
+          }
+        },
+        "x-pmlPermissions": [
+          "config:update"
+        ]
+      }
+    },
+    "/warranty": {
+      "get": {
+        "tags": [
+          "RawWarranty resource"
+        ],
+        "summary": "Read the current status of the system's warrantied hardware",
+        "description": "",
+        "operationId": "getWarrantyInformation",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Operation",
+            "schema": {
+              "$ref": "#/definitions/WarrantyStatusSummary"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "warranty:read"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "A disk pack sku": {
+      "type": "object",
+      "properties": {
+        "serialNumber": {
+          "type": "string",
+          "description": "The serial number"
+        },
+        "partNumber": {
+          "type": "string",
+          "description": "The part number"
+        },
+        "diskPackUuid": {
+          "type": "string",
+          "description": "The disk pack uuid"
+        },
+        "enclosureUuid": {
+          "type": "string",
+          "description": "The enclosure uuid"
+        },
+        "volumeUuid": {
+          "type": "string",
+          "description": "The volume uuid"
+        },
+        "boxNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The physical box number"
+        },
+        "bayNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The physical bay number"
+        }
+      }
+    },
+    "A server sku": {
+      "type": "object",
+      "properties": {
+        "serialNumber": {
+          "type": "string",
+          "description": "The serial number"
+        },
+        "partNumber": {
+          "type": "string",
+          "description": "The part number"
+        },
+        "diskPackUuid": {
+          "type": "string",
+          "description": "The disk pack uuid"
+        },
+        "enclosureUuid": {
+          "type": "string",
+          "description": "The enclosure uuid"
+        },
+        "volumeUuid": {
+          "type": "string",
+          "description": "The volume uuid"
+        },
+        "boxNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The physical box number"
+        },
+        "bayNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The physical bay number"
+        },
+        "serverUuid": {
+          "type": "string",
+          "description": "The server uuid"
+        }
+      }
+    },
+    "ActionStatus": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "error": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "suggestedAction": {
+          "type": "string",
+          "enum": [
+            "NOACTION",
+            "REPEAT_AFTER_DELAY",
+            "REPEAT_NO_DELAY",
+            "FAIL"
+          ]
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoEx"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "actionStatus"
+      }
+    },
+    "An unrecognized hardware sku": {
+      "type": "object",
+      "properties": {
+        "serialNumber": {
+          "type": "string",
+          "description": "The serial number"
+        },
+        "partNumber": {
+          "type": "string",
+          "description": "The part number"
+        },
+        "uuid": {
+          "type": "string",
+          "description": "The uuid"
+        }
+      }
+    },
+    "An unrecognized pool": {
+      "type": "object",
+      "properties": {
+        "serialNumber": {
+          "type": "string",
+          "description": "The serial number"
+        },
+        "partNumber": {
+          "type": "string",
+          "description": "The part number"
+        },
+        "uuid": {
+          "type": "string",
+          "description": "The uuid"
+        },
+        "parentUuid": {
+          "type": "string",
+          "description": "The uuid of the parent enclosure"
+        },
+        "boxNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The physical box number"
+        },
+        "bayNumber": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The physical bay number"
+        },
+        "volumeUuid": {
+          "type": "string",
+          "description": "The volume uuid"
+        }
+      }
+    },
+    "ConsoleResponse": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "ExtendedError": {
+      "type": "object",
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "OK",
+            "Warning",
+            "Critical"
+          ]
+        },
+        "messageForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "message"
+          }
+        },
+        "resolutionForCurrentLocale": {
+          "type": "string",
+          "xml": {
+            "name": "resolution"
+          }
+        },
+        "resolution": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfo"
+        }
+      },
+      "xml": {
+        "name": "extendedError"
+      }
+    },
+    "ExtendedInfo": {
+      "type": "object",
+      "properties": {
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "$ref": "#/definitions/MessageInfoExImpl"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ExternalDocs": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "ILOSecurityState": {
+      "type": "object",
+      "properties": {
+        "securityState": {
+          "type": "string",
+          "example": "PRODUCTION",
+          "description": "The iLO security state",
+          "enum": [
+            "PRODUCTION",
+            "HIGH_SECURITY"
+          ]
+        },
+        "httpStatusCode": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "username": {
+          "type": "string",
+          "description": "iLO Username"
+        },
+        "password": {
+          "type": "string",
+          "description": "iLO Password"
+        },
+        "securityStateString": {
+          "type": "string",
+          "example": "PRODUCTION",
+          "description": "Localized security state"
+        },
+        "securityStateAllowableValues": {
+          "type": "object",
+          "description": "Allowable security states",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "xml": {
+        "name": "ILOSecurityState"
+      }
+    },
+    "MaintenanceModeResponse": {
+      "type": "object",
+      "properties": {
+        "maintenanceModeEnabled": {
+          "type": "boolean",
+          "description": "Maintenance Mode flag",
+          "default": false
+        }
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "messageKey": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoEx": {
+      "type": "object",
+      "properties": {
+        "messageForCurrentLocale": {
+          "type": "string"
+        },
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "MessageInfoExImpl": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfoEx"
+      }
+    },
+    "PatchedComponents": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "release": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "installDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expected": {
+          "type": "string"
+        },
+        "available": {
+          "type": "string"
+        }
+      }
+    },
+    "Property": {
+      "type": "object",
+      "properties": {
+        "vendorExtensions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "readOnly": {
+          "type": "boolean",
+          "default": false
+        },
+        "example": {
+          "type": "object"
+        },
+        "xml": {
+          "$ref": "#/definitions/Xml"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "format": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "RepairActions": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "SupportNoteDetails": {
+      "type": "object",
+      "properties": {
+        "supportNote": {
+          "type": "string",
+          "description": "Support Note"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "NEW",
+            "STARTING",
+            "RUNNING",
+            "SUSPENDED",
+            "COMPLETED",
+            "KILLED",
+            "EXCEPTION",
+            "TIMEOUT",
+            "STOPPED",
+            "INFAILOVER",
+            "STALE"
+          ]
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "scheduledStartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ActionStatus"
+          }
+        },
+        "data": {
+          "type": "string"
+        },
+        "extendedError": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "location": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "routingSelector": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "extendedInfo": {
+          "$ref": "#/definitions/ExtendedInfo"
+        },
+        "extendedErr": {
+          "$ref": "#/definitions/ExtendedError"
+        },
+        "response": {
+          "type": "string"
+        }
+      }
+    },
+    "The Raw Warranty body": {
+      "type": "object",
+      "properties": {
+        "baseWarranty": {
+          "description": "The base warranty",
+          "$ref": "#/definitions/A server sku"
+        },
+        "enclosureWarranties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/A disk pack sku"
+          }
+        },
+        "diskPackWarranties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/A disk pack sku"
+          }
+        },
+        "unrecognizedServers": {
+          "type": "array",
+          "description": "The list of unrecognized servers",
+          "items": {
+            "$ref": "#/definitions/An unrecognized hardware sku"
+          }
+        },
+        "unrecognizedEnclosures": {
+          "type": "array",
+          "description": "The list of unrecognized enclosures",
+          "items": {
+            "$ref": "#/definitions/An unrecognized hardware sku"
+          }
+        },
+        "unrecognizedPools": {
+          "type": "array",
+          "description": "The list of unrecognized pools",
+          "items": {
+            "$ref": "#/definitions/An unrecognized pool"
+          }
+        },
+        "enclosureWarrantiesProperty": {
+          "type": "array",
+          "xml": {
+            "name": "enclosureWarranties"
+          },
+          "description": "The list of enclosure warranties",
+          "items": {
+            "$ref": "#/definitions/A disk pack sku"
+          }
+        },
+        "diskPackWarrantiesProperty": {
+          "type": "array",
+          "xml": {
+            "name": "diskPackWarranties"
+          },
+          "description": "The list of disk pack warranties",
+          "items": {
+            "$ref": "#/definitions/A disk pack sku"
+          }
+        }
+      }
+    },
+    "The Raw Warranty root object": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "description": "Product ID (aka SKU)"
+        },
+        "rebootRequired": {
+          "type": "boolean",
+          "description": "Set to true if a reboot is required to apply changes",
+          "default": false
+        },
+        "warrantyInformation": {
+          "description": "The body",
+          "$ref": "#/definitions/The Raw Warranty body"
+        },
+        "poolNames": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "The status of the console password": {
+      "type": "object",
+      "properties": {
+        "passwordSet": {
+          "type": "boolean",
+          "description": "Whether the console password has been configured",
+          "default": false
+        }
+      }
+    },
+    "WarrantyStatusSku": {
+      "type": "object",
+      "properties": {
+        "hardwareType": {
+          "type": "string",
+          "example": "BASE",
+          "description": "The warranty type",
+          "enum": [
+            "BASE",
+            "ENCLOSURE",
+            "DISKPACK"
+          ]
+        },
+        "hardwareTypeString": {
+          "type": "string",
+          "example": "Base",
+          "description": "Localized warranty type"
+        },
+        "serialNumber": {
+          "type": "string",
+          "example": "TEST8075WT",
+          "description": "The serial number"
+        },
+        "partNumber": {
+          "type": "string",
+          "example": "BB954A",
+          "description": "The part number"
+        },
+        "productName": {
+          "type": "string",
+          "example": "HPE StoreOnce 3620 24TB Capacity Upgrade Kit",
+          "description": "Product name"
+        },
+        "shortProductName": {
+          "type": "string",
+          "example": "HPE StoreOnce 3620 24TB Cap Upg Kit",
+          "description": "Short product name"
+        },
+        "hardwareStatus": {
+          "type": "string",
+          "example": "OK",
+          "description": "The warranty status",
+          "enum": [
+            "OK",
+            "MISSING",
+            "MISMATCH",
+            "NEW"
+          ]
+        },
+        "hardwareStatusString": {
+          "type": "string",
+          "example": "Ok",
+          "description": "Localized hardware status"
+        }
+      }
+    },
+    "WarrantyStatusSummary": {
+      "type": "object",
+      "properties": {
+        "members": {
+          "type": "array",
+          "xml": {
+            "name": "member",
+            "wrapped": true
+          },
+          "description": "Members of the collection",
+          "items": {
+            "$ref": "#/definitions/WarrantyStatusSku"
+          }
+        },
+        "nextPageUri": {
+          "type": "string",
+          "description": "Provided if more members are available",
+          "readOnly": true
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Total number of members that are available",
+          "readOnly": true
+        },
+        "numMembers": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Number of members returned",
+          "readOnly": true
+        }
+      },
+      "description": "Container for a collection of models",
+      "xml": {
+        "name": "Collection"
+      }
+    },
+    "Xml": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "attribute": {
+          "type": "boolean",
+          "default": false
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "iloNetworkInformation": {
+      "type": "object",
+      "properties": {
+        "dhcpEnabled": {
+          "type": "boolean",
+          "description": "Flag indicating whether ip addressing is static or dynamic",
+          "default": false
+        },
+        "ip4Address": {
+          "type": "string",
+          "description": "iLO address in ipv4 dotted format (x.x.x.x)"
+        },
+        "ip4Subnet": {
+          "type": "string",
+          "description": "iLO subnet mask in ipv4 dotted format (x.x.x.x)"
+        },
+        "ip4Gateway": {
+          "type": "string",
+          "description": "iLO gateway in ipv4 dotted format (x.x.x.x)"
+        },
+        "ip4DnsServer": {
+          "type": "string",
+          "description": "iLO Dns server address in ipv4 dotted format (x.x.x.x)"
+        },
+        "ip6Address": {
+          "type": "string",
+          "description": "iLO address in ipv6 format (x:x:x:x:x:x:x:x)"
+        },
+        "ip6Prefix": {
+          "type": "integer",
+          "format": "int32",
+          "description": "iLO address prefix (1-127) range"
+        },
+        "ip6Gateway": {
+          "type": "string",
+          "description": "iLO gateway in ipv6 format (x:x:x:x:x:x:x:x)"
+        },
+        "ip6DnsServer": {
+          "type": "string",
+          "description": "iLO gateway in ipv6 format (x:x:x:x:x:x:x:x)"
+        },
+        "httpStatusCode": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "iloNetworkInformation"
+      }
+    },
+    "loginBanner": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Login banner text"
+        },
+        "featureEnabled": {
+          "type": "boolean",
+          "description": "Login banner flag",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "loginBanner"
+      }
+    },
+    "recommendedSoftwareVersion": {
+      "type": "object",
+      "properties": {
+        "informationAvailable": {
+          "type": "boolean",
+          "description": "Whether information has been obtained from HPE servers",
+          "default": false
+        },
+        "updateRecommended": {
+          "type": "boolean",
+          "description": "Whether there is a software update recommended",
+          "default": false
+        },
+        "recommendedSoftwareVersion": {
+          "type": "string",
+          "description": "The latest recommended software version"
+        },
+        "releaseNotesUri": {
+          "type": "string",
+          "description": "The location of the release notes for the upgrade"
+        },
+        "lastUpdateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date/time this information was obtained from HPE servers"
+        }
+      },
+      "xml": {
+        "name": "recommendedSoftwareVersion"
+      }
+    },
+    "systemInformation": {
+      "type": "object",
+      "properties": {
+        "softwareVersion": {
+          "type": "string",
+          "description": "Software version installed on the appliance"
+        },
+        "hostname": {
+          "type": "string",
+          "description": "Host name of the appliance"
+        },
+        "productSku": {
+          "type": "string",
+          "description": "Product SKU of the appliance"
+        },
+        "productName": {
+          "type": "string",
+          "description": "Product name installed on the appliance"
+        },
+        "serialNumber": {
+          "type": "string",
+          "description": "Serial number of the appliance"
+        },
+        "warrantySerialNumber": {
+          "type": "string",
+          "description": "Warranty serial number of the appliance"
+        },
+        "systemUuid": {
+          "type": "string",
+          "description": "Unique identifier for the appliance"
+        },
+        "managementAddress": {
+          "type": "string",
+          "description": "IP address for the management interface"
+        },
+        "systemLocation": {
+          "type": "string",
+          "description": "System Location for the appliance"
+        },
+        "contactName": {
+          "type": "string",
+          "description": "Contact name for the appliance"
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "Contact phone number for the appliance"
+        },
+        "contactEmail": {
+          "type": "string",
+          "description": "Contact email address for the appliance"
+        },
+        "opeToken": {
+          "type": "string",
+          "description": "Auth token for DP as a service"
+        },
+        "catGatewayId": {
+          "type": "string",
+          "description": "Identifier for Catalyst Gateway"
+        },
+        "platformCustomerId": {
+          "type": "string",
+          "description": "Identifier for Platform Customer ID"
+        },
+        "applicationCustomerId": {
+          "type": "string",
+          "description": "Identifier for Application Customer ID"
+        },
+        "iqn": {
+          "type": "string",
+          "description": "Identifier for IQN"
+        },
+        "isSystemPatched": {
+          "type": "boolean",
+          "description": "Is System Patched",
+          "default": false
+        },
+        "operationalMode": {
+          "type": "string",
+          "description": "Operational mode of the appliance",
+          "enum": [
+            "PRODUCTION",
+            "MANUFACTURING"
+          ]
+        },
+        "patchedComponents": {
+          "type": "array",
+          "description": "patchedComponents",
+          "items": {
+            "$ref": "#/definitions/PatchedComponents"
+          }
+        }
+      },
+      "xml": {
+        "name": "systemInformation"
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
