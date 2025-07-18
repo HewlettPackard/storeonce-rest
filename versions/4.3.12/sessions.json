@@ -263,7 +263,10 @@
             "description": "New Password Policy Ruleset",
             "required": true,
             "schema": {
-              "$ref": "application/json"
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
             }
           }
         ],

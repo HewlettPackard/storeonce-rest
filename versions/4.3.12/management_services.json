@@ -777,6 +777,23 @@
         "name": "ILOSecurityState"
       }
     },
+    "LoginBannerResponse": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "Login banner text"
+        },
+        "featureEnabled": {
+          "type": "boolean",
+          "description": "Login banner flag",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "LoginBannerResponse"
+      }
+    },
     "MaintenanceModeResponse": {
       "type": "object",
       "properties": {
