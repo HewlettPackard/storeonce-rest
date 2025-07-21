@@ -2,20 +2,22 @@
   "swagger": "2.0",
   "info": {
     "description": "unused",
-    "version": "2.2-SNAPSHOT",
+    "version": "2.5-SNAPSHOT",
     "title": "Alerts and Events"
   },
-  "host": "APPLIANCE-ADDRESS",
   "basePath": "/rest",
   "tags": [
     {
-      "name": "Alerts"
+      "name": "eAtlas Alerts"
     },
     {
-      "name": "Events"
+      "name": "eAtlas Events"
     },
     {
-      "name": "Tasks"
+      "name": "eAtlas EventsAndAlerts"
+    },
+    {
+      "name": "eAtlas Tasks"
     }
   ],
   "schemes": [
@@ -25,14 +27,13 @@
     "/alerts": {
       "get": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Get list of Alerts",
-        "description": "Retrieves alerts based on the specified filters.",
+        "summary": "Get list of AlertsEntry resources",
+        "description": "<p>This operation is loosely based on the <a href=\"http://apidocs.vse.rdlabs.hpecorp.net/atc/200/private/#rest/alerts\" target=\"_blank\">Atlas GET /rest/alerts</a> operation.</p>",
         "operationId": "getAlerts",
         "produces": [
-          "application/json",
-          "application/xml"
+          "application/json"
         ],
         "parameters": [
           {
@@ -84,12 +85,48 @@
           "mgmt_alerts:write"
         ]
       },
+      "post": {
+        "tags": [
+          "eAtlas Alerts"
+        ],
+        "summary": "Create a new <code>AlertsEntry</code> resource",
+        "description": "<p>This operation is loosely based on the <a href=\"http://apidocs.vse.rdlabs.hpecorp.net/atc/200/private/#rest/alerts\" target=\"_blank\">Atlas POST /rest/alerts</a> operation.</p><p>The following AlertsEntry properties are required: descriptionInfo.catalogName, descriptionInfo.messageKey, level (WARN or ALERT), and associatedResource.resourceCategory. \"level\" can be omitted as long as the&lt;message key&gt;.metadata line in the message catalogue specifies an EVENT_LEVEL value.Other metadata values are also auto-populated.</p><p>The uuid and uri fields must not be specified. If they were then that would imply an update instead of a create operation.</p>",
+        "operationId": "createAlert",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "serialized <code>AlertsEntry</code> object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AlertsEntry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AlertsEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:write"
+        ]
+      },
       "delete": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Used to delete Alerts using filtering",
-        "description": "Deletes all alerts based on the filtering parameters passed in. If no filtering parameters are defined, then all alerts will be deleted.",
+        "summary": "Used to delete <code>AlertsEntry</code> resources using filtering",
+        "description": "<p>This operation is based on the <a href=\"http://apidocs.vse.rdlabs.hpecorp.net/atc/200/private/#rest/alerts\" target=\"_blank\">Atlas DELETE /rest/alerts</a> operation.</p>",
         "operationId": "deleteByFilter",
         "parameters": [
           {
@@ -113,14 +150,13 @@
     "/alerts/autoPruneMonths": {
       "get": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Get the current value of the autoPruneMonths configuration parameter  for Alert s",
-        "description": "Once a day the system will automatically prune alerts from the database that were created more than autoPruneMonths ago",
+        "summary": "Get the current value of the <code>autoPruneMonths</code> configuration parameter  for <code>AlertsEntry</code> resources",
+        "description": "<p>Once a day the system will automatically prune <code>AlertsEntry</code> resources from the database that were created more than <code>autoPruneMonths</code> ago.</p>",
         "operationId": "getAutoPruneMonths",
         "produces": [
-          "application/json",
-          "application/xml"
+          "application/json"
         ],
         "responses": {
           "200": {
@@ -137,10 +173,10 @@
       },
       "put": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Set the autoPruneMonths configuration parameter for alerts",
-        "description": "Once a day the system will automatically prune alerts from the database that were created more than autoPruneMonths ago",
+        "summary": "Set the <code>autoPruneMonths</code> configuration parameter for <code>AlertsEntry</code> resources",
+        "description": "<p>Once a day the system will automatically prune <code>AlertsEntry</code> resources from the database that were created more than <code>autoPruneMonths</code> ago.</p>",
         "operationId": "setAutoPruneMonths",
         "parameters": [
           {
@@ -166,14 +202,13 @@
     "/alerts/count": {
       "get": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Get the current number of alerts in the database",
-        "description": "Get the current number of alerts in the database",
+        "summary": "Get the current number of AlertsEntry resources in the database",
+        "description": "<p>This operation is based on the <a href=\"http://apidocs.vse.rdlabs.hpecorp.net/atc/200/private/#rest/alerts\" target=\"_blank\">Atlas GET /rest/alerts/Count</a> operation.</p>",
         "operationId": "getCount",
         "produces": [
-          "application/json",
-          "application/xml"
+          "application/json"
         ],
         "responses": {
           "200": {
@@ -192,14 +227,13 @@
     "/alerts/{id}": {
       "get": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Retrieves a particular alert entry using its uuid",
-        "description": "Retrieves a particular alert entry using its uuid",
+        "summary": "Retrieves a particular AlertsEntry resource using its uuid",
+        "description": "<p>This operation is loosely based on the <a href=\"http://apidocs.vse.rdlabs.hpecorp.net/atc/200/private/#rest/alerts\" target=\"_blank\">Atlas GET /rest/alerts/{id}</a> operation.</p>",
         "operationId": "getAlertById",
         "produces": [
-          "application/json",
-          "application/xml"
+          "application/json"
         ],
         "parameters": [
           {
@@ -223,12 +257,55 @@
           "mgmt_alerts:write"
         ]
       },
+      "put": {
+        "tags": [
+          "eAtlas Alerts"
+        ],
+        "summary": "This method is only for Piano compliance and is expected to be called only from Piano. Please use PATCH to update properties in an existing AlertsEntry resource.",
+        "description": "To prevent concurrent resource modification a proper Etag needs to be provided either in the eTag property of AlertsEntry in the request payload, or in 'If-Match' HTTP request header. Only the following AlertsEntry properties can be modified: modified, alertState, assignedToUser, childAlerts, clearedByUser, assignedToUser, clearedTime, childAlerts, etag, modified, serviceEventDetails, and urgency.</p>",
+        "operationId": "updateAlert",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier (uuid) of an existing AlertsEntry resource.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "AlertsEntry payload with any of the allowed properties. For example: {\"alertState\": \"Cleared\", \"assignedToUser\": \"Paul\", \"urgency\": \"High\", \"notes\": \"Problem fixed\", \"eTag\": \"2016-02-08 13:42:30.444\"}",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AlertsEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:write"
+        ]
+      },
       "delete": {
         "tags": [
-          "Alerts"
+          "eAtlas Alerts"
         ],
-        "summary": "Delete a specific Alert using its uuid",
-        "description": "Delete a specific Alert using its uuid",
+        "summary": "Delete a specific AlertsEntry resource using its uuid",
+        "description": "<p>This operation is based on the <a href=\"http://apidocs.vse.rdlabs.hpecorp.net/atc/200/private/#rest/alerts\" target=\"_blank\">Atlas DELETE /rest/alerts/{id}</a> operation.</p>",
         "operationId": "deleteAlert",
         "parameters": [
           {
@@ -242,6 +319,49 @@
         "responses": {
           "202": {
             "description": "The request was accepted but not completed. The result payload will contain a URL that can be queried to determine the status of the request."
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_alerts:write"
+        ]
+      },
+      "patch": {
+        "tags": [
+          "eAtlas Alerts"
+        ],
+        "summary": "Updates properties in an existing AlertsEntry resource",
+        "description": "<p>To prevent concurrent resource modification a proper Etag needs to be provided either in the eTag property of AlertsEntry in the request payload, or in 'If-Match' HTTP request header.</p><p>Only the following AlertsEntry properties can be modified: modified, alertState, assignedToUser, childAlerts, clearedByUser, assignedToUser, clearedTime, childAlerts, etag, modified, serviceEventDetails, and urgency.</p>",
+        "operationId": "modifyAlert",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique identifier (uuid) of an existing AlertsEntry resource.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "serialized <code>AlertsEntry</code> object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AlertsEntry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/AlertsEntry"
+            }
           }
         },
         "x-pmlPermissions": [
@@ -877,6 +997,18 @@
     }
   },
   "definitions": {
+    "AddressAndPort": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "AlertsEntries": {
       "type": "object",
       "properties": {
@@ -1201,6 +1333,46 @@
     "DeleteStatus": {
       "type": "object"
     },
+    "DirectoryGroup": {
+      "type": "object",
+      "properties": {
+        "groupName": {
+          "type": "string"
+        },
+        "directory_name": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DirectoryGroups": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DirectoryGroup"
+          }
+        }
+      }
+    },
     "EventDetails": {
       "type": "object",
       "properties": {
@@ -1423,6 +1595,42 @@
         "name": "eventsEntry"
       }
     },
+    "MFAEntries": {
+      "type": "object",
+      "properties": {
+        "mfaEntry": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/MFAEntry"
+          }
+        }
+      }
+    },
+    "MFAEntry": {
+      "type": "object",
+      "properties": {
+        "factor": {
+          "type": "string",
+          "enum": [
+            "TOTP",
+            "EMAIL"
+          ]
+        },
+        "mfaStatus": {
+          "type": "string",
+          "enum": [
+            "DISABLED",
+            "ENABLED",
+            "ACTIVE",
+            "RESET"
+          ]
+        }
+      },
+      "xml": {
+        "name": "mfaEntry"
+      }
+    },
     "MessageInfo": {
       "type": "object",
       "properties": {
@@ -1508,6 +1716,158 @@
         }
       }
     },
+    "RealmConfig": {
+      "type": "object",
+      "discriminator": "jsonTypeInfo",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "realmName": {
+          "type": "string"
+        },
+        "realmClassName": {
+          "type": "string",
+          "xml": {
+            "name": "realmClass"
+          }
+        }
+      }
+    },
+    "RealmConfigs": {
+      "type": "object",
+      "properties": {
+        "realmConfigs": {
+          "type": "array",
+          "xml": {
+            "name": "realmConfig"
+          },
+          "readOnly": true,
+          "items": {
+            "$ref": "#/definitions/RealmConfig"
+          }
+        }
+      }
+    },
+    "SSLCertificate": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "alternativeName": {
+          "type": "string"
+        },
+        "base64Data": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "challengePassword": {
+          "type": "string"
+        },
+        "commonName": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "distinguishedName": {
+          "type": "string"
+        },
+        "dnQualifier": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "eTag": {
+          "type": "string"
+        },
+        "expiresInDays": {
+          "type": "string"
+        },
+        "givenName": {
+          "type": "string"
+        },
+        "initials": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "locality": {
+          "type": "string"
+        },
+        "modified": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "organizationalUnit": {
+          "type": "string"
+        },
+        "serialNumber": {
+          "type": "string"
+        },
+        "md5Fingerprint": {
+          "type": "string"
+        },
+        "sha1Fingerprint": {
+          "type": "string"
+        },
+        "sha256Fingerprint": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subjectAlternativeNameType": {
+          "type": "string"
+        },
+        "surname": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unstructuredName": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
     "ServiceEventDetails": {
       "type": "object",
       "properties": {
@@ -1530,8 +1890,395 @@
           "type": "string"
         }
       }
+    },
+    "TaskError": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "string"
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "recommendedActions": {
+          "type": "string"
+        },
+        "messageInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        },
+        "resolutionInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        }
+      },
+      "xml": {
+        "name": "taskError"
+      }
+    },
+    "TasksEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "unFilteredTotal": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "prevPageUri": {
+          "type": "string"
+        },
+        "nextPageUri": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TasksEntry"
+          }
+        }
+      },
+      "xml": {
+        "name": "taskEntries"
+      }
+    },
+    "TasksEntry": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Critical",
+            "Warning",
+            "OK",
+            "Unknown",
+            "Disabled"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "dataSenderId": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "readOnly": true,
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "attributesList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "associations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Association"
+          }
+        },
+        "associatedResource": {
+          "$ref": "#/definitions/AssociatedResource"
+        },
+        "associatedTaskUri": {
+          "type": "string"
+        },
+        "computedPercentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "parentTaskUri": {
+          "type": "string"
+        },
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "progressUpdates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ProgressUpdate"
+          }
+        },
+        "taskErrors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TaskError"
+          }
+        },
+        "taskStatus": {
+          "type": "string"
+        },
+        "taskState": {
+          "type": "string",
+          "enum": [
+            "New",
+            "Starting",
+            "Running",
+            "Suspended",
+            "Completed",
+            "Killed",
+            "Error",
+            "Stopping",
+            "Stopped",
+            "Unknown"
+          ]
+        },
+        "taskOutput": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "taskType": {
+          "type": "string"
+        },
+        "userInitiated": {
+          "type": "boolean",
+          "default": false
+        },
+        "taskId": {
+          "type": "string"
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false
+        },
+        "stateReason": {
+          "type": "string"
+        },
+        "purposeInfo": {
+          "$ref": "#/definitions/MessageInfo"
+        },
+        "taskOutputInfos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageInfoWrapper"
+          }
+        },
+        "eTag": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "taskEntry"
+      }
+    },
+    "UnboundidDSRealmConfig": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/RealmConfig"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userNamingAttribute": {
+              "type": "string"
+            },
+            "baseDN": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "offline": {
+              "type": "boolean",
+              "default": false
+            },
+            "checkCertificates": {
+              "type": "boolean",
+              "default": false
+            },
+            "autoConfigureSecurity": {
+              "type": "boolean",
+              "default": false
+            },
+            "timeout": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "servers": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UnboundidDSServer"
+              }
+            },
+            "bindUser": {
+              "type": "string"
+            },
+            "bindPassword": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "xml": {
+            "name": "UnboundidDSRealmConfig"
+          }
+        }
+      ]
+    },
+    "UnboundidDSServer": {
+      "type": "object",
+      "properties": {
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "certs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SSLCertificate"
+          }
+        },
+        "isSecure": {
+          "type": "boolean",
+          "default": false
+        },
+        "useStartTLS": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "UserEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserEntry"
+          }
+        }
+      }
+    },
+    "UserEntry": {
+      "type": "object",
+      "required": [
+        "roles",
+        "userName"
+      ],
+      "properties": {
+        "roles": {
+          "type": "array",
+          "description": "a list of roles",
+          "items": {
+            "type": "string"
+          }
+        },
+        "directory_name": {
+          "type": "string",
+          "example": "mydomain.com",
+          "description": "the name of an existing directory (directory users only)."
+        },
+        "userName": {
+          "type": "string",
+          "description": "the user name (login name) of the user account. The user will be created if the user is local. Needs to pre-exist if the user is an existing directory account."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "the full name of the user (local users only)."
+        },
+        "mobilePhone": {
+          "type": "string",
+          "example": "555-123-1234",
+          "description": "the mobile phone number of the user (local users only)."
+        },
+        "officePhone": {
+          "type": "string",
+          "example": "555-123-1234",
+          "description": "the office phone number of the user (local users only)"
+        },
+        "emailAddress": {
+          "type": "string",
+          "example": "john.doe@company.com",
+          "description": "the email address of the user (local users only)."
+        },
+        "password": {
+          "type": "string",
+          "example": "test123",
+          "description": "the password of the user. Only configurable if the user is local. Required if the user is local."
+        },
+        "uri": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean",
+          "default": false
+        },
+        "roleIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mfaEntries": {
+          "description": "nested values for mfaEntries ",
+          "$ref": "#/definitions/MFAEntries"
+        }
+      }
     }
   },
+  "host": "APPLIANCE-ADDRESS",
   "securityDefinitions": {
     "BasicAuth": {
       "type": "basic"
