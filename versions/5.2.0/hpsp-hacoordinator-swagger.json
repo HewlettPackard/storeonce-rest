@@ -1,0 +1,260 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "5.10-SNAPSHOT",
+    "title": "hpsp HA coordinator"
+  },
+  "basePath": "/hacoordinator",
+  "tags": [
+    {
+      "name": "HA Coordinator"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/servernodes/clusterwidegracefulshutdown": {
+      "post": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Powerdown/reboot all nodes in the cluster gracefully",
+        "description": "The request payload should be a Form with the parameters described below. Content-Type header should have application/x-www-form-urlencoded media type",
+        "operationId": "clusterwideGracefulShutdown",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "powerOperation",
+            "in": "formData",
+            "description": "Power operation (powerDown or powerReboot)",
+            "required": false,
+            "type": "string",
+            "default": "powerOperation=powerDown",
+            "enum": [
+              "powerOperation=powerDown",
+              "powerOperation=powerReboot"
+            ]
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodestatus": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get HA status for all cluster nodes",
+        "description": "",
+        "operationId": "getAllServerNodeStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ServerNodeStatusList"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    },
+    "/servernodestatus/{name}": {
+      "get": {
+        "tags": [
+          "HA Coordinator"
+        ],
+        "summary": "Get HA status for cluster node specified by node name",
+        "description": "",
+        "operationId": "getServerNodeStatusByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ServerNodeStatus"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "hpsp_ha_coordinator:read",
+          "pml:read:guestinfo:read",
+          "hpsp_ha_coordinator:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ClusterwideConfiguration": {
+      "type": "object",
+      "properties": {
+        "enableCrashDumpFailover": {
+          "type": "boolean",
+          "default": false
+        },
+        "allowHaToFailedOverBackupNode": {
+          "type": "boolean",
+          "default": false
+        },
+        "gracefulPowerDownTimeout": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "xml": {
+        "name": "serverNodeList"
+      }
+    },
+    "MigratableEntity": {
+      "type": "object",
+      "properties": {
+        "modelClassName": {
+          "type": "string"
+        },
+        "resourceTypeDisplayName": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "ownerClassName": {
+          "type": "string"
+        },
+        "primaryOwner": {
+          "type": "string"
+        },
+        "nodeAt": {
+          "type": "string"
+        }
+      }
+    },
+    "ServerNodeList": {
+      "type": "object",
+      "properties": {
+        "serverNodes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/definitions/ServerNodeModel"
+          }
+        }
+      },
+      "xml": {
+        "name": "serverNodeList"
+      }
+    },
+    "ServerNodeModel": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "backUpNode": {
+          "type": "string"
+        },
+        "automaticFailoverEnabled": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "serverNode"
+      }
+    },
+    "ServerNodeStatus": {
+      "type": "object",
+      "properties": {
+        "serverNodeName": {
+          "type": "string"
+        },
+        "powerStatus": {
+          "type": "string",
+          "enum": [
+            "POWERING_UP",
+            "UP",
+            "POWERING_DOWN",
+            "PML_DOWN",
+            "DOWN",
+            "DOWN_FAILED_TO_POWER_UP",
+            "TRIGGERING_CRASH_DUMP",
+            "CRASH_DUMP",
+            "UNKNOWN",
+            "UP_FAILED"
+          ]
+        },
+        "failoverStatus": {
+          "type": "string",
+          "enum": [
+            "NO_RESOURCE",
+            "ON_OWNER",
+            "IN_FAILOVER",
+            "IN_FAILBACK",
+            "PARTIALLY_FAILED_OVER",
+            "FAILED_OVER"
+          ]
+        },
+        "migratableEntities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MigratableEntity"
+          }
+        }
+      }
+    },
+    "ServerNodeStatusList": {
+      "type": "object",
+      "properties": {
+        "statusForAllNodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ServerNodeStatus"
+          }
+        }
+      }
+    }
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}

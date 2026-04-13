@@ -50,5 +50,9 @@
     {
         "name": "5.1.0",
         "path": "versions/5.1.0"
+    },
+    {
+        "name": "5.2.0",
+        "path": "versions/5.2.0"
     }
 ]

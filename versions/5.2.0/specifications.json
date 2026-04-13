@@ -1,0 +1,110 @@
+[
+  {
+    "name": "alerts_and_events.json",
+    "path": "versions/5.2.0/alerts_and_events.json"
+  },
+  {
+    "name": "appliance.json",
+    "path": "versions/5.2.0/appliance.json"
+  },
+  {
+    "name": "asynchronous_tasks.json",
+    "path": "versions/5.2.0/asynchronous_tasks.json"
+  },
+  {
+    "name": "cat.json",
+    "path": "versions/5.2.0/cat.json"
+  },
+  {
+    "name": "certificates.json",
+    "path": "versions/5.2.0/certificates.json"
+  },
+  {
+    "name": "d2d_service.json",
+    "path": "versions/5.2.0/d2d_service.json"
+  },
+  {
+    "name": "dashboard.json",
+    "path": "versions/5.2.0/dashboard.json"
+  },
+  {
+    "name": "eatlas_adapters.json",
+    "path": "versions/5.2.0/eatlas_adapters.json"
+  },
+  {
+    "name": "email_notifications.json",
+    "path": "versions/5.2.0/email_notifications.json"
+  },
+  {
+    "name": "fc.json",
+    "path": "versions/5.2.0/fc.json"
+  },
+  {
+    "name": "hpsp-hacoordinator-swagger.json",
+    "path": "versions/5.2.0/hpsp-hacoordinator-swagger.json"
+  },
+  {
+    "name": "hpsp-hw-monitor-swagger.json",
+    "path": "versions/5.2.0/hpsp-hw-monitor-swagger.json"
+  },
+  {
+    "name": "hpsp-logcollection-swagger.json",
+    "path": "versions/5.2.0/hpsp-logcollection-swagger.json"
+  },
+  {
+    "name": "iscsi.json",
+    "path": "versions/5.2.0/iscsi.json"
+  },
+  {
+    "name": "licensing.json",
+    "path": "versions/5.2.0/licensing.json"
+  },
+  {
+    "name": "management_services.json",
+    "path": "versions/5.2.0/management_services.json"
+  },
+  {
+    "name": "mgmt-serverstatus-swagger.json",
+    "path": "versions/5.2.0/mgmt-serverstatus-swagger.json"
+  },
+  {
+    "name": "nas.json",
+    "path": "versions/5.2.0/nas.json"
+  },
+  {
+    "name": "remote_logging.json",
+    "path": "versions/5.2.0/remote_logging.json"
+  },
+  {
+    "name": "rep.json",
+    "path": "versions/5.2.0/rep.json"
+  },
+  {
+    "name": "reporting.json",
+    "path": "versions/5.2.0/reporting.json"
+  },
+  {
+    "name": "sessions.json",
+    "path": "versions/5.2.0/sessions.json"
+  },
+  {
+    "name": "smm.json",
+    "path": "versions/5.2.0/smm.json"
+  },
+  {
+    "name": "snmp.json",
+    "path": "versions/5.2.0/snmp.json"
+  },
+  {
+    "name": "storage.json",
+    "path": "versions/5.2.0/storage.json"
+  },
+  {
+    "name": "users_and_groups.json",
+    "path": "versions/5.2.0/users_and_groups.json"
+  },
+  {
+    "name": "vtl.json",
+    "path": "versions/5.2.0/vtl.json"
+  }
+]
