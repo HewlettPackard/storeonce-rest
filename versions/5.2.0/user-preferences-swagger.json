@@ -1,0 +1,93 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "1.0",
+    "title": "User Preferences"
+  },
+  "basePath": "/preferences",
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Retrieve both the current master configuration and the authenticated user&#39;s selections  # noqa: E501",
+        "operationId": "get_combined_data_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/configuration": {
+      "get": {
+        "summary": "Retrieve the current configuration information  # noqa: E501",
+        "operationId": "get_configuration_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/selections": {
+      "get": {
+        "summary": "Retrieve the authenticated user&#39;s choices  # noqa: E501",
+        "operationId": "get_user_selections_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "delete": {
+        "summary": "Change the authenticated user&#39;s choices to the current defaults  # noqa: E501",
+        "operationId": "set_user_selection_to_default_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "summary": "Update the authenticated user&#39;s choices  # noqa: E501",
+        "operationId": "update_user_selections_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {}
+}

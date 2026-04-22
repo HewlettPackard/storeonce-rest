@@ -1,0 +1,221 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "1.0",
+    "title": "Key Management Service"
+  },
+  "basePath": "/keyManager",
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Get hpsp_kms version, mode, and ip addresses if in External Key Manager mode  # noqa: E501",
+        "operationId": "get_kms_info_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/csr": {
+      "post": {
+        "summary": "Generate certificate signing request (CSR), new line is shown as &#39;\\\\n&#39;  # noqa: E501",
+        "operationId": "generate_csr_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "get": {
+        "summary": "Get current certificate signing request (CSR) text, new line is shown as &#39;\\\\n&#39;  # noqa: E501",
+        "operationId": "get_csr_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ekm": {
+      "put": {
+        "summary": "begin EKM enrollment procedure. asynchronous call and return URL to retrieve result  # noqa: E501",
+        "operationId": "enroll_with_ekm_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "patch": {
+        "summary": "Update EKM configuration information  # noqa: E501",
+        "operationId": "update_ekm_config_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "delete": {
+        "summary": "Withdraw from external key manager, with removeCertificates option  # noqa: E501",
+        "operationId": "withdraw_from_ekm_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/ekm/certificates": {
+      "get": {
+        "summary": "Get EKM certificates and CA certificate, statsOnly&#x3D;true only returns name and expiry  # noqa: E501",
+        "operationId": "get_ekm_certificates_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "put": {
+        "summary": "Import EKM certificates, signed certificates and CA certificate  # noqa: E501",
+        "operationId": "import_ekm_certificates_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/keystore": {
+      "put": {
+        "summary": "Restore a local keystore from a previously retrieved backup  # noqa: E501",
+        "operationId": "restore_local_keystore_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "Backup the keystore  # noqa: E501",
+        "operationId": "retain_local_keystore_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/kvm/certificates": {
+      "delete": {
+        "summary": "Delete all certificates from &#39;Generate CSR&#39; and &#39;Import Certificates&#39;  # noqa: E501",
+        "operationId": "delete_ekm_certificates_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      },
+      "post": {
+        "summary": "Renew EKM certificates and corresponding CA certificate  # noqa: E501",
+        "operationId": "renew_ekm_certificates_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/nodes": {
+      "post": {
+        "summary": "Expand a KMS cluster, automatically enrolls newly added nodes with the EKM  # noqa: E501",
+        "operationId": "expand_kms_cluster_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {}
+}

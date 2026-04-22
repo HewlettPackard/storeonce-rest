@@ -1,0 +1,29 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "1.0",
+    "title": "Health Status Aggregator"
+  },
+  "basePath": "/hsaggregator/mgmt-srv-health",
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Get Overall Health Status report resource  # noqa: E501",
+        "operationId": "get_status_health_with_http_info",
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {}
+}
