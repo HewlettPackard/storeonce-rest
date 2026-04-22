@@ -1,0 +1,735 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "unused",
+    "version": "2.2-SNAPSHOT",
+    "title": "Users and Groups"
+  },
+  "host": "APPLIANCE-ADDRESS",
+  "basePath": "/rest",
+  "tags": [
+    {
+      "name": "Authorization info about the currently authenticated user"
+    },
+    {
+      "name": "Directory Groups"
+    },
+    {
+      "name": "Realms"
+    },
+    {
+      "name": "Users"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/groups": {
+      "get": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Get list of DirectoryGroup resources",
+        "description": "",
+        "operationId": "getGroups",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroups"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:read"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Create a new DirectoryGroup, for the given ldap server, with any roles specified",
+        "description": "",
+        "operationId": "createNewGroup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The incoming group to create",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:write"
+        ]
+      }
+    },
+    "/groups/{groupId}": {
+      "get": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Get the specified DirectoryGroup by its group ID",
+        "description": "",
+        "operationId": "getGroupById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "groupName:directory_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:read"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Update an existing DirectoryGroup by its group ID",
+        "description": "",
+        "operationId": "updateExistingGroup",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "groupName:directory_name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "directoryGroup",
+            "description": "The DirectoryGroup payload to modify the directory group with",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/DirectoryGroup"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "owninfo:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Directory Groups"
+        ],
+        "summary": "Delete the specified DirectoryGroup by its group ID",
+        "description": "",
+        "operationId": "deleteGroupbyId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "description": "groupName:directory_name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_groups:write"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get list of UserEntry resources",
+        "description": "",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserEntries"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:read",
+          "mgmt_users:write"
+        ]
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new Local or Directory User, with any roles specified",
+        "description": "",
+        "operationId": "createNewUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The incoming user to create",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:write"
+        ]
+      }
+    },
+    "/users/{username}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get the specified UserAndGroup by username",
+        "description": "",
+        "operationId": "getUserByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LocalUser"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:read",
+          "mgmt_users:write"
+        ]
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update an existing UserEntry",
+        "description": "",
+        "operationId": "updateExistingUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The target username of the user to modify",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "The UserEntry payload to modify the user with",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UserEntry"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LocalUser"
+            }
+          }
+        },
+        "x-pmlPermissions": [
+          "owninfo:write",
+          "othersinfo:write"
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete the specified UserAndGroup by username",
+        "description": "",
+        "operationId": "deleteUserByName",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation"
+          }
+        },
+        "x-pmlPermissions": [
+          "mgmt_users:write"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AssociatedResource": {
+      "type": "object",
+      "properties": {
+        "associationType": {
+          "type": "string"
+        },
+        "resourceCategory": {
+          "type": "string"
+        },
+        "resourceName": {
+          "type": "string"
+        },
+        "resourceLocation": {
+          "type": "string"
+        },
+        "resourceUri": {
+          "type": "string"
+        }
+      }
+    },
+    "Association": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentUri": {
+          "type": "string"
+        },
+        "parentCategory": {
+          "type": "string"
+        }
+      }
+    },
+    "CatalogKeyPair": {
+      "type": "object",
+      "properties": {
+        "catalog": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "ChangeLog": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "userEntered": {
+          "type": "boolean",
+          "default": false
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "DeleteStatus": {
+      "type": "object"
+    },
+    "DirectoryGroup": {
+      "type": "object",
+      "properties": {
+        "groupName": {
+          "type": "string"
+        },
+        "directory_name": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DirectoryGroups": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DirectoryGroup"
+          }
+        }
+      }
+    },
+    "MessageInfoWrapper": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MessageInfoArgWrapper"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageInfo": {
+      "type": "object",
+      "properties": {
+        "catalogName": {
+          "type": "string"
+        },
+        "messageKey": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "messageForCurrentLocale": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "messageInfo"
+      }
+    },
+    "MessageInfoArgWrapper": {
+      "type": "object",
+      "properties": {
+        "messageInfoArg": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        },
+        "stringArg": {
+          "type": "string"
+        },
+        "intArg": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "longArg": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "booleanArg": {
+          "type": "boolean",
+          "default": false
+        },
+        "dateArg": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "LocalUser": {
+      "type": "object",
+      "required": [
+        "roles",
+        "userName"
+      ],
+      "properties": {
+        "roles": {
+          "type": "array",
+          "example": "[\"1\", \"a2549aaf-dc7c-4888-af7a-5b6a61347614\"]",
+          "description": "A list of any IDs that this user should be in. (1 is admin's ID, 2 is observer's ID, custom roles are UUIDs)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "directory_name": {
+          "type": "string",
+          "example": "mydomain.com",
+          "description": "The name of an existing Directory if not a local user."
+        },
+        "userName": {
+          "type": "string",
+          "example": "test123",
+          "description": "The user name (login name) of the user account.  The user will be created if the user is local.  Needs to pre-exist if the user is an existing directory account."
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "mobilePhone": {
+          "type": "string"
+        },
+        "officePhone": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string"
+        },
+        "currentPassword": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean",
+          "default": false
+        },
+        "needsPasswordReset": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "xml": {
+        "name": "localUser"
+      }
+    },
+    "ProgressUpdate": {
+      "type": "object",
+      "properties": {
+        "statusUpdate": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "statusUpdateInfo": {
+          "$ref": "#/definitions/MessageInfoWrapper"
+        }
+      }
+    },
+    "ServiceEventDetails": {
+      "type": "object",
+      "properties": {
+        "caseId": {
+          "type": "string"
+        },
+        "remoteSupportState": {
+          "type": "string",
+          "enum": [
+            "Closed",
+            "Error",
+            "None",
+            "Open",
+            "Pending",
+            "Received",
+            "Submitted"
+          ]
+        },
+        "primaryContact": {
+          "type": "string"
+        }
+      }
+    },
+    "UserEntries": {
+      "type": "object",
+      "properties": {
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "start": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UserEntry"
+          }
+        }
+      }
+    },
+    "UserEntry": {
+      "type": "object",
+      "required": [
+        "roles",
+        "userName"
+      ],
+      "properties": {
+        "roles": {
+          "type": "array",
+          "example": "[\"1\", \"a2549aaf-dc7c-4888-af7a-5b6a61347614\"]",
+          "description": "A list of any IDs that this user should be in. (1 is admin's ID, 2 is observer's ID, custom roles are UUIDs)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "directory_name": {
+          "type": "string",
+          "example": "mydomain.com",
+          "description": "The name of an existing Directory if not a local user."
+        },
+        "userName": {
+          "type": "string",
+          "example": "test123",
+          "description": "The user name (login name) of the user account.  The user will be created if the user is local.  Needs to pre-exist if the user is an existing directory account."
+        },
+        "fullName": {
+          "type": "string",
+          "example": "John Doe III",
+          "description": "The full name of the user.  Only configurable for local users."
+        },
+        "mobilePhone": {
+          "type": "string",
+          "example": "555-123-1234",
+          "description": "The mobile phone number of the user.  Only configurable if the user is local."
+        },
+        "officePhone": {
+          "type": "string",
+          "example": "555-123-1234",
+          "description": "The office phone number of the user.  Only configurable if the user is local."
+        },
+        "emailAddress": {
+          "type": "string",
+          "example": "john.doe@company.com",
+          "description": "The email address of the user.  Only configurable if the user is local."
+        },
+        "password": {
+          "type": "string",
+          "example": "test123",
+          "description": "The password of the user.  Only configurable if the user is local.  Required if the user is local."
+        },
+        "uri": {
+          "type": "string"
+        },
+        "locked": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "BasicAuth": {
+      "type": "basic"
+    },
+    "oauth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "/pml/login/authenticatewithobject"
+    }
+  },
+  "security": [
+    {
+      "BasicAuth": [],
+      "oauth": []
+    }
+  ]
+}
