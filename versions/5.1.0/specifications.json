@@ -48,6 +48,10 @@
     "path": "versions/5.1.0/hpsp-hw-monitor-swagger.json"
   },
   {
+    "name": "hpsp-kms-swagger.json",
+    "path": "versions/5.1.0/hpsp-kms-swagger.json"
+  },
+  {
     "name": "hpsp-logcollection-swagger.json",
     "path": "versions/5.1.0/hpsp-logcollection-swagger.json"
   },
@@ -62,6 +66,10 @@
   {
     "name": "management_services.json",
     "path": "versions/5.1.0/management_services.json"
+  },
+  {
+    "name": "mgmt-healthstatusaggregator-swagger.json",
+    "path": "versions/5.1.0/mgmt-healthstatusaggregator-swagger.json"
   },
   {
     "name": "mgmt-serverstatus-swagger.json",
@@ -102,6 +110,10 @@
   {
     "name": "users_and_groups.json",
     "path": "versions/5.1.0/users_and_groups.json"
+  },
+  {
+    "name": "user-preferences-swagger.json",
+    "path": "versions/5.1.0/user-preferences-swagger.json"
   },
   {
     "name": "vtl.json",
